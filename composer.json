@@ -1,0 +1,31 @@
+{
+    "name": "salibhdr/typhoon-iran-cities",
+    "description": "A laravel package for importing provinces, counties and cities of iran into your database accurately",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Salar Bahador",
+            "email": "bahador.salar@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SaliBhdr\\TyphoonIranCities\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SaliBhdr\\TyphoonIranCities\\IranCitiesServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "require": {},
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
