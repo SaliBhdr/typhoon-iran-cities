@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\City;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateCitiesTable extends Migration
 {
@@ -18,6 +19,8 @@ class CreateCitiesTable extends Migration
             $table->unsignedInteger('province_id');
             $table->unsignedInteger('county_id');
             $table->string('name');
+            $table->boolean('status')->default(City::$active);
+
             $table->unique(['name', 'province_id','county_id']);
             $table->foreign('province_id' )->references('id')->on('provinces')->onDelete('cascade');
             $table->foreign('county_id' )->references('id')->on('counties')->onDelete('cascade');

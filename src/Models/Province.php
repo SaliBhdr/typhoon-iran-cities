@@ -3,19 +3,28 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use SaliBhdr\TyphoonIranCities\useActiveField;
 
 class Province extends Model
 {
-    protected $fillable=['name'];
+    use useActiveField;
 
+    protected $fillable = ['name'];
 
-    public function cities(){
-
-        return $this->hasMany(City::class,'province_id');
+    /**
+     * province has many cities
+     */
+    public function cities()
+    {
+        return $this->hasMany(City::class, 'province_id');
     }
 
-    public function counties(){
-
-        return $this->hasMany(County::class,'province_id');
+    /**
+     * province has many counties
+     */
+    public function counties()
+    {
+        return $this->hasMany(County::class, 'province_id');
     }
+
 }

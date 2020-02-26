@@ -5,21 +5,8 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class InsertCities extends Command
+abstract class AbstractImportCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     * @var string
-     */
-    protected $signature = 'iran-cities:import';
-
-    /**
-     * The console command description.
-     * @var string
-     */
-    protected $description = 'Imports cities, counties and provinces into the database';
-
-
     /**
      * Execute the console command.
      * @return void
@@ -29,7 +16,7 @@ class InsertCities extends Command
         $this->info('Starting to import data...');
         $this->line('');
 
-        $files = $this->dirToArray(__DIR__ . '/../../csv/');
+        $files = $this->getFiles();
 
         $files = array_reverse($files);
 
@@ -52,19 +39,25 @@ class InsertCities extends Command
         $this->info('Data has been imported successfully!!!');
     }
 
-    protected function dirToArray($dir)
+    /**
+     * @return array
+     */
+    abstract protected function getFiles();
+
+    protected function dirToArray($dir, array $skip = [])
     {
+
+        $skip = array_merge($skip, [".", ".."]);
 
         $result = [];
 
-        $cdir = scandir($dir);
+        $targetDirFiles = scandir($dir);
 
-        foreach ($cdir as $key => $value) {
-            if (!in_array($value, [".", ".."])) {
+        foreach ($targetDirFiles as $key => $value) {
+            if (!in_array($value, $skip)) {
                 if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                     $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-                }
-                else {
+                } else {
                     $result[] = $value;
                 }
             }
@@ -88,6 +81,5 @@ class InsertCities extends Command
 
         return $csv;
     }
-
 
 }

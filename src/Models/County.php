@@ -3,13 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use SaliBhdr\TyphoonIranCities\useActiveField;
 
 class County extends Model
 {
-    protected $fillable=['province_id','name'];
+    use useActiveField;
 
-    public function province(){
+    protected $fillable = ['province_id', 'name'];
 
-        return $this->belongsTo(Province::class,'province_id');
+    /**
+     * County belongs to province
+     */
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
     }
+
 }
