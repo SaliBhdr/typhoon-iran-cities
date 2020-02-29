@@ -17,7 +17,7 @@ class CreateProvincesTable extends Migration
         Schema::create('provinces', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->boolean('status')->default(Province::$active);
+            $table->boolean('status')->default(1);
         });
     }
 

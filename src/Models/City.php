@@ -3,11 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use SaliBhdr\TyphoonIranCities\useActiveField;
+use SaliBhdr\TyphoonIranCities\HasStatusField;
 
 class City extends Model
 {
-    use useActiveField;
+    use HasStatusField;
 
     protected $fillable = ['province_id', 'county_id', 'name'];
 

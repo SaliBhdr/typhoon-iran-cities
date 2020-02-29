@@ -19,7 +19,7 @@ class CreateCitiesTable extends Migration
             $table->unsignedInteger('province_id');
             $table->unsignedInteger('county_id');
             $table->string('name');
-            $table->boolean('status')->default(City::$active);
+            $table->boolean('status')->default(1);
 
             $table->unique(['name', 'province_id','county_id']);
             $table->foreign('province_id' )->references('id')->on('provinces')->onDelete('cascade');
