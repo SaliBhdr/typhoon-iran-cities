@@ -18,6 +18,7 @@ class CreateProvincesTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->boolean('status')->default(1);
+            $table->timestamps();
         });
     }
 

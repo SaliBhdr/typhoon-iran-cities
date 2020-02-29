@@ -19,6 +19,7 @@ class CreateCountiesTable extends Migration
             $table->unsignedInteger('province_id');
             $table->string('name')->unique();
             $table->boolean('status')->default(1);
+            $table->timestamps();
 
             $table->foreign('province_id' )->references('id')->on('provinces')->onDelete('cascade');
         });
