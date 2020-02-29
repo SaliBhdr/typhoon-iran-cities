@@ -20,6 +20,7 @@ class CreateCitiesTable extends Migration
             $table->unsignedInteger('county_id');
             $table->string('name');
             $table->boolean('status')->default(1);
+            $table->timestamps();
 
             $table->unique(['name', 'province_id','county_id']);
             $table->foreign('province_id' )->references('id')->on('provinces')->onDelete('cascade');
