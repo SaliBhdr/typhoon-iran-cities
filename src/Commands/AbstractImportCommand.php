@@ -2,6 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +33,8 @@ abstract class AbstractImportCommand extends Command
 
             foreach ($rows as $row){
                 if(DB::table($dbName)->where('id', $row['id'])->doesntExist()){
+                    $row['created_at'] = Carbon::now();
+                    $row['updated_at'] = Carbon::now();
                     DB::table($dbName)->insert($row);
                 }
             }
