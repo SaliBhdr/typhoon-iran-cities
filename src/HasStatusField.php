@@ -28,7 +28,7 @@ trait HasStatusField
      */
     public function scopeActive(Builder $query)
     {
-        return $query->where('status', static::$ACTIVE);
+        return $this->statusQuery($query, static::$ACTIVE);
     }
 
     /**
@@ -39,7 +39,33 @@ trait HasStatusField
      */
     public function scopeNotActive(Builder $query)
     {
-        return $query->where('status', static::$NOT_ACTIVE);
+        return $this->statusQuery($query, static::$NOT_ACTIVE);
+    }
+
+    /**
+     * generates status query based on relation
+     *
+     * @param Builder $query
+     * @param $status
+     * @return Builder
+     */
+    private function statusQuery(Builder $query, $status)
+    {
+        $query->where('status', $status);
+
+        if (method_exists($this, 'province')) {
+            $query->whereHas('province', function ($q) use ($status) {
+                return $q->where('provinces.status', $status);
+            });
+        }
+
+        if (method_exists($this, 'county')) {
+            $query->whereHas('county', function ($q) use ($status) {
+                return $q->where('counties.status', $status);
+            });
+        }
+
+        return $query;
     }
 
     /**
@@ -94,7 +120,24 @@ trait HasStatusField
      */
     private function isStatus($status)
     {
-        return $this->status == $status;
+        if ($this->status != $status)
+            return false;
+
+        if (method_exists($this, 'county')) {
+            $county = $this->county()->first();
+
+            if ($this->status != $county->status)
+                return false;
+        }
+
+        if (method_exists($this, 'province')) {
+            $province = $this->province()->first();
+
+            if ($this->status != $province->status)
+                return false;
+        }
+
+        return true;
     }
 
     /**
