@@ -8,7 +8,7 @@ class ImportCities extends AbstractImportCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'iran:cities';
+    protected $signature = 'iran:import-cities';
 
     /**
      * The console command description.

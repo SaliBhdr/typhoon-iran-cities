@@ -19,4 +19,11 @@ class County extends Model
         return $this->belongsTo(Province::class, 'province_id');
     }
 
+    /**
+     * County has many cities
+     */
+    public function cities()
+    {
+        return $this->hasMany(City::class, 'county_id');
+    }
 }
