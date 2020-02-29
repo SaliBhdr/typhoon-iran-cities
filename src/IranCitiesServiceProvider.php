@@ -8,7 +8,9 @@
 namespace SaliBhdr\TyphoonIranCities;
 
 use Illuminate\Support\ServiceProvider;
-use SaliBhdr\TyphoonIranCities\Commands\InsertCities;
+use SaliBhdr\TyphoonIranCities\Commands\ImportCities;
+use SaliBhdr\TyphoonIranCities\Commands\ImportCounties;
+use SaliBhdr\TyphoonIranCities\Commands\ImportProvinces;
 
 class IranCitiesServiceProvider extends ServiceProvider
 {
@@ -32,7 +34,9 @@ class IranCitiesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-            InsertCities::class,
+            ImportProvinces::class,
+            ImportCounties::class,
+            ImportCities::class,
         ]);
     }
 

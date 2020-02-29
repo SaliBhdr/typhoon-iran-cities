@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\County;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateCountiesTable extends Migration
 {
@@ -17,6 +18,8 @@ class CreateCountiesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('province_id');
             $table->string('name')->unique();
+            $table->boolean('status')->default(1);
+
             $table->foreign('province_id' )->references('id')->on('provinces')->onDelete('cascade');
         });
     }

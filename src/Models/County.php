@@ -3,13 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use SaliBhdr\TyphoonIranCities\HasStatusField;
 
 class County extends Model
 {
-    protected $fillable=['province_id','name'];
+    use HasStatusField;
 
-    public function province(){
+    protected $fillable = ['province_id', 'name'];
 
-        return $this->belongsTo(Province::class,'province_id');
+    /**
+     * County belongs to province
+     */
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
     }
+
 }
