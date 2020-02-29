@@ -30,9 +30,11 @@ abstract class AbstractImportCommand extends Command
 
             $this->line('importing ' . $dbName . '...');
 
-            foreach ($rows as $row)
-                DB::table($dbName)->updateOrInsert($row);
-
+            foreach ($rows as $row){
+                if(DB::table($dbName)->where('id', $row['id'])->doesntExist()){
+                    DB::table($dbName)->insert($row);
+                }
+            }
         }
 
         $this->line('');
