@@ -11,7 +11,7 @@ class ImportCounties extends AbstractImportCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'iran:counties';
+    protected $signature = 'iran:import-counties';
 
     /**
      * The console command description.

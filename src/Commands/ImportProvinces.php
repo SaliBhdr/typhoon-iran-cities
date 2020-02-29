@@ -11,7 +11,7 @@ class ImportProvinces extends AbstractImportCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'iran:provinces';
+    protected $signature = 'iran:import-provinces';
 
     /**
      * The console command description.
