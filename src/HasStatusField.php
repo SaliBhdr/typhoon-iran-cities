@@ -17,9 +17,6 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait HasStatusField
 {
-    public static $ACTIVE = 1;
-    public static $NOT_ACTIVE = 0;
-
     /**
      * query for get active records
      *
@@ -28,7 +25,7 @@ trait HasStatusField
      */
     public function scopeActive(Builder $query)
     {
-        return $this->statusQuery($query, static::$ACTIVE);
+        return $this->statusQuery($query, 1);
     }
 
     /**
@@ -39,7 +36,7 @@ trait HasStatusField
      */
     public function scopeNotActive(Builder $query)
     {
-        return $this->statusQuery($query, static::$NOT_ACTIVE);
+        return $this->statusQuery($query, 0);
     }
 
     /**
@@ -75,7 +72,7 @@ trait HasStatusField
      */
     public function activate()
     {
-        $this->updateStatus(static::$ACTIVE);
+        $this->updateStatus(1);
 
         return $this;
     }
@@ -87,7 +84,7 @@ trait HasStatusField
      */
     public function deactivate()
     {
-        $this->updateStatus(static::$NOT_ACTIVE);
+        $this->updateStatus(0);
 
         return $this;
     }
@@ -99,7 +96,7 @@ trait HasStatusField
      */
     public function isActive()
     {
-        return $this->isStatus(static::$ACTIVE);
+        return $this->isStatus(1);
     }
 
     /**
@@ -109,7 +106,7 @@ trait HasStatusField
      */
     public function isNotActive()
     {
-        return $this->isStatus(static::$NOT_ACTIVE);
+        return $this->isStatus(0);
     }
 
     /**
