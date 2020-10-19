@@ -42,7 +42,7 @@ class Province extends Model
     {
         return $this->hasMany(County::class);
     }
-    
+
     /**
      * @return Province[]|Collection
      */
@@ -57,6 +57,14 @@ class Province extends Model
     public static function getAllActive()
     {
         return static::active()->all();
+    }
+
+    /**
+     * @return Province[]|Collection
+     */
+    public static function getAllNotActive()
+    {
+        return static::notActive()->all();
     }
 
     /**
