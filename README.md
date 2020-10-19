@@ -99,36 +99,122 @@ Data has been imported successfully!!!
 ```
 #### Code Usage
 
+All Available methods
+
+This package uses 3 eloquent models to get data from the database. These models are Province, County, and City.
+Some methods are common among these models, and some are not. 
+Here is the list of all these methods with their usages:
+
+**Common Methods for All models**
+
+If you use `HasStatusField` trait these methods are available. By default, the `HasStatusField` is used.
+
+| Method        | Type           | Usage                              |
+|---------------|:--------------:|:-----------------------------------|
+| active()      | static/dynamic | Query for get active records       |
+| notActive()   | static/dynamic | Query for get not active records   |
+| activate()    | dynamic        | Activates a record                 |
+| deactivate()  | dynamic        | Deactivates a record               |
+| isActive()    | dynamic        | Returns bool for record status     |
+| isNotActive() | dynamic        | Get all the counties of a province |
+
+**Province Model:**
+
+| Method                 | Type    | Usage                                                         |
+|------------------------|:-------:|:--------------------------------------------------------------|
+| cities()               | dynamic | hasMany() relation method for all the cities of a province    |
+| counties()             | dynamic | hasMany() relation method for all the Counties of a province  |
+| getAll()               | static  | Get all provinces                                             |
+| getAllActive()         | static  | Get all active provinces                                      |
+| getAllNotActive()      | static  | Get all not active provinces                                  |
+| getCounties()          | dynamic | Get all the counties of a province                            |
+| getActiveCounties()    | dynamic | Get all the active counties of a province                     |
+| getNotActiveCounties() | dynamic | Get all the not active counties of a province                 |
+| getCities()            | dynamic | Get all the cities of a province                              |
+| getActiveCities()      | dynamic | Get all the active cities of a province                       |
+| getNotActiveCities()   | dynamic | Get all the not active cities of a province                   |
+
+**County Model:**
+
+| Method                 | Type    | Usage                                                       |
+|------------------------|:-------:|:------------------------------------------------------------|
+| province()             | dynamic | belongsTo() relation method for the province of a county    |
+| cities()               | dynamic | hasMany() relation method for all the cities of a county    |
+| getAll()               | static  | Get all counties                                            |
+| getAllActive()         | static  | Get all active counties                                     |
+| getAllNotActive()      | static  | Get all not active counties                                 |
+| getProvince()          | dynamic | Get the parent province of a county                         |
+| getCities()            | dynamic | Get all the cities of a county                              |
+| getActiveCities()      | dynamic | Get all the active cities of a county                       |
+| getNotActiveCities()   | dynamic | Get all the not active cities of a county                   |
+
+**City Model:**
+
+| Method                 | Type    | Usage                                                     |
+|------------------------|:-------:|:--------------------------------------------------------- |
+| province()             | dynamic | belongsTo() relation method for the province of a city    |
+| county()               | dynamic | belongsTo() relation method for the county of a city      |
+| getAll()               | static  | Get all cities                                            |
+| getAllActive()         | static  | Get all active cities                                     |
+| getAllNotActive()      | static  | Get all not active cities                                 |
+| getProvince()          | dynamic | Get the parent province of a city                         |
+| getCounty()            | dynamic | Get the parent county of a city                           |
+
 All models have relation methods between themselves.
 
+**Examples:**
+
 * Province Model: 
+
 ```php
 use App\Province;
 
-# Getting province :
+# Fetching collection of provinces
+$provinces          = Province::getAll(); // returns collection of provinces
+$activeProvinces    = Province::getAllActive(); // returns collection of active provinces
+$notActiveProvinces = Province::getAllNotActive(); // returns collection of not active provinces
+
+# Fetching a province :
 $province = Province::find(1); // returns Province model
 
 # A province has many counties
 $counties = $province->counties()->get(); // returns collection of counties
+$counties = $province->getCounties(); // returns collection of counties
+$activeCounties = $province->getActiveCounties(); // returns collection of active counties
+$notActiveCounties = $province->getNotActiveCounties(); // returns collection of not active counties
 
 # A province has many cities
 $cities = $province->cities()->get(); // returns collection of cities
+$cities = $province->getCities();  // returns collection of cities
+$activeCities = $province->getActiveCities(); // returns collection of active cities
+$notActiveCities = $province->getNotActiveCities(); // returns collection of not active cities
 
 ```
 
 * County Model:
+
 ```php
 
 use App\County;
+
+# Fetching collection of counties
+$counties          = County::getAll(); // returns collection of counties
+$activeCounties    = County::getAllActive(); // returns collection of active counties
+$notActiveCounties = County::getAllNotActive(); // returns collection of not active counties
 
 # Getting County
 $county = County::find(1); // returns County model
 
 # A county has many cities
+# A province has many cities
 $cities = $county->cities()->get(); // returns collection of cities
+$cities = $county->getCities();  // returns collection of cities
+$activeCities = $county->getActiveCities(); // returns collection of active cities
+$notActiveCities = $county->getNotActiveCities(); // returns collection of not active cities
 
 # A county belongs to one province
 $province = $county->province()->first(); // returns Province model
+$province = $county->getProvince(); // returns Province model
 
 ```
 
@@ -137,14 +223,21 @@ $province = $county->province()->first(); // returns Province model
 
 use App\City;
 
+# Fetching collection of cities
+$counties          = City::getAll(); // returns collection of cities
+$activeCounties    = City::getAllActive(); // returns collection of active cities
+$notActiveCounties = City::getAllNotActive(); // returns collection of not active cities
+
 # Getting County
 $city = City::find(1);
 
 # A city belongs to a county
 $county = $city->county()->first(); // returns County model
+$county = $city->getCounty(); // returns County model
 
 # A city belongs to one province
 $province = $city->province()->first(); // returns Province model
+$province = $city->getProvince(); // returns Province model
 
 ```
 
@@ -187,6 +280,7 @@ as you use active() scope for fetching data.
 * City deactivation only will deactivate that city and does not affect province and county of that record 
 
 Example :
+
 ```php
 use App\Province;
 use App\City;

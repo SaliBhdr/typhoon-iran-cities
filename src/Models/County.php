@@ -45,6 +45,30 @@ class County extends Model
     }
 
     /**
+     * @return County[]|Collection
+     */
+    public static function getAll()
+    {
+        return static::all();
+    }
+
+    /**
+     * @return County[]|Collection
+     */
+    public static function getAllActive()
+    {
+        return static::active()->all();
+    }
+
+    /**
+     * @return County[]|Collection
+     */
+    public static function getAllNotActive()
+    {
+        return static::notActive()->all();
+    }
+
+    /**
      * @return Province
      */
     public function getProvince()

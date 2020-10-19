@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use SaliBhdr\TyphoonIranCities\HasStatusField;
 
@@ -42,6 +43,30 @@ class City extends Model
     public function county()
     {
         return $this->belongsTo(County::class);
+    }
+
+    /**
+     * @return City[]|Collection
+     */
+    public static function getAll()
+    {
+        return static::all();
+    }
+
+    /**
+     * @return City[]|Collection
+     */
+    public static function getAllActive()
+    {
+        return static::active()->all();
+    }
+
+    /**
+     * @return City[]|Collection
+     */
+    public static function getAllNotActive()
+    {
+        return static::notActive()->all();
     }
 
     /**
