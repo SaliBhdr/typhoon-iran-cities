@@ -19,13 +19,9 @@ class IranCitiesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../migrations/' => database_path('migrations')
-        ], 'migrations');
+        $this->publishMigrations();
 
-        $this->publishes([
-            __DIR__ . '/Models/' => app_path()
-        ], 'models');
+        $this->publishModels();
     }
 
     /**
@@ -38,6 +34,26 @@ class IranCitiesServiceProvider extends ServiceProvider
             ImportCounties::class,
             ImportCities::class,
         ]);
+    }
+
+    private function publishModels()
+    {
+        if ($this->app->version() >= 8) {
+            $targetModelsPath = app_path('Models');
+        } else {
+            $targetModelsPath = app_path();
+        }
+
+        $this->publishes([
+            __DIR__ . '/Models/' => $targetModelsPath
+        ], 'models');
+    }
+
+    private function publishMigrations()
+    {
+        $this->publishes([
+            __DIR__ . '/../migrations/' => database_path('migrations')
+        ], 'migrations');
     }
 
 }
