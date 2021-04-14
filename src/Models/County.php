@@ -57,7 +57,7 @@ class County extends Model
      */
     public static function getAllActive()
     {
-        return static::active()->all();
+        return static::active()->get();
     }
 
     /**
@@ -65,7 +65,7 @@ class County extends Model
      */
     public static function getAllNotActive()
     {
-        return static::notActive()->all();
+        return static::notActive()->get();
     }
 
     /**
