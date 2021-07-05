@@ -1,20 +1,24 @@
 <?php
 
-use App\IranCity;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateIranCityDistrictsTable extends Migration
 {
+    private $tableName = 'iran_city_districts';
+
     /**
+     * Migration for mantaghe shahri
+     *
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('iran_city_districts', function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->unsignedTinyInteger('district');
@@ -30,6 +34,9 @@ class CreateIranCityDistrictsTable extends Migration
             $table->foreign('sector_id' )->references('id')->on('iran_sectors')->onDelete('cascade');
             $table->foreign('city_id' )->references('id')->on('iran_cities')->onDelete('cascade');
         });
+
+        DB::statement("ALTER TABLE `$this->tableName` comment 'This table is equal to mantaghe shari in farsi'");
+
     }
 
     /**
@@ -39,6 +46,6 @@ class CreateIranCityDistrictsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('iran_city_districts');
+        Schema::dropIfExists($this->tableName);
     }
 }
