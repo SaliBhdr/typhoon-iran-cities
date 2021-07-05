@@ -47,17 +47,15 @@ abstract class AbstractImportCommand extends Command
 
             foreach ($rows as $rowData) {
 
-                $id = $rowData['id'];
-
                 if (
                     $this->option('force')
-                    || DB::table($dbName)->where('id', $id)->doesntExist()
+                    || DB::table($dbName)->where('id', $rowData['id'])->doesntExist()
                 ) {
                     $rowData = array_map(function ($value) {
                         return $value === "" ? null : $value;
                     }, $rowData);
 
-                    DB::table($dbName)->updateOrInsert(['id' => $id], $rowData);
+                    DB::table($dbName)->updateOrInsert(['id' => $rowData['id']], $rowData);
 
                     $bar->advance();
                 }
