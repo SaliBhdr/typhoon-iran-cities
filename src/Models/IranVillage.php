@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Collection;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
 /**
- * Class IranCityDistrict (Mantaghe Shahri)
+ * Class IranVillage (Abadi)
  * @package App
  */
-class IranCityDistrict extends Model
+class IranVillage extends Model
 {
     use HasStatusField;
 
@@ -31,7 +31,7 @@ class IranCityDistrict extends Model
     ];
 
     /**
-     * city district belongs to a province
+     * village belongs to a province
      */
     public function province()
     {
@@ -39,7 +39,7 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * city district belongs to a county
+     * village belongs to a county
      */
     public function county()
     {
@@ -47,7 +47,7 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * city district belongs to a county
+     * village belongs to a county
      */
     public function sector()
     {
@@ -55,11 +55,11 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * city district belongs to a county
+     * village belongs to a rural district
      */
-    public function city()
+    public function ruralDistrict()
     {
-        return $this->belongsTo(IranCity::class);
+        return $this->belongsTo(IranRuralDistrict::class);
     }
 
     /**
@@ -111,10 +111,11 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * @return IranCity
+     * @return IranRuralDistrict
      */
-    public function getCity()
+    public function getRuralDistrict()
     {
-        return $this->city()->first();
+        return $this->ruralDistrict()->first();
     }
+
 }

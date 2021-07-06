@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Collection;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
 /**
- * Class IranCityDistrict (Mantaghe Shahri)
+ * Class IranRuralDistrict (Dehestan)
  * @package App
  */
-class IranCityDistrict extends Model
+class IranRuralDistrict extends Model
 {
     use HasStatusField;
 
@@ -31,7 +31,7 @@ class IranCityDistrict extends Model
     ];
 
     /**
-     * city district belongs to a province
+     * rural district belongs to a province
      */
     public function province()
     {
@@ -39,7 +39,7 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * city district belongs to a county
+     * rural district belongs to a county
      */
     public function county()
     {
@@ -47,7 +47,7 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * city district belongs to a county
+     * rural district belongs to a county
      */
     public function sector()
     {
@@ -55,11 +55,11 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * city district belongs to a county
+     * rural district has many districts
      */
-    public function city()
+    public function villages()
     {
-        return $this->belongsTo(IranCity::class);
+        return $this->hasMany(IranVillage::class);
     }
 
     /**
@@ -111,10 +111,26 @@ class IranCityDistrict extends Model
     }
 
     /**
-     * @return IranCity
+     * @return IranVillage[]|Collection
      */
-    public function getCity()
+    public function getVillages()
     {
-        return $this->city()->first();
+        return $this->villages()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getActiveVillages()
+    {
+        return $this->villages()->active()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getNotActiveVillages()
+    {
+        return $this->villages()->notActive()->get();
     }
 }

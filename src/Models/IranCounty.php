@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
+/**
+ * Class IranCounty (Shahrestan)
+ * @package App
+ */
 class IranCounty extends Model
 {
     use HasStatusField;

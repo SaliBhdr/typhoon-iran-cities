@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
+/**
+ * Class IranCity (Shahr)
+ * @package App
+ */
 class IranCity extends Model
 {
     use HasStatusField;
@@ -55,10 +59,8 @@ class IranCity extends Model
      */
     public function districts()
     {
-        return $this->belongsTo(IranCityDistrict::class);
+        return $this->hasMany(IranCityDistrict::class);
     }
-
-
 
     /**
      * @return IranProvince
