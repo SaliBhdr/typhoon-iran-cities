@@ -8,6 +8,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 abstract class AbstractImportCommand extends Command
 {
+    /**
+     * AbstractImportCommand constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -30,7 +33,7 @@ abstract class AbstractImportCommand extends Command
         $files = $this->getFiles();
 
         foreach ($files as $fileName) {
-            $rows = $this->extractCsvArray($fileName);
+            $rows = $this->csvToArray($fileName);
 
             if (empty($rows))
                 continue;
@@ -41,27 +44,18 @@ abstract class AbstractImportCommand extends Command
 
             $this->info("\nImporting " . str_replace("_", " ", $targetName) . "...");
 
-            $bar = $this->output->createProgressBar(count($rows));
+            $task = $this->output->createProgressBar(count($rows));
 
-            $bar->start();
+            $task->start();
 
             foreach ($rows as $rowData) {
 
-                if (
-                    $this->option('force')
-                    || DB::table($dbName)->where('id', $rowData['id'])->doesntExist()
-                ) {
-                    $rowData = array_map(function ($value) {
-                        return $value === "" ? null : $value;
-                    }, $rowData);
+                $this->insertToDb($dbName, $rowData);
 
-                    DB::table($dbName)->updateOrInsert(['id' => $rowData['id']], $rowData);
-
-                    $bar->advance();
-                }
+                $task->advance();
             }
 
-            $bar->finish();
+            $task->finish();
         }
 
         $this->line('');
@@ -73,7 +67,11 @@ abstract class AbstractImportCommand extends Command
      */
     abstract protected function getFiles();
 
-    protected function extractCsvArray($file)
+    /**
+     * @param string $file
+     * @return array|null
+     */
+    protected function csvToArray($file)
     {
         $filePath = __DIR__ . '/../../csv/' . $file;
 
@@ -81,12 +79,30 @@ abstract class AbstractImportCommand extends Command
             return null;
 
         $csv = array_map('str_getcsv', file($filePath));
+
         array_walk($csv, function (&$a) use ($csv) {
             $a = array_combine($csv[0], $a);
         });
+
         array_shift($csv);
 
         return $csv;
+    }
+
+    /**
+     * @param string $dbName
+     * @param array $data
+     */
+    private function insertToDb($dbName, $data)
+    {
+        if (!$this->option('force') && DB::table($dbName)->where('id', $data['id'])->exists())
+            return;
+
+        $data = array_map(function ($value) {
+            return $value === "" ? null : $value;
+        }, $data);
+
+        DB::table($dbName)->updateOrInsert(['id' => $data['id']], $data);
     }
 
     /**

@@ -25,7 +25,7 @@ class CreateIranCountiesTable extends Migration
             $table->string('code', 50)->unique();
             $table->boolean('status')->default(1);
 
-            $table->foreign('province_id' )->references('id')->on('iran_provinces')->onDelete('cascade');
+            $table->foreign('province_id')->references('id')->on('iran_provinces')->onDelete('cascade');
         });
 
         DB::statement("ALTER TABLE `$this->tableName` comment 'This table is equal to shahrestan in farsi'");

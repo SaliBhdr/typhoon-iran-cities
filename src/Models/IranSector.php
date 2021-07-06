@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
-class IranCity extends Model
+class IranSector extends Model
 {
     use HasStatusField;
 
@@ -27,7 +27,7 @@ class IranCity extends Model
     ];
 
     /**
-     * city belongs to a province
+     * Sector belongs to province
      */
     public function province()
     {
@@ -35,7 +35,7 @@ class IranCity extends Model
     }
 
     /**
-     * city belongs to a county
+     * Sector belongs to a county
      */
     public function county()
     {
@@ -43,22 +43,20 @@ class IranCity extends Model
     }
 
     /**
-     * city belongs to a county
+     * Sector has many cities
      */
-    public function sector()
+    public function cities()
     {
-        return $this->belongsTo(IranSector::class);
+        return $this->hasMany(IranCity::class);
     }
 
     /**
-     * city has many districts
+     * Sector has many city districts
      */
-    public function districts()
+    public function cityDistricts()
     {
-        return $this->belongsTo(IranCityDistrict::class);
+        return $this->hasMany(IranCityDistrict::class);
     }
-
-
 
     /**
      * @return IranProvince
@@ -77,34 +75,50 @@ class IranCity extends Model
     }
 
     /**
-     * @return IranSector
+     * @return IranCity[]|Collection
      */
-    public function getSector()
+    public function getCities()
     {
-        return $this->sector()->first();
+        return $this->cities()->get();
+    }
+
+    /**
+     * @return IranCity[]|Collection
+     */
+    public function getActiveCities()
+    {
+        return $this->cities()->active()->get();
+    }
+
+    /**
+     * @return IranCity[]|Collection
+     */
+    public function getNotActiveCities()
+    {
+        return $this->cities()->notActive()->get();
     }
 
     /**
      * @return IranCityDistrict[]|Collection
      */
-    public function getDistricts()
+    public function getCityDistricts()
     {
-        return $this->districts()->get();
+        return $this->cityDistricts()->get();
     }
 
     /**
      * @return IranCityDistrict[]|Collection
      */
-    public function getActiveDistricts()
+    public function getActiveCityDistricts()
     {
-        return $this->districts()->active()->get();
+        return $this->cityDistricts()->active()->get();
     }
 
     /**
      * @return IranCityDistrict[]|Collection
      */
-    public function getNotActiveDistricts()
+    public function getNotActiveCityDistricts()
     {
-        return $this->districts()->notActive()->get();
+        return $this->cityDistricts()->notActive()->get();
     }
 }

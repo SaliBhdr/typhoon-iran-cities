@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: s.bahador
- * Date: 2/16/2020
- * Time: 2:14 PM
- */
-
-namespace SaliBhdr\TyphoonIranCities;
+namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -59,6 +52,24 @@ trait HasStatusField
         if (method_exists($this, 'county')) {
             $query->whereHas('county', function ($q) use ($status) {
                 return $q->where('counties.status', $status);
+            });
+        }
+
+        if (method_exists($this, 'sector')) {
+            $query->whereHas('sector', function ($q) use ($status) {
+                return $q->where('sectors.status', $status);
+            });
+        }
+
+        if (method_exists($this, 'city')) {
+            $query->whereHas('city', function ($q) use ($status) {
+                return $q->where('cities.status', $status);
+            });
+        }
+
+        if (method_exists($this, 'ruralDistrict')) {
+            $query->whereHas('ruralDistrict', function ($q) use ($status) {
+                return $q->where('rural_districts.status', $status);
             });
         }
 
@@ -131,6 +142,27 @@ trait HasStatusField
             $province = $this->province()->first();
 
             if ($this->status != $province->status)
+                return false;
+        }
+
+        if (method_exists($this, 'sector')) {
+            $sector = $this->sector()->first();
+
+            if ($this->status != $sector->status)
+                return false;
+        }
+
+        if (method_exists($this, 'city')) {
+            $city = $this->city()->first();
+
+            if ($this->status != $city->status)
+                return false;
+        }
+
+        if (method_exists($this, 'ruralDistrict')) {
+            $ruralDistrict = $this->ruralDistrict()->first();
+
+            if ($this->status != $ruralDistrict->status)
                 return false;
         }
 

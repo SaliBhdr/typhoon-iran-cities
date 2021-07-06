@@ -2,21 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use SaliBhdr\TyphoonIranCities\HasStatusField;
+use Illuminate\Database\Eloquent\Collection;
+use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
-/**
- * @property string $name
- * @property bool $status
- * Class Province
- * @package App
- */
 class IranProvince extends Model
 {
     use HasStatusField;
-
-    protected $fillable = ['name'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -35,14 +27,6 @@ class IranProvince extends Model
     ];
 
     /**
-     * province has many cities
-     */
-    public function cities()
-    {
-        return $this->hasMany(IranCity::class);
-    }
-
-    /**
      * province has many counties
      */
     public function counties()
@@ -51,27 +35,27 @@ class IranProvince extends Model
     }
 
     /**
-     * @return IranProvince[]|Collection
+     * County has many sectors
      */
-    public static function getAll()
+    public function sectors()
     {
-        return static::all();
+        return $this->hasMany(IranSector::class);
     }
 
     /**
-     * @return IranProvince[]|Collection
+     * County has many cities
      */
-    public static function getAllActive()
+    public function cities()
     {
-        return static::active()->get();
+        return $this->hasMany(IranCity::class);
     }
 
     /**
-     * @return IranProvince[]|Collection
+     * County has many city districts
      */
-    public static function getAllNotActive()
+    public function cityDistricts()
     {
-        return static::notActive()->get();
+        return $this->hasMany(IranCityDistrict::class);
     }
 
     /**
@@ -99,6 +83,30 @@ class IranProvince extends Model
     }
 
     /**
+     * @return IranSector[]|Collection
+     */
+    public function getSectors()
+    {
+        return $this->sectors()->get();
+    }
+
+    /**
+     * @return IranSector[]|Collection
+     */
+    public function getActiveSectors()
+    {
+        return $this->sectors()->active()->get();
+    }
+
+    /**
+     * @return IranSector[]|Collection
+     */
+    public function getNotActiveSectors()
+    {
+        return $this->sectors()->notActive()->get();
+    }
+
+    /**
      * @return IranCity[]|Collection
      */
     public function getCities()
@@ -120,6 +128,30 @@ class IranProvince extends Model
     public function getNotActiveCities()
     {
         return $this->cities()->notActive()->get();
+    }
+
+    /**
+     * @return IranCityDistrict[]|Collection
+     */
+    public function getCityDistricts()
+    {
+        return $this->cityDistricts()->get();
+    }
+
+    /**
+     * @return IranCityDistrict[]|Collection
+     */
+    public function getActiveCityDistricts()
+    {
+        return $this->cityDistricts()->active()->get();
+    }
+
+    /**
+     * @return IranCityDistrict[]|Collection
+     */
+    public function getNotActiveCityDistricts()
+    {
+        return $this->cityDistricts()->notActive()->get();
     }
 
 }

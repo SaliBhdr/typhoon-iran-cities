@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: S.Bahador
- * Date: 7/5/2021
- * Time: 2:48 PM
- */
-
 namespace SaliBhdr\TyphoonIranCities;
-
 
 final class IranCsvEnum
 {
