@@ -5,17 +5,30 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputOption;
 
 class PublishMigrations extends Command
 {
     protected $name = 'iran:publish:migrations';
 
     /**
+     * AbstractImportCommand constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getDefinition()->addOptions([
+            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files')
+        ]);
+    }
+
+    /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function handle()
     {
-        $src = __DIR__ . '/../../migrations/';
+        $src = $this->getSrcDir();
 
         $timestamp = time();
 
@@ -29,8 +42,11 @@ class PublishMigrations extends Command
             $src . '7_create_iran_villages_table.stub'        => $this->getMigrationFileName('create_iran_villages_table.php', $timestamp + 6),
         ];
 
-        foreach ($map as $stub => $target) {
-            file_put_contents($target, file_get_contents($stub));
+
+        foreach ($map as $stubFile => $migrationFile) {
+            if ($this->option('force') || !file_exists($migrationFile)) {
+                file_put_contents($migrationFile, file_get_contents($stubFile));
+            }
         }
     }
 
@@ -52,10 +68,20 @@ class PublishMigrations extends Command
         $targetDirPath = database_path() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR;
 
         return Collection::make($targetDirPath)
-            ->flatMap(function ($path) use ($filesystem, $fileName) {
-                return $filesystem->glob($path . '*_' . $fileName);
-            })
-            ->push($targetDirPath . date('Y_m_d_His', $timestamp) . "_{$fileName}")
-            ->first();
+                         ->flatMap(function ($path) use ($filesystem, $fileName) {
+                             return $filesystem->glob($path . '*_' . $fileName);
+                         })
+                         ->push($targetDirPath . date('Y_m_d_His', $timestamp) . "_{$fileName}")
+                         ->first();
+    }
+
+    /**
+     * Get models src dir
+     *
+     * @return string
+     */
+    protected function getSrcDir()
+    {
+        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'migrations') . DIRECTORY_SEPARATOR;
     }
 }

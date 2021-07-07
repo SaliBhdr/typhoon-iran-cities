@@ -1,37 +1,52 @@
 <?php
-
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 class PublishModels extends Command
 {
     protected $name = 'iran:publish:models';
 
+    /**
+     * AbstractImportCommand constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getDefinition()->addOptions([
+            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files')
+        ]);
+    }
+
     public function handle()
     {
-        $src = __DIR__ . '/../Models/';
+        $src = $this->getSrcDir();
 
         $target = $this->getTargetDir();
 
-        $namespace = $this->getNamespace();
+        $namespace = $this->getTargetNamespace();
 
         $map = [
-//            $src . 'IranProvince.stub'       => $target.'IranProvince.php',
-//            $src . 'IranCounty.stub'       => $target.'IranCounty.php',
-//            $src . 'IranSector.stub'       => $target.'IranSector.php',
-            $src . 'IranCity.stub'       => $target.'IranCity.php',
-//            $src . 'IranCityDistrict.stub'       => $target.'IranCityDistrict.php',
-//            $src . 'IranRuralDistrict.stub'       => $target.'IranRuralDistrict.php',
-//            $src . 'IranVillage.stub'       => $target.'IranVillage.php',
+            $src . 'IranProvince.stub'      => $target . 'IranProvince.php',
+            $src . 'IranCounty.stub'        => $target . 'IranCounty.php',
+            $src . 'IranSector.stub'        => $target . 'IranSector.php',
+            $src . 'IranCity.stub'          => $target . 'IranCity.php',
+            $src . 'IranCityDistrict.stub'  => $target . 'IranCityDistrict.php',
+            $src . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php',
+            $src . 'IranVillage.stub'       => $target . 'IranVillage.php',
         ];
 
-        foreach ($map as $stub => $target) {
 
-            $md = file_get_contents($stub);
-            $md = str_replace("{{ namespace }}",$namespace, $md);
+        foreach ($map as $stubFile => $modelFile) {
+            if ($this->option('force') || !file_exists($modelFile)) {
 
-            file_put_contents($target, $md);
+                $modelContent = file_get_contents($stubFile);
+                $modelContent = str_replace("{{ namespace }}", $namespace, $modelContent);
+
+                file_put_contents($modelFile, $modelContent);
+            }
         }
     }
 
@@ -40,21 +55,30 @@ class PublishModels extends Command
      *
      * @return string
      */
-    protected function getNamespace()
+    protected function getTargetNamespace()
     {
         $rootNamespace = $this->laravel->getNamespace();
 
-        return is_dir(app_path('Models')) ? $rootNamespace.'\\'.'Models' : $rootNamespace;
+        return stripslashes(rtrim(is_dir(app_path('Models')) ? "{$rootNamespace}\Models" : $rootNamespace, '\\'));
     }
 
     /**
-     * Get the default namespace for the class.
+     * Get models target dir
      *
      * @return string
      */
     protected function getTargetDir()
     {
-        return is_dir(app_path('Models')) ?  app_path('Models') : app_path();
+        return realpath(is_dir(app_path('Models')) ? app_path('Models') : app_path()) . DIRECTORY_SEPARATOR;
     }
 
+    /**
+     * Get models src dir
+     *
+     * @return string
+     */
+    protected function getSrcDir()
+    {
+        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
+    }
 }

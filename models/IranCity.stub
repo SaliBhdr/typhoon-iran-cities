@@ -1,16 +1,15 @@
 <?php
-
-namespace App;
+namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
 /**
- * Class IranRuralDistrict (Dehestan)
+ * Class IranCity (Shahr)
  * @package App
  */
-class IranRuralDistrict extends Model
+class IranCity extends Model
 {
     use HasStatusField;
 
@@ -31,7 +30,7 @@ class IranRuralDistrict extends Model
     ];
 
     /**
-     * rural district belongs to a province
+     * city belongs to a province
      */
     public function province()
     {
@@ -39,7 +38,7 @@ class IranRuralDistrict extends Model
     }
 
     /**
-     * rural district belongs to a county
+     * city belongs to a county
      */
     public function county()
     {
@@ -47,7 +46,7 @@ class IranRuralDistrict extends Model
     }
 
     /**
-     * rural district belongs to a county
+     * city belongs to a county
      */
     public function sector()
     {
@@ -55,35 +54,11 @@ class IranRuralDistrict extends Model
     }
 
     /**
-     * rural district has many districts
+     * city has many districts
      */
-    public function villages()
+    public function districts()
     {
-        return $this->hasMany(IranVillage::class);
-    }
-
-    /**
-     * @return self[]|Collection
-     */
-    public static function getAll()
-    {
-        return static::all();
-    }
-
-    /**
-     * @return self[]|Collection
-     */
-    public static function getAllActive()
-    {
-        return static::active()->get();
-    }
-
-    /**
-     * @return self[]|Collection
-     */
-    public static function getAllNotActive()
-    {
-        return static::notActive()->get();
+        return $this->hasMany(IranCityDistrict::class);
     }
 
     /**
@@ -111,26 +86,26 @@ class IranRuralDistrict extends Model
     }
 
     /**
-     * @return IranVillage[]|Collection
+     * @return IranCityDistrict[]|Collection
      */
-    public function getVillages()
+    public function getDistricts()
     {
-        return $this->villages()->get();
+        return $this->districts()->get();
     }
 
     /**
-     * @return IranVillage[]|Collection
+     * @return IranCityDistrict[]|Collection
      */
-    public function getActiveVillages()
+    public function getActiveDistricts()
     {
-        return $this->villages()->active()->get();
+        return $this->districts()->active()->get();
     }
 
     /**
-     * @return IranVillage[]|Collection
+     * @return IranCityDistrict[]|Collection
      */
-    public function getNotActiveVillages()
+    public function getNotActiveDistricts()
     {
-        return $this->villages()->notActive()->get();
+        return $this->districts()->notActive()->get();
     }
 }
