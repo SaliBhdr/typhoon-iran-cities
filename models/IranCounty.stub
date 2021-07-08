@@ -62,6 +62,22 @@ class IranCounty extends Model
     }
 
     /**
+     * County has many rural districts
+     */
+    public function ruralDistricts()
+    {
+        return $this->hasMany(IranRuralDistrict::class);
+    }
+
+    /**
+     * County has many villages
+     */
+    public function villages()
+    {
+        return $this->hasMany(IranVillage::class);
+    }
+
+    /**
      * @return IranProvince
      */
     public function getProvince()
@@ -139,5 +155,53 @@ class IranCounty extends Model
     public function getNotActiveCityDistricts()
     {
         return $this->cityDistricts()->notActive()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getRuralDistricts()
+    {
+        return $this->ruralDistricts()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getActiveRuralDistricts()
+    {
+        return $this->ruralDistricts()->active()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getNotActiveRuralDistricts()
+    {
+        return $this->ruralDistricts()->notActive()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getVillages()
+    {
+        return $this->villages()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getActiveVillages()
+    {
+        return $this->villages()->active()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getNotActiveVillages()
+    {
+        return $this->villages()->notActive()->get();
     }
 }

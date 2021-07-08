@@ -30,7 +30,7 @@ class IranProvince extends Model
     ];
 
     /**
-     * province has many counties
+     * Province has many counties
      */
     public function counties()
     {
@@ -38,7 +38,7 @@ class IranProvince extends Model
     }
 
     /**
-     * County has many sectors
+     * Province has many sectors
      */
     public function sectors()
     {
@@ -46,7 +46,7 @@ class IranProvince extends Model
     }
 
     /**
-     * County has many cities
+     * Province has many cities
      */
     public function cities()
     {
@@ -54,11 +54,27 @@ class IranProvince extends Model
     }
 
     /**
-     * County has many city districts
+     * Province has many city districts
      */
     public function cityDistricts()
     {
         return $this->hasMany(IranCityDistrict::class);
+    }
+
+    /**
+     * Province has many rural districts
+     */
+    public function ruralDistricts()
+    {
+        return $this->hasMany(IranRuralDistrict::class);
+    }
+
+    /**
+     * Province has many villages
+     */
+    public function villages()
+    {
+        return $this->hasMany(IranVillage::class);
     }
 
     /**
@@ -157,4 +173,51 @@ class IranProvince extends Model
         return $this->cityDistricts()->notActive()->get();
     }
 
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getRuralDistricts()
+    {
+        return $this->ruralDistricts()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getActiveRuralDistricts()
+    {
+        return $this->ruralDistricts()->active()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getNotActiveRuralDistricts()
+    {
+        return $this->ruralDistricts()->notActive()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getVillages()
+    {
+        return $this->villages()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getActiveVillages()
+    {
+        return $this->villages()->active()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getNotActiveVillages()
+    {
+        return $this->villages()->notActive()->get();
+    }
 }

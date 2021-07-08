@@ -6,11 +6,19 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PublishModels extends Command
 {
+    /**
+     * The name and signature of the console command.
+     * @var string
+     */
     protected $name = 'iran:publish:models';
 
     /**
-     * AbstractImportCommand constructor.
+     * The console command description.
+     * @var string
      */
+    protected $description = 'Copies related models';
+
+
     public function __construct()
     {
         parent::__construct();

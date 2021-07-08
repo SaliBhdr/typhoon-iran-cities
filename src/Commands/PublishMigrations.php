@@ -9,11 +9,19 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PublishMigrations extends Command
 {
+    /**
+     * The name and signature of the console command.
+     * @var string
+     */
     protected $name = 'iran:publish:migrations';
 
     /**
-     * AbstractImportCommand constructor.
+     * The console command description.
+     * @var string
      */
+    protected $description = 'Copies migrations into migrations directory';
+
+
     public function __construct()
     {
         parent::__construct();
