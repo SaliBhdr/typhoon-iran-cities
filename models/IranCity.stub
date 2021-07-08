@@ -54,9 +54,9 @@ class IranCity extends Model
     }
 
     /**
-     * city has many districts
+     * city has many city districts
      */
-    public function districts()
+    public function cityDistricts()
     {
         return $this->hasMany(IranCityDistrict::class);
     }
@@ -88,7 +88,7 @@ class IranCity extends Model
     /**
      * @return IranCityDistrict[]|Collection
      */
-    public function getDistricts()
+    public function getCityDistricts()
     {
         return $this->districts()->get();
     }
@@ -96,7 +96,7 @@ class IranCity extends Model
     /**
      * @return IranCityDistrict[]|Collection
      */
-    public function getActiveDistricts()
+    public function getActiveCityDistricts()
     {
         return $this->districts()->active()->get();
     }
@@ -104,7 +104,7 @@ class IranCity extends Model
     /**
      * @return IranCityDistrict[]|Collection
      */
-    public function getNotActiveDistricts()
+    public function getNotActiveCityDistricts()
     {
         return $this->districts()->notActive()->get();
     }
