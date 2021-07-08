@@ -41,13 +41,13 @@ class ImportIran extends AbstractImportCommand
 
         $target = [
             'all'               => IranCsvEnum::ALL,
-            'provinces'         => IranCsvEnum::PROVINCE,
-            'counties'          => IranCsvEnum::COUNTY,
-            'sectors'           => IranCsvEnum::SECTOR,
-            'cities'            => IranCsvEnum::CITY,
-            'city_districts'    => IranCsvEnum::CITY_DISTRICT,
-            'rural_districts'   => IranCsvEnum::RURAL_DISTRICT,
-            'villages'          => IranCsvEnum::VILLAGE
+            'provinces'         => IranCsvEnum::PROVINCES,
+            'counties'          => IranCsvEnum::COUNTIES,
+            'sectors'           => IranCsvEnum::SECTORS,
+            'cities'            => IranCsvEnum::CITIES,
+            'city_districts'    => IranCsvEnum::CITY_DISTRICTS,
+            'rural_districts'   => IranCsvEnum::RURAL_DISTRICTS,
+            'villages'          => IranCsvEnum::VILLAGES
         ];
 
         if (isset($target[$region]))

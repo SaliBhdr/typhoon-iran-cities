@@ -95,6 +95,7 @@ abstract class AbstractImportCommand extends Command
      */
     private function insertToDb($dbName, $data)
     {
+
         if (!$this->option('force') && DB::table($dbName)->where('id', $data['id'])->exists())
             return;
 

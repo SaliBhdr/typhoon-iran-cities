@@ -23,6 +23,6 @@ class ImportVillages extends AbstractImportCommand
      */
     protected function getFiles()
     {
-        return IranCsvEnum::VILLAGE;
+        return IranCsvEnum::VILLAGES;
     }
 }

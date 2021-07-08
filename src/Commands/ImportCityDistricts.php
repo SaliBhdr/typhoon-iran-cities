@@ -23,6 +23,6 @@ class ImportCityDistricts extends AbstractImportCommand
      */
     protected function getFiles()
     {
-        return IranCsvEnum::CITY_DISTRICT;
+        return IranCsvEnum::CITY_DISTRICTS;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use SaliBhdr\TyphoonIranCities\IranCsvEnum;
 
 class ImportCounties extends AbstractImportCommand
@@ -26,7 +24,7 @@ class ImportCounties extends AbstractImportCommand
      */
     protected function getFiles()
     {
-        return IranCsvEnum::COUNTY;
+        return IranCsvEnum::COUNTIES;
     }
 
 }

@@ -13,29 +13,29 @@ final class IranCsvEnum
         'villages.csv',
     ];
 
-    const PROVINCE = [
+    const PROVINCES = [
         'provinces.csv',
     ];
 
-    const COUNTY = [
+    const COUNTIES = [
         'provinces.csv',
         'counties.csv',
     ];
 
-    const SECTOR = [
+    const SECTORS = [
         'provinces.csv',
         'counties.csv',
         'sectors.csv',
     ];
 
-    const CITY = [
+    const CITIES = [
         'provinces.csv',
         'counties.csv',
         'sectors.csv',
         'cities.csv',
     ];
 
-    const CITY_DISTRICT = [
+    const CITY_DISTRICTS = [
         'provinces.csv',
         'counties.csv',
         'sectors.csv',
@@ -43,14 +43,14 @@ final class IranCsvEnum
         'city_districts.csv',
     ];
 
-    const RURAL_DISTRICT = [
+    const RURAL_DISTRICTS = [
         'provinces.csv',
         'counties.csv',
         'sectors.csv',
         'rural_districts.csv',
     ];
 
-    const VILLAGE = [
+    const VILLAGES = [
         'provinces.csv',
         'counties.csv',
         'sectors.csv',

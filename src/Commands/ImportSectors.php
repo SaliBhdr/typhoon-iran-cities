@@ -23,6 +23,6 @@ class ImportSectors extends AbstractImportCommand
      */
     protected function getFiles()
     {
-        return IranCsvEnum::SECTOR;
+        return IranCsvEnum::SECTORS;
     }
 }

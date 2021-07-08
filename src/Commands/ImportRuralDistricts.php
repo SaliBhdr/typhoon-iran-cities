@@ -23,6 +23,6 @@ class ImportRuralDistricts extends AbstractImportCommand
      */
     protected function getFiles()
     {
-        return IranCsvEnum::RURAL_DISTRICT;
+        return IranCsvEnum::RURAL_DISTRICTS;
     }
 }
