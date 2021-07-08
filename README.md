@@ -1,4 +1,4 @@
-# Typhoon Iran Cities, Counties and Provinces
+# Typhoon Iran Regions, Provinces, Counties, Cities, City Districts, Rural Districts and Villages
 
 ![Salibhdr|typhoon](https://drive.google.com/a/domain.com/thumbnail?id=12yntFCiYIGJzI9FMUaF9cRtXKb0rXh9X)
 
@@ -9,17 +9,23 @@
 
 ## Introduction
 
-Typhoon Iran Cities is a Laravel package for importing all provinces, counties, and cities of Iran into your database with just 
+Typhoon Iran Cities is a Laravel package for importing all regions for example provinces, counties, sectors, cities, city districts, rural districts and villages of Iran into your database with just 
 only one console command.
 
-This is the most accurate Laravel package for cities of Iran without a doubt.
+This is the most accurate Laravel package for administrative divisions of Iran without a doubt.
+
+![Administrative Divisions of Iran](./docs/images/administrative_divisions_of_Iran.jpg)
 
 **Features**
 - All provinces of Iran (استان)
 - All counties of Iran (شهرستان)
+- All sectors of Iran (بخش)
 - All cities of Iran (شهر)
+- All city districts of Iran (مناطق شهری)
+- All rural districts of Iran (دهستان)
+- All villages of Iran (آبادی)
 - Compatible with Laravel
-- Built-in models of provinces, counties, and cities
+- Built-in models of provinces, counties, sectors, cities, city districts, rural districts and villages
 - relational database between these tables
 
 ## Installation
@@ -36,7 +42,7 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 
 ---
 
-```php
+```
 'providers' => [
 
      # Other service providers...
@@ -45,54 +51,76 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 ],
 ```
 
-Run `vendor:publish` command:
+Run `Iran:publish:migrations` command for copying migrations:
 
 ```sh
 
-php artisan vendor:publish --provider="SaliBhdr\TyphoonIranCities\IranCitiesServiceProvider"
+php artisan Iran:publish:migrations
 
 ```
 
-It will generate the 3 migration files under database/migrations directory.
+It will generate the 7 migration files under database/migrations directory.
 
 ```
-2018_02_10_115102_create_provinces_table.php,
-2018_02_10_115103_create_counties_table.php,
-2018_02_10_115104_create_cities_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_provinces_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_counties_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_sectors_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_cities_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_city_districts_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_rural_districts_table.php,
+xxxx_xx_xx_xxxxxx_create_iran_villages_table.php,
+
+```
+Then run `Iran:publish:models` command for copying models (If you don't want to use models skip this part) :
+
+```sh
+
+php artisan Iran:publish:models
 
 ```
 
-And will copy `Province.php`,`County.php` and `City.php` models.
+This will copy `IranProvince.php`, `IranCounty.php`, `IranSector.php`, `IranCity.php`, `IranCityDistrict.php`, `IranRuralDistrict.php` and `IranVillage.php` models.
 
-Run the `php artisan migrate` command to migrate all 3 tables:
+Run the `php artisan migrate` command to migrate all 7 tables:
 
 ## Usage
 
 #### Data Import
-At the end for importing all provinces, counties, and cities into these tables run this command in your console :
+At the end for importing data into related tables you can run one of these commands:
 
 ```
 
-# Imports cities, counties, and provinces into the database
-php artisan iran:import-cities
-
-# Imports counties and provinces without cities into the database
-php artisan iran:import-counties
-
-# Imports provinces only into the database
-php artisan iran:import-provinces
+  iran:import                  Imports all regions into the database (Can be selected by option)
+  iran:import:provinces        Imports provinces only into the database
+  iran:import:counties         Imports counties and provinces without cities into the database
+  iran:import:sectors          Imports sectors, counties and provinces into the database
+  iran:import:cities           Imports cities, sectors, counties and provinces into the database
+  iran:import:city-districts   Imports city districts, cities, sectors, counties and provinces into the database
+  iran:import:rural-districts  Imports rural districts, sectors, counties and provinces into the database
+  iran:import:villages         Imports villages, rural districts, sectors, counties and provinces into the database
 
 ```
 
-This outputs :
+This outputs one or more of these line based on the command :
 
 ```
 
 Starting to import data...
 
-importing provinces...
-importing counties...
-importing cities...
+Importing provinces...
+ 31/31 [============================] 100%
+Importing counties...
+ 448/448 [============================] 100%
+Importing sectors...
+ 1099/1099 [============================] 100%
+Importing cities...
+ 1354/1354 [============================] 100%
+Importing city districts...
+ 200/200 [============================] 100%
+Importing rural districts...
+ 2637/2637 [============================] 100%
+Importing villages...
+  98100/98100 [============================] 100%
 
 Data has been imported successfully!!!
 
@@ -118,105 +146,169 @@ If you use `HasStatusField` trait these methods are available. By default, the `
 | isActive()    | dynamic        | Returns bool for record status     |
 | isNotActive() | dynamic        | Get all the counties of a province |
 
+All models have these methods:
+
+| Method             | Type      | Usage               |
+|--------------------|:---------:|:--------------------|
+| getAll()           | static    | Get all             |
+| getAllActive()     | static    | Get all active      |
+| getAllNotActive()  | static    | Get all not active  |
+
+---
 **Province Model:**
 
-| Method                 | Type    | Usage                                                         |
-|------------------------|:-------:|:--------------------------------------------------------------|
-| cities()               | dynamic | hasMany() relation method for all the cities of a province    |
-| counties()             | dynamic | hasMany() relation method for all the Counties of a province  |
-| getAll()               | static  | Get all provinces                                             |
-| getAllActive()         | static  | Get all active provinces                                      |
-| getAllNotActive()      | static  | Get all not active provinces                                  |
-| getCounties()          | dynamic | Get all the counties of a province                            |
-| getActiveCounties()    | dynamic | Get all the active counties of a province                     |
-| getNotActiveCounties() | dynamic | Get all the not active counties of a province                 |
-| getCities()            | dynamic | Get all the cities of a province                              |
-| getActiveCities()      | dynamic | Get all the active cities of a province                       |
-| getNotActiveCities()   | dynamic | Get all the not active cities of a province                   |
+| Method                        | Type    | Usage                                                               |
+|-------------------------------|:-------:|:--------------------------------------------------------------------|
+| counties()                    | dynamic | hasMany() relation method for all the counties of a province        |
+| sectors()                     | dynamic | hasMany() relation method for all the sectors of a province         |
+| cities()                      | dynamic | hasMany() relation method for all the cities of a province          |
+| cityDistricts()               | dynamic | hasMany() relation method for all the city districts of a province  |
+| ruralDistricts()              | dynamic | hasMany() relation method for all the rural districts of a province |
+| villages()                    | dynamic | hasMany() relation method for all the villages of a province        |
+| getCounties()                 | dynamic | Get all the counties of a province                                  |
+| getActiveCounties()           | dynamic | Get all the active counties of a province                           |
+| getNotActiveCounties()        | dynamic | Get all the not active counties of a province                       |
+| getSectors()                  | dynamic | Get all the sectors of a province                                   |
+| getActiveSectors()            | dynamic | Get all the active sectors of a province                            |
+| getNotActiveSectors()         | dynamic | Get all the not active sectors of a province                        |
+| getCities()                   | dynamic | Get all the cities of a province                                    |
+| getActiveCities()             | dynamic | Get all the active cities of a province                             |
+| getNotActiveCities()          | dynamic | Get all the not active cities of a province                         |
+| getCityDistricts()            | dynamic | Get all the city districts of a province                            |
+| getActiveCityDistricts()      | dynamic | Get all the active city districts of a province                     |
+| getNotActiveCityDistricts()   | dynamic | Get all the not active city districts of a province                 | 
+| getRuralDistricts()           | dynamic | Get all the rural districts of a province                           |
+| getActiveRuralDistricts()     | dynamic | Get all the active rural districts of a province                    |
+| getNotActiveRuralDistricts()  | dynamic | Get all the not active rural districts of a province                |
+| getVillages()                 | dynamic | Get all the villages of a province                                  |
+| getActiveVillages()           | dynamic | Get all the active villages of a province                           |
+| getNotActiveVillages()        | dynamic | Get all the not active villages of a province                       |
+
+---
 
 **County Model:**
 
-| Method                 | Type    | Usage                                                       |
-|------------------------|:-------:|:------------------------------------------------------------|
-| province()             | dynamic | belongsTo() relation method for the province of a county    |
-| cities()               | dynamic | hasMany() relation method for all the cities of a county    |
-| getAll()               | static  | Get all counties                                            |
-| getAllActive()         | static  | Get all active counties                                     |
-| getAllNotActive()      | static  | Get all not active counties                                 |
-| getProvince()          | dynamic | Get the parent province of a county                         |
-| getCities()            | dynamic | Get all the cities of a county                              |
-| getActiveCities()      | dynamic | Get all the active cities of a county                       |
-| getNotActiveCities()   | dynamic | Get all the not active cities of a county                   |
+| Method                        | Type    | Usage                                                             |
+|-------------------------------|:-------:|:------------------------------------------------------------------|
+| province()                    | dynamic | belongsTo() relation method for the province of a county          |
+| sectors()                     | dynamic | hasMany() relation method for all the sectors of a county         |
+| cities()                      | dynamic | hasMany() relation method for all the cities of a county          |
+| cityDistricts()               | dynamic | hasMany() relation method for all the city districts of a county  |
+| ruralDistricts()              | dynamic | hasMany() relation method for all the rural districts of a county |
+| villages()                    | dynamic | hasMany() relation method for all the villages of a county        |
+| getProvince()                 | dynamic | Get the parent province of a county                               |
+| getSectors()                  | dynamic | Get all the sectors of a county                                   |
+| getActiveSectors()            | dynamic | Get all the active sectors of a county                            |
+| getNotActiveSectors()         | dynamic | Get all the not active sectors of a county                        |
+| getCities()                   | dynamic | Get all the cities of a county                                    |
+| getActiveCities()             | dynamic | Get all the active cities of a county                             |
+| getNotActiveCities()          | dynamic | Get all the not active cities of a county                         |
+| getCityDistricts()            | dynamic | Get all the city districts of a county                            |
+| getActiveCityDistricts()      | dynamic | Get all the active city districts of a county                     |
+| getNotActiveCityDistricts()   | dynamic | Get all the not active city districts of a county                 | 
+| getRuralDistricts()           | dynamic | Get all the rural districts of a county                           |
+| getActiveRuralDistricts()     | dynamic | Get all the active rural districts of a county                    |
+| getNotActiveRuralDistricts()  | dynamic | Get all the not active rural districts of a county                |
+| getVillages()                 | dynamic | Get all the villages of a county                                  |
+| getActiveVillages()           | dynamic | Get all the active villages of a county                           |
+| getNotActiveVillages()        | dynamic | Get all the not active villages of a county                       |
+
+---
+
+**Sector Model:**
+
+| Method                        | Type    | Usage                                                             |
+|-------------------------------|:-------:|:------------------------------------------------------------------|
+| province()                    | dynamic | belongsTo() relation method for the province of a sector          |
+| county()                      | dynamic | belongsTo() relation method for the county of a sector            |
+| cities()                      | dynamic | hasMany() relation method for all the cities of a sector          |
+| cityDistricts()               | dynamic | hasMany() relation method for all the city districts of a sector  |
+| ruralDistricts()              | dynamic | hasMany() relation method for all the rural districts of a sector |
+| villages()                    | dynamic | hasMany() relation method for all the villages of a sector        |                                     
+| getProvince()                 | dynamic | Get the parent province of a sector                               |
+| getCounty()                   | dynamic | Get the parent province of a sector                               |
+| getCities()                   | dynamic | Get all the cities of a sector                                    |
+| getActiveCities()             | dynamic | Get all the active cities of a sector                             |
+| getNotActiveCities()          | dynamic | Get all the not active cities of a sector                         |
+| getCityDistricts()            | dynamic | Get all the city districts of a sector                            |
+| getActiveCityDistricts()      | dynamic | Get all the active city districts of a sector                     |
+| getNotActiveCityDistricts()   | dynamic | Get all the not active city districts of a sector                 | 
+| getRuralDistricts()           | dynamic | Get all the rural districts of a sector                           |
+| getActiveRuralDistricts()     | dynamic | Get all the active rural districts of a sector                    |
+| getNotActiveRuralDistricts()  | dynamic | Get all the not active rural districts of a sector                |
+| getVillages()                 | dynamic | Get all the villages of a sector                                  |
+| getActiveVillages()           | dynamic | Get all the active villages of a sector                           |
+| getNotActiveVillages()        | dynamic | Get all the not active villages of a sector                       |
+
+---
 
 **City Model:**
 
-| Method                 | Type    | Usage                                                     |
-|------------------------|:-------:|:--------------------------------------------------------- |
-| province()             | dynamic | belongsTo() relation method for the province of a city    |
-| county()               | dynamic | belongsTo() relation method for the county of a city      |
-| getAll()               | static  | Get all cities                                            |
-| getAllActive()         | static  | Get all active cities                                     |
-| getAllNotActive()      | static  | Get all not active cities                                 |
-| getProvince()          | dynamic | Get the parent province of a city                         |
-| getCounty()            | dynamic | Get the parent county of a city                           |
+| Method                        | Type    | Usage                                                           |
+|-------------------------------|:-------:|:--------------------------------------------------------------- |
+| province()                    | dynamic | belongsTo() relation method for the province of a city          |
+| county()                      | dynamic | belongsTo() relation method for the county of a city            |
+| sector()                      | dynamic | belongsTo() relation method for the sector of a city            |                              |
+| cityDistricts()               | dynamic | hasMany() relation method for all the city districts of a city  |
+| getProvince()                 | dynamic | Get the parent province of a city                               |
+| getCounty()                   | dynamic | Get the parent county of a city                                 |     
+| getSector()                   | dynamic | Get the parent sector of a city                                 |
+| getCityDistricts()            | dynamic | Get all the city districts of a city                            |
+| getActiveCityDistricts()      | dynamic | Get all the active city districts of a city                     |
+| getNotActiveCityDistricts()   | dynamic | Get all the not active city districts of a city                 |                     |
+
+---
+
+**CityDistrict Model:**
+
+| Method                 | Type    | Usage                                                           |
+|------------------------|:-------:|:--------------------------------------------------------------- |
+| province()             | dynamic | belongsTo() relation method for the province of a city district |
+| county()               | dynamic | belongsTo() relation method for the county of a city district   |
+| sector()               | dynamic | belongsTo() relation method for the sector of a city district   |
+| city()                 | dynamic | belongsTo() relation method for the city of a city district     |                              |
+| getProvince()          | dynamic | Get the parent province of a city district                      |
+| getCounty()            | dynamic | Get the parent county of a city district                        |
+| getSector()            | dynamic | Get the parent sector of a city district                        |
+| getCity()              | dynamic | Get the parent city of a city district                          | 
+
+---
+
+**RuralDistrict Model:**
+
+| Method                  | Type    | Usage                                                                 |
+|-------------------------|:-------:|:--------------------------------------------------------------------- |
+| province()              | dynamic | belongsTo() relation method for the province of a rural district      |
+| county()                | dynamic | belongsTo() relation method for the county of a rural district        |
+| sector()                | dynamic | belongsTo() relation method for the sector of a rural district        |
+| villages()              | dynamic | hasMany() relation method for all the villages of a rural district    |                                     
+| getProvince()           | dynamic | Get the parent province of a rural district                           |
+| getCounty()             | dynamic | Get the parent county of a rural district                             |
+| getSector()             | dynamic | Get the parent sector of a rural district                             |
+| getVillages()           | dynamic | Get all the villages of a rural district                              |
+| getActiveVillages()     | dynamic | Get all the active villages of a rural district                       |
+| getNotActiveVillages()  | dynamic | Get all the not active villages of a rural district                   |
+
+---
+
+**Village Model:**
+
+| Method                  | Type    | Usage                                                             |
+|-------------------------|:-------:|:----------------------------------------------------------------- |
+| province()              | dynamic | belongsTo() relation method for the province of a village         |
+| county()                | dynamic | belongsTo() relation method for the county of a village           |
+| sector()                | dynamic | belongsTo() relation method for the sector of a village           |
+| ruralDistrict()         | dynamic | belongsTo() relation method for the rural district of a village   |
+| getProvince()           | dynamic | Get the parent province of a village                              |
+| getCounty()             | dynamic | Get the parent county of a village                                |
+| getSector()             | dynamic | Get the parent sector of a village                                |
+| getRuralDistrict()      | dynamic | Get the parent rural district of a village                           |
+
+---
 
 All models have relation methods between themselves.
 
 **Examples:**
-
-* Province Model: 
-
-```php
-use App\Province;
-
-# Fetching collection of provinces
-$provinces          = Province::getAll(); // returns collection of provinces
-$activeProvinces    = Province::getAllActive(); // returns collection of active provinces
-$notActiveProvinces = Province::getAllNotActive(); // returns collection of not active provinces
-
-# Fetching a province :
-$province = Province::find(1); // returns Province model
-
-# A province has many counties
-$counties = $province->counties()->get(); // returns collection of counties
-$counties = $province->getCounties(); // returns collection of counties
-$activeCounties = $province->getActiveCounties(); // returns collection of active counties
-$notActiveCounties = $province->getNotActiveCounties(); // returns collection of not active counties
-
-# A province has many cities
-$cities = $province->cities()->get(); // returns collection of cities
-$cities = $province->getCities();  // returns collection of cities
-$activeCities = $province->getActiveCities(); // returns collection of active cities
-$notActiveCities = $province->getNotActiveCities(); // returns collection of not active cities
-
-```
-
-* County Model:
-
-```php
-
-use App\County;
-
-# Fetching collection of counties
-$counties          = County::getAll(); // returns collection of counties
-$activeCounties    = County::getAllActive(); // returns collection of active counties
-$notActiveCounties = County::getAllNotActive(); // returns collection of not active counties
-
-# Getting County
-$county = County::find(1); // returns County model
-
-# A county has many cities
-# A province has many cities
-$cities = $county->cities()->get(); // returns collection of cities
-$cities = $county->getCities();  // returns collection of cities
-$activeCities = $county->getActiveCities(); // returns collection of active cities
-$notActiveCities = $county->getNotActiveCities(); // returns collection of not active cities
-
-# A county belongs to one province
-$province = $county->province()->first(); // returns Province model
-$province = $county->getProvince(); // returns Province model
-
-```
 
 * City Model:
 ```php
@@ -306,6 +398,8 @@ $city->isActive(); // return false because the province of the city is not activ
 ## Todos
 
  - Write Tests
+ - Add longitude and latitude of regions
+ - Add geo locations of regions
  
 Issues
 ----
@@ -315,11 +409,9 @@ License
 ----
 Typhoon-Iran-Cities is released under the MIT License.
 
-Created by Salar Bahador.
+Created by [Salar Bahador][lkself].
 
 Built with ❤ for you.
-
-**Free Software, Hell Yeah!**
 
 Contributing
 ----
@@ -328,7 +420,8 @@ Contributions, useful comments, and feedback are most welcome!
 Reference
 ----
 
-Based on [ahmadazizi/iran-cities][2k2] git repository. Take a look For more info.
+Based on [ahmadazizi/iran-cities][2k2] git repository version 3. Take a look For more info.
 
    [lk1]: <https://github.com/SaliBhdr/typhoon-iran-cities/issues>
+   [lkself]: <https://github.com/SaliBhdr>
    [2k2]: <https://github.com/ahmadazizi/iran-cities>
