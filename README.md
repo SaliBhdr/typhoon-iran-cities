@@ -51,7 +51,7 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 ],
 ```
 
-Run `Iran:publish:migrations` command for copying migrations:
+Run the `Iran:publish:migrations` command for copying migrations:
 
 ```sh
 
@@ -71,7 +71,7 @@ xxxx_xx_xx_xxxxxx_create_iran_rural_districts_table.php,
 xxxx_xx_xx_xxxxxx_create_iran_villages_table.php,
 
 ```
-Then run `Iran:publish:models` command for copying models (If you don't want to use models skip this part) :
+Then run the `Iran:publish:models` command for copying models (If you don't want to use models skip this part) :
 
 ```sh
 
@@ -101,7 +101,7 @@ At the end for importing data into related tables you can run one of these comma
 
 ```
 
-This outputs one or more of these line based on the command :
+This outputs one or more of these lines, based on the command :
 
 ```
 
@@ -135,7 +135,7 @@ Here is the list of all these methods with their usages:
 
 **Common Methods for All models**
 
-If you use `HasStatusField` trait these methods are available. By default, the `HasStatusField` is used.
+If you use the `HasStatusField` trait these methods are available. By default, the `HasStatusField` is used.
 
 | Method        | Type           | Usage                              |
 |---------------|:--------------:|:-----------------------------------|
@@ -155,7 +155,7 @@ All models have these methods:
 | getAllNotActive()  | static    | Get all not active  |
 
 ---
-**Province Model:**
+**IranProvince Model:**
 
 | Method                        | Type    | Usage                                                               |
 |-------------------------------|:-------:|:--------------------------------------------------------------------|
@@ -186,7 +186,7 @@ All models have these methods:
 
 ---
 
-**County Model:**
+**IranCounty Model:**
 
 | Method                        | Type    | Usage                                                             |
 |-------------------------------|:-------:|:------------------------------------------------------------------|
@@ -215,7 +215,7 @@ All models have these methods:
 
 ---
 
-**Sector Model:**
+**IranSector Model:**
 
 | Method                        | Type    | Usage                                                             |
 |-------------------------------|:-------:|:------------------------------------------------------------------|
@@ -242,7 +242,7 @@ All models have these methods:
 
 ---
 
-**City Model:**
+**IranCity Model:**
 
 | Method                        | Type    | Usage                                                           |
 |-------------------------------|:-------:|:--------------------------------------------------------------- |
@@ -259,7 +259,7 @@ All models have these methods:
 
 ---
 
-**CityDistrict Model:**
+**IranCityDistrict Model:**
 
 | Method                 | Type    | Usage                                                           |
 |------------------------|:-------:|:--------------------------------------------------------------- |
@@ -274,7 +274,7 @@ All models have these methods:
 
 ---
 
-**RuralDistrict Model:**
+**IranRuralDistrict Model:**
 
 | Method                  | Type    | Usage                                                                 |
 |-------------------------|:-------:|:--------------------------------------------------------------------- |
@@ -291,7 +291,7 @@ All models have these methods:
 
 ---
 
-**Village Model:**
+**IranVillage Model:**
 
 | Method                  | Type    | Usage                                                             |
 |-------------------------|:-------:|:----------------------------------------------------------------- |
@@ -310,18 +310,18 @@ All models have relation methods between themselves.
 
 **Examples:**
 
-* City Model:
+* IranCity Model:
 ```php
 
-use App\City;
+use App\Models\IranCity;
 
 # Fetching collection of cities
-$counties          = City::getAll(); // returns collection of cities
-$activeCounties    = City::getAllActive(); // returns collection of active cities
-$notActiveCounties = City::getAllNotActive(); // returns collection of not active cities
+$cities          = IranCity::getAll(); // returns collection of cities
+$activeCities    = IranCity::getAllActive(); // returns collection of active cities
+$notActiveCities = IranCity::getAllNotActive(); // returns collection of not active cities
 
 # Getting County
-$city = City::find(1);
+$city = IranCity::find(1);
 
 # A city belongs to a county
 $county = $city->county()->first(); // returns County model
@@ -336,28 +336,28 @@ $province = $city->getProvince(); // returns Province model
 **Status Field**
 
 If you want to be able to activate and deactivate provinces, counties, and cities by default each model uses
-a trait named 'HasStatusField'. This trait allows you to access a bunch of methods that help you to manage all records. Here is how to use them:
+the 'HasStatusField' trait. This trait allows you to access a bunch of methods that help you to manage all records. Here is how to use them:
 
 Each table has a field named `status`. This field is a boolean type field so that `1` stands for active record and `0` stands
 for not active record. to make sure that you always get active records, use `active()` method:
 
 ```php
-use App\City;
-use App\County;
-use App\Province;
+use App\Models\IranCity;
+use App\Models\IranCounty;
+use App\Models\IranProvince;
 
 # To get active provinces or an active province:
-$provinces = Province::active()->get(); // returns collection of all active provinces
-$provinces = Province::notActive()->get(); // returns collection of all not active provinces
+$provinces = IranProvince::active()->get(); // returns collection of all active provinces
+$provinces = IranProvince::notActive()->get(); // returns collection of all not active provinces
 
 # You can even check if the record is active or not
-$city = City::find(1);
+$city = IranCity::find(1);
 
 $city->isActive(); //returns true if the record is active false if is not active
 $city->isNotActive(); //returns true if the record is not active false if is active
 
 # You can even activate and deactivate records like so:
-$county = County::find(1);
+$county = IranCounty::find(1);
 
 $county->activate(); // activates record by setting status field in db to 1
 $county->deactivate(); // deactivates record by setting status field in db to 0
@@ -374,22 +374,22 @@ as you use active() scope for fetching data.
 Example :
 
 ```php
-use App\Province;
-use App\City;
+use App\Models\IranProvince;
+use App\Models\IranCity;
 
 # assume that city with id `1` is belongs to province with id `1'
 # if you deactivate province all the cities will be deactivated and not showed in the results.
 
-$province = Province::active()->find(1); // find the active province with id `1`
+$province = IranProvince::active()->find(1); // find the active province with id `1`
 
 $province->deactivate(); // deactivate province with id `1`
 
 # now if you try to get city:
-$city = City::active()->find(1); // returns null because the province of the city is deactivated
+$city = IranCity::active()->find(1); // returns null because the province of the city is deactivated
 
 //or
 
-$city = City::find(1); // finds the record because you didn't use active() scope
+$city = IranCity::find(1); // finds the record because you didn't use active() scope
 
 $city->isActive(); // return false because the province of the city is not active
 
