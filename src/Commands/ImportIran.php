@@ -5,7 +5,7 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 use SaliBhdr\TyphoonIranCities\IranCsvEnum;
 use Symfony\Component\Console\Input\InputOption;
 
-class ImportIran extends AbstractImportCommand
+class ImportIran extends AbstractImport
 {
     /**
      * The name and signature of the console command.
@@ -24,7 +24,7 @@ class ImportIran extends AbstractImportCommand
         parent::__construct();
 
         $this->getDefinition()->addOptions([
-            new InputOption('region', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [provinces, counties, sectors, cities, city_districts, rural_districts, villages]')
+            new InputOption('region', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
 
@@ -36,23 +36,20 @@ class ImportIran extends AbstractImportCommand
     {
         $region = $this->option('region');
 
-        if (empty($region))
-            $region = 'all';
-
         $target = [
-            'all'               => IranCsvEnum::ALL,
-            'provinces'         => IranCsvEnum::PROVINCES,
-            'counties'          => IranCsvEnum::COUNTIES,
-            'sectors'           => IranCsvEnum::SECTORS,
-            'cities'            => IranCsvEnum::CITIES,
-            'city_districts'    => IranCsvEnum::CITY_DISTRICTS,
-            'rural_districts'   => IranCsvEnum::RURAL_DISTRICTS,
-            'villages'          => IranCsvEnum::VILLAGES
+            'all'             => IranCsvEnum::ALL,
+            'provinces'       => IranCsvEnum::PROVINCES,
+            'counties'        => IranCsvEnum::COUNTIES,
+            'sectors'         => IranCsvEnum::SECTORS,
+            'cities'          => IranCsvEnum::CITIES,
+            'city_districts'  => IranCsvEnum::CITY_DISTRICTS,
+            'rural_districts' => IranCsvEnum::RURAL_DISTRICTS,
+            'villages'        => IranCsvEnum::VILLAGES
         ];
 
         if (isset($target[$region]))
             return $target[$region];
 
-        throw new \Exception('Target Region Not Found',404);
+        throw new \Exception("Target Region ({$region}) Not Found", 404);
     }
 }

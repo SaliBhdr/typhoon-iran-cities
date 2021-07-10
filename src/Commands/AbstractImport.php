@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\InputOption;
 
-abstract class AbstractImportCommand extends Command
+abstract class AbstractImport extends Command
 {
     /**
      * AbstractImportCommand constructor.
