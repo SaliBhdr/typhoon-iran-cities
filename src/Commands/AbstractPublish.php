@@ -28,6 +28,8 @@ abstract class AbstractPublish extends Command
                 $this->copyFile($src,$destination);
             }
         }
+
+        $this->info('Done !!!');
     }
 
     /**
