@@ -9,7 +9,7 @@
 
 ## Introduction
 
-Typhoon Iran Cities is a Laravel package for importing all regions for example provinces, counties, sectors, cities, city districts, rural districts and villages of Iran into your database with just 
+Typhoon Iran Cities is a Laravel package for importing all regions such as provinces, counties, sectors, cities, city districts, rural districts and villages of Iran into your database with just 
 only one console command.
 
 This is the most accurate Laravel package for administrative divisions of Iran without a doubt.

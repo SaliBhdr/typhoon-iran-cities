@@ -1,8 +1,21 @@
 {
     "name": "salibhdr/typhoon-iran-cities",
-    "description": "A laravel package for importing all regions for example provinces, counties, cities, city districts, rural districts and villages of iran into database accurately",
+    "description": "A laravel package for importing all regions such as provinces, counties, cities, city districts, rural districts and villages of iran into database accurately",
     "type": "package",
     "license": "MIT",
+    "keywords": [
+        "salibhdr",
+        "laravel",
+        "regions",
+        "locations",
+        "iran",
+        "province",
+        "county",
+        "city",
+        "city-district",
+        "rural-district",
+        "village"
+    ],
     "authors": [
         {
             "name": "Salar Bahador",
