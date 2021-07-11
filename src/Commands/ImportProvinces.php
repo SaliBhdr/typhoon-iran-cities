@@ -2,16 +2,15 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use SaliBhdr\TyphoonIranCities\IranCsvEnum;
 
-class ImportProvinces extends AbstractImportCommand
+class ImportProvinces extends AbstractImport
 {
     /**
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'iran:import-provinces';
+    protected $signature = 'iran:import:provinces';
 
     /**
      * The console command description.
@@ -25,7 +24,7 @@ class ImportProvinces extends AbstractImportCommand
      */
     protected function getFiles()
     {
-        return $this->dirToArray(__DIR__ . '/../../csv/', ['cities.csv', 'counties.csv']);
+        return IranCsvEnum::PROVINCES;
     }
 
 }

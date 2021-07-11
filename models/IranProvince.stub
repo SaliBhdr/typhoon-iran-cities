@@ -1,0 +1,248 @@
+<?php
+
+namespace {{ namespace }}
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
+
+/**
+ * Class IranProvince (Ostan)
+ * @package App
+ */
+class IranProvince extends Model
+{
+    use HasStatusField;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
+    /**
+     * Province has many counties
+     */
+    public function counties()
+    {
+        return $this->hasMany(IranCounty::class, 'province_id');
+    }
+
+    /**
+     * Province has many sectors
+     */
+    public function sectors()
+    {
+        return $this->hasMany(IranSector::class, 'province_id');
+    }
+
+    /**
+     * Province has many cities
+     */
+    public function cities()
+    {
+        return $this->hasMany(IranCity::class, 'province_id');
+    }
+
+    /**
+     * Province has many city districts
+     */
+    public function cityDistricts()
+    {
+        return $this->hasMany(IranCityDistrict::class, 'province_id');
+    }
+
+    /**
+     * Province has many rural districts
+     */
+    public function ruralDistricts()
+    {
+        return $this->hasMany(IranRuralDistrict::class, 'province_id');
+    }
+
+    /**
+     * Province has many villages
+     */
+    public function villages()
+    {
+        return $this->hasMany(IranVillage::class, 'province_id');
+    }
+
+    /**
+     * @return self[]|Collection
+     */
+    public static function getAll()
+    {
+        return static::all();
+    }
+
+    /**
+     * @return self[]|Collection
+     */
+    public static function getAllActive()
+    {
+        return static::active()->get();
+    }
+
+    /**
+     * @return self[]|Collection
+     */
+    public static function getAllNotActive()
+    {
+        return static::notActive()->get();
+    }
+
+    /**
+     * @return IranCounty[]|Collection
+     */
+    public function getCounties()
+    {
+        return $this->counties()->get();
+    }
+
+    /**
+     * @return IranCounty[]|Collection
+     */
+    public function getActiveCounties()
+    {
+        return $this->counties()->active()->get();
+    }
+
+    /**
+     * @return IranCounty[]|Collection
+     */
+    public function getNotActiveCounties()
+    {
+        return $this->counties()->notActive()->get();
+    }
+
+    /**
+     * @return IranSector[]|Collection
+     */
+    public function getSectors()
+    {
+        return $this->sectors()->get();
+    }
+
+    /**
+     * @return IranSector[]|Collection
+     */
+    public function getActiveSectors()
+    {
+        return $this->sectors()->active()->get();
+    }
+
+    /**
+     * @return IranSector[]|Collection
+     */
+    public function getNotActiveSectors()
+    {
+        return $this->sectors()->notActive()->get();
+    }
+
+    /**
+     * @return IranCity[]|Collection
+     */
+    public function getCities()
+    {
+        return $this->cities()->get();
+    }
+
+    /**
+     * @return IranCity[]|Collection
+     */
+    public function getActiveCities()
+    {
+        return $this->cities()->active()->get();
+    }
+
+    /**
+     * @return IranCity[]|Collection
+     */
+    public function getNotActiveCities()
+    {
+        return $this->cities()->notActive()->get();
+    }
+
+    /**
+     * @return IranCityDistrict[]|Collection
+     */
+    public function getCityDistricts()
+    {
+        return $this->cityDistricts()->get();
+    }
+
+    /**
+     * @return IranCityDistrict[]|Collection
+     */
+    public function getActiveCityDistricts()
+    {
+        return $this->cityDistricts()->active()->get();
+    }
+
+    /**
+     * @return IranCityDistrict[]|Collection
+     */
+    public function getNotActiveCityDistricts()
+    {
+        return $this->cityDistricts()->notActive()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getRuralDistricts()
+    {
+        return $this->ruralDistricts()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getActiveRuralDistricts()
+    {
+        return $this->ruralDistricts()->active()->get();
+    }
+
+    /**
+     * @return IranRuralDistrict[]|Collection
+     */
+    public function getNotActiveRuralDistricts()
+    {
+        return $this->ruralDistricts()->notActive()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getVillages()
+    {
+        return $this->villages()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getActiveVillages()
+    {
+        return $this->villages()->active()->get();
+    }
+
+    /**
+     * @return IranVillage[]|Collection
+     */
+    public function getNotActiveVillages()
+    {
+        return $this->villages()->notActive()->get();
+    }
+}
