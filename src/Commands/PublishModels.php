@@ -1,10 +1,7 @@
 <?php
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-
-class PublishModels extends Command
+class PublishModels extends AbstractPublish
 {
     /**
      * The name and signature of the console command.
@@ -18,56 +15,44 @@ class PublishModels extends Command
      */
     protected $description = 'Copies related models';
 
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->getDefinition()->addOptions([
-            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files')
-        ]);
-    }
-
-    public function handle()
+    /**
+     * @param array[int] $targets
+     * @return array
+     */
+    protected function getTargets($targets)
     {
         $src = $this->getSrcDir();
 
         $target = $this->getTargetDir();
 
-        $namespace = $this->getTargetNamespace();
-
         $map = [
-            $src . 'IranProvince.stub'      => $target . 'IranProvince.php',
-            $src . 'IranCounty.stub'        => $target . 'IranCounty.php',
-            $src . 'IranSector.stub'        => $target . 'IranSector.php',
-            $src . 'IranCity.stub'          => $target . 'IranCity.php',
-            $src . 'IranCityDistrict.stub'  => $target . 'IranCityDistrict.php',
-            $src . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php',
-            $src . 'IranVillage.stub'       => $target . 'IranVillage.php',
+            1 => [$src . 'IranProvince.stub'       => $target . 'IranProvince.php'],
+            2 => [$src . 'IranCounty.stub'        => $target . 'IranCounty.php'],
+            3 => [$src . 'IranSector.stub'         => $target . 'IranSector.php'],
+            4 => [$src . 'IranCity.stub'          => $target . 'IranCity.php'],
+            5 => [$src . 'IranCityDistrict.stub'  => $target . 'IranCityDistrict.php'],
+            6 => [$src . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php'],
+            7 => [$src . 'IranVillage.stub'        => $target . 'IranVillage.php'],
         ];
 
+        $result = [];
 
-        foreach ($map as $stubFile => $modelFile) {
-            if ($this->option('force') || !file_exists($modelFile)) {
-
-                $modelContent = file_get_contents($stubFile);
-                $modelContent = str_replace("{{ namespace }}", $namespace, $modelContent);
-
-                file_put_contents($modelFile, $modelContent);
-            }
+        foreach ($targets as $target) {
+            if (isset($map[$target]))
+                $result = array_merge($result, $map[$target]);
         }
+
+        return $result;
     }
 
     /**
-     * Get the default namespace for the class.
+     * Get models src dir
      *
      * @return string
      */
-    protected function getTargetNamespace()
+    protected function getSrcDir()
     {
-        $rootNamespace = $this->laravel->getNamespace();
-
-        return stripslashes(rtrim(is_dir(app_path('Models')) ? "{$rootNamespace}\Models" : $rootNamespace, '\\'));
+        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -81,12 +66,29 @@ class PublishModels extends Command
     }
 
     /**
-     * Get models src dir
+     * @param string $src
+     * @param string $destination
+     * @return void
+     */
+    protected function copyFile($src, $destination)
+    {
+        $namespace = $this->getTargetNamespace();
+
+        $modelContent = file_get_contents($src);
+        $modelContent = str_replace("{{ namespace }}", $namespace, $modelContent);
+
+        file_put_contents($destination, $modelContent);
+    }
+
+    /**
+     * Get the default namespace for the class.
      *
      * @return string
      */
-    protected function getSrcDir()
+    protected function getTargetNamespace()
     {
-        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
+        $rootNamespace = $this->laravel->getNamespace();
+
+        return stripslashes(rtrim(is_dir(app_path('Models')) ? "{$rootNamespace}\Models" : $rootNamespace, '\\'));
     }
 }

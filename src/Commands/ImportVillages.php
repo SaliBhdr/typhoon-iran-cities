@@ -4,7 +4,7 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use SaliBhdr\TyphoonIranCities\IranCsvEnum;
 
-class ImportVillages extends AbstractImportCommand
+class ImportVillages extends AbstractImport
 {
     /**
      * The name and signature of the console command.

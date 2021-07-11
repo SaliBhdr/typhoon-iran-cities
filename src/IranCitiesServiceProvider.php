@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use SaliBhdr\TyphoonIranCities\Commands\ImportIran;
 use SaliBhdr\TyphoonIranCities\Commands\ImportCities;
 use SaliBhdr\TyphoonIranCities\Commands\ImportSectors;
+use SaliBhdr\TyphoonIranCities\Commands\IranInit;
 use SaliBhdr\TyphoonIranCities\Commands\PublishModels;
 use SaliBhdr\TyphoonIranCities\Commands\ImportVillages;
 use SaliBhdr\TyphoonIranCities\Commands\ImportCounties;
@@ -22,6 +23,7 @@ class IranCitiesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
+            IranInit::class,
             PublishMigrations::class,
             PublishModels::class,
             ImportIran::class,
