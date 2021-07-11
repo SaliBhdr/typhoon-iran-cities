@@ -1,4 +1,4 @@
-# Typhoon Iran Regions, Provinces, Counties, Cities, City Districts, Rural Districts and Villages
+# Iran Regions such as Provinces, Counties, Cities, City Districts, Rural Districts and Villages
 
 ![Salibhdr|typhoon](https://drive.google.com/a/domain.com/thumbnail?id=12yntFCiYIGJzI9FMUaF9cRtXKb0rXh9X)
 
@@ -14,7 +14,7 @@ only one console command.
 
 This is the most accurate Laravel package for administrative divisions of Iran without a doubt.
 
-![Administrative Divisions of Iran](./docs/images/administrative_divisions_of_Iran.jpg)
+![Administrative Divisions and Regions of Iran](./docs/images/administrative_divisions_of_Iran.jpg)
 
 **Features**
 - All provinces of Iran (استان)

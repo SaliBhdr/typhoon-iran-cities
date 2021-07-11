@@ -1,5 +1,5 @@
 <?php
-namespace {{ namespace }};
+namespace {{ namespace }}
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,7 +34,7 @@ class IranSector extends Model
      */
     public function province()
     {
-        return $this->belongsTo(IranProvince::class);
+        return $this->belongsTo(IranProvince::class,'province_id');
     }
 
     /**
@@ -42,7 +42,7 @@ class IranSector extends Model
      */
     public function county()
     {
-        return $this->belongsTo(IranCounty::class);
+        return $this->belongsTo(IranCounty::class,'county_id');
     }
 
     /**
@@ -50,7 +50,7 @@ class IranSector extends Model
      */
     public function cities()
     {
-        return $this->hasMany(IranCity::class);
+        return $this->hasMany(IranCity::class,'sector_id');
     }
 
     /**
@@ -58,7 +58,7 @@ class IranSector extends Model
      */
     public function cityDistricts()
     {
-        return $this->hasMany(IranCityDistrict::class);
+        return $this->hasMany(IranCityDistrict::class,'sector_id');
     }
 
     /**
@@ -66,7 +66,7 @@ class IranSector extends Model
      */
     public function ruralDistricts()
     {
-        return $this->hasMany(IranRuralDistrict::class);
+        return $this->hasMany(IranRuralDistrict::class,'sector_id');
     }
 
     /**
@@ -74,7 +74,31 @@ class IranSector extends Model
      */
     public function villages()
     {
-        return $this->hasMany(IranVillage::class);
+        return $this->hasMany(IranVillage::class,'sector_id');
+    }
+
+    /**
+     * @return self[]|Collection
+     */
+    public static function getAll()
+    {
+        return static::all();
+    }
+
+    /**
+     * @return self[]|Collection
+     */
+    public static function getAllActive()
+    {
+        return static::active()->get();
+    }
+
+    /**
+     * @return self[]|Collection
+     */
+    public static function getAllNotActive()
+    {
+        return static::notActive()->get();
     }
 
     /**
