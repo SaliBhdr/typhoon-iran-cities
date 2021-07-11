@@ -51,87 +51,68 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 ],
 ```
 
-Run the `Iran:publish:migrations` command for copying migrations:
+
+
+Run the `php artisan Iran:init` command. This command has two options :
+
+1. `--force` : to overwrite the files and db data (if exists)
+2. `--region` : select the target regions that you want to use from one
+of these options [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]
+
+You can use `php artisan Iran:init -h` to see the available options.
+
+This command will run these commands step by step:
 
 ```sh
 
-php artisan Iran:publish:migrations
+  iran:publish:migrations      Copies migrations into migrations directory
+  iran:publish:models          Copies related models
+  migrate                      For migrating new migrations of package
+  iran:import                  Imports all regions into the database (Can be selected by option)
 
 ```
 
-It will generate the 7 migration files under database/migrations directory.
+The init command will generate migrations, models to your project and import data to database.
 
-```
-xxxx_xx_xx_xxxxxx_create_iran_provinces_table.php,
-xxxx_xx_xx_xxxxxx_create_iran_counties_table.php,
-xxxx_xx_xx_xxxxxx_create_iran_sectors_table.php,
-xxxx_xx_xx_xxxxxx_create_iran_cities_table.php,
-xxxx_xx_xx_xxxxxx_create_iran_city_districts_table.php,
-xxxx_xx_xx_xxxxxx_create_iran_rural_districts_table.php,
-xxxx_xx_xx_xxxxxx_create_iran_villages_table.php,
+**Notice:** 
 
-```
-Then run the `Iran:publish:models` command for copying models (If you don't want to use models skip this part) :
+You can select the level of usage that you want by adding `--region=[REGION]` tag to any command.
+For example, if you need cities in your project and don't want to add extra villages data to your database
+you can run `php artisan Iran:init --region=cities`. 
 
-```sh
-
-php artisan Iran:publish:models
-
-```
-
-This will copy `IranProvince.php`, `IranCounty.php`, `IranSector.php`, `IranCity.php`, `IranCityDistrict.php`, `IranRuralDistrict.php` and `IranVillage.php` models.
-
-Run the `php artisan migrate` command to migrate all 7 tables:
+**By default, all regions will be added if not specified.**
 
 ## Usage
 
-#### Data Import
-At the end for importing data into related tables you can run one of these commands:
+#### Commands
 
-```
+Here are the commands that are available you can use it separately if you don't want to use `iran:init` command.
 
+```sh
+
+  # init command that runs publish and import commands step by step (For ease of use)
+  iran:init                    Copies models and migrations then imports data
+  
+  # publish commands
+  iran:publish:migrations      Copies migrations into migrations directory
+  iran:publish:models          Copies related models
+    
+  # import commands
   iran:import                  Imports all regions into the database (Can be selected by option)
-  iran:import:provinces        Imports provinces only into the database
-  iran:import:counties         Imports counties and provinces without cities into the database
-  iran:import:sectors          Imports sectors, counties and provinces into the database
   iran:import:cities           Imports cities, sectors, counties and provinces into the database
   iran:import:city-districts   Imports city districts, cities, sectors, counties and provinces into the database
+  iran:import:counties         Imports counties and provinces without cities into the database
+  iran:import:provinces        Imports provinces only into the database
   iran:import:rural-districts  Imports rural districts, sectors, counties and provinces into the database
+  iran:import:sectors          Imports sectors, counties and provinces into the database
   iran:import:villages         Imports villages, rural districts, sectors, counties and provinces into the database
 
 ```
 
-This outputs one or more of these lines, based on the command :
+#### Code
 
-```
-
-Starting to import data...
-
-Importing provinces...
- 31/31 [============================] 100%
-Importing counties...
- 448/448 [============================] 100%
-Importing sectors...
- 1099/1099 [============================] 100%
-Importing cities...
- 1354/1354 [============================] 100%
-Importing city districts...
- 200/200 [============================] 100%
-Importing rural districts...
- 2637/2637 [============================] 100%
-Importing villages...
-  98100/98100 [============================] 100%
-
-Data has been imported successfully!!!
-
-```
-#### Code Usage
-
-All Available methods
-
-This package uses 3 eloquent models to get data from the database. These models are Province, County, and City.
-Some methods are common among these models, and some are not. 
-Here is the list of all these methods with their usages:
+This package uses eloquent models. Some methods are common among these models, and some aren't. 
+Here is the list of all available methods with their usages:
 
 **Common Methods for All models**
 
@@ -311,6 +292,7 @@ All models have relation methods between themselves.
 **Examples:**
 
 * IranCity Model:
+
 ```php
 
 use App\Models\IranCity;
@@ -339,9 +321,10 @@ If you want to be able to activate and deactivate provinces, counties, and citie
 the 'HasStatusField' trait. This trait allows you to access a bunch of methods that help you to manage all records. Here is how to use them:
 
 Each table has a field named `status`. This field is a boolean type field so that `1` stands for active record and `0` stands
-for not active record. to make sure that you always get active records, use `active()` method:
+for not active record. to make sure that you always get active records, use the `active()` method:
 
 ```php
+
 use App\Models\IranCity;
 use App\Models\IranCounty;
 use App\Models\IranProvince;
@@ -364,16 +347,18 @@ $county->deactivate(); // deactivates record by setting status field in db to 0
 
 ```
 
-**Notice:** If you want to deactivate a record the records that belong to that record will be deactivated as long 
-as you use active() scope for fetching data.
+**Notice :** 
 
-* Province deactivation will deactivate all counties and cities of that province
-* County deactivation will deactivate all cities of that county
-* City deactivation only will deactivate that city and does not affect province and county of that record 
+If you want to deactivate a record, all the children that belong to that record will be deactivated and their status will change to 0.
+Deactivation will be implied by the hierarchy of divisions. For example:
+
+* Province deactivation will deactivate all counties and cities and so on.
+* County deactivation will deactivate all cities of that county and so on.
 
 Example :
 
 ```php
+
 use App\Models\IranProvince;
 use App\Models\IranCity;
 
