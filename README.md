@@ -349,13 +349,15 @@ $county->deactivate(); // deactivates record by setting status field in db to 0
 
 **Notice :** 
 
-If you want to deactivate a record, all the children that belong to that record will be deactivated and their status will change to 0.
-Deactivation will be implied by the hierarchy of divisions. For example:
+Deactivation will be applied by the hierarchy of divisions. For example:
 
 * Province deactivation will deactivate all counties and cities and so on.
 * County deactivation will deactivate all cities of that county and so on.
 
-Example :
+Note that the children's records will not change. 
+They only will be unavailable if you try to get them via the `active()` scope.
+
+For Example :
 
 ```php
 
@@ -376,7 +378,7 @@ $city = IranCity::active()->find(1); // returns null because the province of the
 
 $city = IranCity::find(1); // finds the record because you didn't use active() scope
 
-$city->isActive(); // return false because the province of the city is not active
+$city->isActive(); // return false because the province of the city is not active but the status is still 1
 
 ```
 
