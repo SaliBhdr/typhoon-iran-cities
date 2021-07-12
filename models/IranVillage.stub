@@ -1,5 +1,5 @@
 <?php
-namespace {{ namespace }}
+namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
