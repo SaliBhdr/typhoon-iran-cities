@@ -115,7 +115,7 @@ class IranCity extends Model
      */
     public function getCityDistricts()
     {
-        return $this->districts()->get();
+        return $this->cityDistricts()->get();
     }
 
     /**
@@ -123,7 +123,7 @@ class IranCity extends Model
      */
     public function getActiveCityDistricts()
     {
-        return $this->districts()->active()->get();
+        return $this->cityDistricts()->active()->get();
     }
 
     /**
@@ -131,6 +131,6 @@ class IranCity extends Model
      */
     public function getNotActiveCityDistricts()
     {
-        return $this->districts()->notActive()->get();
+        return $this->cityDistricts()->notActive()->get();
     }
 }
