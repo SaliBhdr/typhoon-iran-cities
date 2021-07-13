@@ -16,7 +16,7 @@ trait HasRuralDistricts
     }
 
     /**
-     * @return IranRuralDistrict[]\Illuminate\Database\Eloquent\Collection
+     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getRuralDistricts()
     {
@@ -24,7 +24,7 @@ trait HasRuralDistricts
     }
 
     /**
-     * @return IranRuralDistrict[]\Illuminate\Database\Eloquent\Collection
+     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getActiveRuralDistricts()
     {
@@ -32,7 +32,7 @@ trait HasRuralDistricts
     }
 
     /**
-     * @return IranRuralDistrict[]\Illuminate\Database\Eloquent\Collection
+     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getNotActiveRuralDistricts()
     {

@@ -17,7 +17,7 @@ trait HasCities
     }
 
     /**
-     * @return IranCity[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCity[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getCities()
     {
@@ -25,7 +25,7 @@ trait HasCities
     }
 
     /**
-     * @return IranCity[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCity[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getActiveCities()
     {
@@ -33,7 +33,7 @@ trait HasCities
     }
 
     /**
-     * @return IranCity[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCity[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getNotActiveCities()
     {

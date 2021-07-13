@@ -16,7 +16,7 @@ trait HasSectors
     }
 
     /**
-     * @return IranSector[]\Illuminate\Database\Eloquent\Collection
+     * @return IranSector[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getSectors()
     {
@@ -24,7 +24,7 @@ trait HasSectors
     }
 
     /**
-     * @return IranSector[]\Illuminate\Database\Eloquent\Collection
+     * @return IranSector[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getActiveSectors()
     {
@@ -32,7 +32,7 @@ trait HasSectors
     }
 
     /**
-     * @return IranSector[]\Illuminate\Database\Eloquent\Collection
+     * @return IranSector[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getNotActiveSectors()
     {

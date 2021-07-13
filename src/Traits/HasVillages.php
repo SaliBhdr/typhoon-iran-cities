@@ -16,7 +16,7 @@ trait HasVillages
     }
 
     /**
-     * @return IranVillage[]\Illuminate\Database\Eloquent\Collection
+     * @return IranVillage[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getVillages()
     {
@@ -24,7 +24,7 @@ trait HasVillages
     }
 
     /**
-     * @return IranVillage[]\Illuminate\Database\Eloquent\Collection
+     * @return IranVillage[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getActiveVillages()
     {
@@ -32,7 +32,7 @@ trait HasVillages
     }
 
     /**
-     * @return IranVillage[]\Illuminate\Database\Eloquent\Collection
+     * @return IranVillage[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getNotActiveVillages()
     {

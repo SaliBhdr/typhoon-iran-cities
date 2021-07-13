@@ -16,7 +16,7 @@ trait HasCounties
     }
 
     /**
-     * @return IranCounty[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getCounties()
     {
@@ -24,7 +24,7 @@ trait HasCounties
     }
 
     /**
-     * @return IranCounty[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getActiveCounties()
     {
@@ -32,7 +32,7 @@ trait HasCounties
     }
 
     /**
-     * @return IranCounty[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getNotActiveCounties()
     {
