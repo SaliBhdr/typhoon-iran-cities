@@ -8,6 +8,7 @@ trait HasSectors
 {
     /**
      * Province has many sectors
+     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
      */
     public function sectors()
     {
@@ -37,6 +38,5 @@ trait HasSectors
     {
         return $this->sectors()->notActive()->get();
     }
-
 
 }

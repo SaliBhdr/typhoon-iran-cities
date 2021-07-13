@@ -8,6 +8,7 @@ trait BelongsToProvince
 {
     /**
      * city belongs to a province
+     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranProvince
      */
     public function province()
     {

@@ -8,6 +8,7 @@ trait BelongsToSector
 {
     /**
      * city belongs to a county
+     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranSector
      */
     public function sector()
     {

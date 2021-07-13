@@ -8,6 +8,7 @@ trait BelongsToCity
 {
     /**
      * city district belongs to a county
+     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranCity
      */
     public function city()
     {

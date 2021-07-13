@@ -8,6 +8,7 @@ trait BelongsToRuralDistrict
 {
     /**
      * village belongs to a rural district
+     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranRuralDistrict
      */
     public function ruralDistrict()
     {

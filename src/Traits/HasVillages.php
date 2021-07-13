@@ -8,6 +8,7 @@ trait HasVillages
 {
     /**
      * rural district has many districts
+     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
      */
     public function villages()
     {

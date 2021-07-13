@@ -4,6 +4,12 @@ namespace SaliBhdr\TyphoonIranCities\Models;
 use Illuminate\Database\Eloquent\Model;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
+/**
+ * @property string $name
+ * @property string $code
+ * Class BaseIranModel
+ * @package SaliBhdr\TyphoonIranCities\Models
+ */
 abstract class BaseIranModel extends Model
 {
     use HasStatusField;
