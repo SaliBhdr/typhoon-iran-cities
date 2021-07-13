@@ -116,24 +116,19 @@ Here is the list of all available methods with their usages:
 
 **Common Methods for All models**
 
-If you use the `HasStatusField` trait these methods are available. By default, the `HasStatusField` is used.
-
-| Method        | Type           | Usage                              |
-|---------------|:--------------:|:-----------------------------------|
-| active()      | static/dynamic | Query for get active records       |
-| notActive()   | static/dynamic | Query for get not active records   |
-| activate()    | dynamic        | Activates a record                 |
-| deactivate()  | dynamic        | Deactivates a record               |
-| isActive()    | dynamic        | Returns bool for record status     |
-| isNotActive() | dynamic        | Get all the counties of a province |
-
 All models have these methods:
 
-| Method             | Type      | Usage               |
-|--------------------|:---------:|:--------------------|
-| getAll()           | static    | Get all             |
-| getAllActive()     | static    | Get all active      |
-| getAllNotActive()  | static    | Get all not active  |
+| Method            | Type           | Usage                                |
+|-------------------|:--------------:|:-------------------------------------|
+| getAll()          | static         | Get all                              |
+| getAllActive()    | static         | Get all active                       |
+| getAllNotActive() | static         | Get all not active                   |
+| active()          | static/dynamic | Query for get active records         |
+| notActive()       | static/dynamic | Query for get not active records     |
+| activate()        | dynamic        | Activates a record                   |
+| deactivate()      | dynamic        | Deactivates a record                 |
+| isActive()        | dynamic        | Returns bool for record status       |
+| isNotActive()     | dynamic        | Get all the counties of a province   |
 
 ---
 **IranProvince Model:**
@@ -316,9 +311,6 @@ $province = $city->getProvince(); // returns Province model
 ```
 
 **Status Field**
-
-If you want to be able to activate and deactivate provinces, counties, and cities by default each model uses
-the 'HasStatusField' trait. This trait allows you to access a bunch of methods that help you to manage all records. Here is how to use them:
 
 Each table has a field named `status`. This field is a boolean type field so that `1` stands for active record and `0` stands
 for not active record. to make sure that you always get active records, use the `active()` method:

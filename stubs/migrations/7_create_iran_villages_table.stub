@@ -22,7 +22,7 @@ class CreateIranVillagesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedTinyInteger('type')
-                ->comment('0 stands for normal village. 1 stands for blocked village');
+                ->comment('0 means a typical village.  1 means industrial zone, a small group of buildings, facilities, factories and so on');
             $table->unsignedInteger('diag')->nullable();
             $table->unsignedInteger('province_id');
             $table->unsignedInteger('county_id');

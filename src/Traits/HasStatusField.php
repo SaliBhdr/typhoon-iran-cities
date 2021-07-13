@@ -4,8 +4,9 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @method static active() gets records where status is 1
- * @method static notActive() gets records where status is 0
+ * @property boolean $status
+ * @method static Builder active() gets records where status is 1
+ * @method static Builder notActive() gets records where status is 0
  * Trait HasStatusField
  */
 trait HasStatusField
