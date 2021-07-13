@@ -52,7 +52,7 @@ class PublishModels extends AbstractPublish
      */
     protected function getSrcDir()
     {
-        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
+        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
     }
 
     /**
