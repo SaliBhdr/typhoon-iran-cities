@@ -403,8 +403,8 @@ Reference
 
 Based on [ahmadazizi/iran-cities][link-reference-repo] git repository version 3. Take a look For more info.
 
-[ico-laravel]: https://img.shields.io/badge/Laravel-%E2%89%A5%205.0-ff2d20?style=flat-square&logo=laravel
-[ico-php]: https://img.shields.io/packagist/php-v/salibhdr/typhoon-iran-cities?color=%238892BF&style=flat-square&logo=php
+[ico-laravel]: https://img.shields.io/badge/Laravel-≥5.0-ff2d20?style=flat-square&logo=laravel
+[ico-php]: https://img.shields.io/badge/php-≥5.6-8892bf?style=flat-square&logo=php
 [ico-downloads]: https://poser.pugx.org/salibhdr/typhoon-iran-cities/downloads
 [ico-today-downloads]: https://img.shields.io/packagist/dd/salibhdr/typhoon-iran-cities.svg?style=flat-square
 [ico-license]: https://poser.pugx.org/salibhdr/typhoon-iran-cities/v/unstable
