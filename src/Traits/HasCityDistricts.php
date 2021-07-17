@@ -16,7 +16,7 @@ trait HasCityDistricts
     }
 
     /**
-     * @return IranCityDistrict[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCityDistrict[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getCityDistricts()
     {
@@ -24,7 +24,7 @@ trait HasCityDistricts
     }
 
     /**
-     * @return IranCityDistrict[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCityDistrict[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getActiveCityDistricts()
     {
@@ -32,7 +32,7 @@ trait HasCityDistricts
     }
 
     /**
-     * @return IranCityDistrict[]\Illuminate\Database\Eloquent\Collection
+     * @return IranCityDistrict[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getNotActiveCityDistricts()
     {

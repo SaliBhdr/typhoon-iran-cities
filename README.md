@@ -1,11 +1,13 @@
 # Iran Regions such as Provinces, Counties, Cities, City Districts, Rural Districts and Villages
 
-![Salibhdr|typhoon](https://drive.google.com/a/domain.com/thumbnail?id=12yntFCiYIGJzI9FMUaF9cRtXKb0rXh9X)
+![Salibhdr|typhoon][link-logo]
 
-[![Total Downloads](https://poser.pugx.org/SaliBhdr/typhoon-iran-cities/downloads)](https://packagist.org/packages/SaliBhdr/typhoon-iran-cities)
-[![Latest Stable Version](https://poser.pugx.org/SaliBhdr/typhoon-iran-cities/v/stable)](https://packagist.org/packages/SaliBhdr/typhoon-iran-cities)
-[![Latest Unstable Version](https://poser.pugx.org/SaliBhdr/typhoon-iran-cities/v/unstable)](https://packagist.org/packages/SaliBhdr/typhoon-iran-cities)
-[![License](https://poser.pugx.org/SaliBhdr/typhoon-iran-cities/license)](https://packagist.org/packages/SaliBhdr/typhoon-iran-cities)
+[![Total Downloads][ico-downloads]][link-downloads]
+[![Required Laravel Version][ico-laravel]][link-packagist]
+[![Required PHP Version][ico-php]][link-packagist]
+[![Latest Versions][ico-version]][link-packagist]
+[![License][ico-license]][link-packegist]
+[![Today Downloads][ico-today-downloads]][link-downloads]
 
 ## Introduction
 
@@ -47,7 +49,7 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 
      # Other service providers...
      
-     SaliBhdr\TyphoonIranCities\IranCitiesServiceProvider::class,
+     Salibhdr\TyphoonIranCities\IranCitiesServiceProvider::class,
 ],
 ```
 
@@ -382,13 +384,13 @@ $city->isActive(); // return false because the province of the city is not activ
  
 Issues
 ----
-You can report issues in github repository [here][lk1] 
+You can report issues in github repository [here][link-issues] 
 
 License
 ----
 Typhoon-Iran-Cities is released under the MIT License.
 
-Created by [Salar Bahador][lkself].
+Created by [Salar Bahador][link-github].
 
 Built with ❤ for you.
 
@@ -399,8 +401,19 @@ Contributions, useful comments, and feedback are most welcome!
 Reference
 ----
 
-Based on [ahmadazizi/iran-cities][2k2] git repository version 3. Take a look For more info.
+Based on [ahmadazizi/iran-cities][link-reference-repo] git repository version 3. Take a look For more info.
 
-   [lk1]: <https://github.com/SaliBhdr/typhoon-iran-cities/issues>
-   [lkself]: <https://github.com/SaliBhdr>
-   [2k2]: <https://github.com/ahmadazizi/iran-cities>
+[ico-laravel]: https://img.shields.io/badge/Laravel-≥5.0-ff2d20?style=flat-square&logo=laravel
+[ico-php]: https://img.shields.io/badge/php-≥5.6-8892bf?style=flat-square&logo=php
+[ico-downloads]: https://poser.pugx.org/salibhdr/typhoon-iran-cities/downloads
+[ico-today-downloads]: https://img.shields.io/packagist/dd/salibhdr/typhoon-iran-cities.svg?style=flat-square
+[ico-license]: https://poser.pugx.org/salibhdr/typhoon-iran-cities/v/unstable
+[ico-version]: https://img.shields.io/packagist/v/salibhdr/typhoon-iran-cities.svg?style=flat-square
+
+[link-logo]: https://drive.google.com/a/domain.com/thumbnail?id=12yntFCiYIGJzI9FMUaF9cRtXKb0rXh9X
+[link-packagist]: https://packagist.org/packages/salibhdr/typhoon-iran-cities
+[link-downloads]: https://packagist.org/packages/salibhdr/typhoon-iran-cities/stats
+[link-packegist]: https://packagist.org/packages/salibhdr/typhoon-iran-cities
+[link-issues]: https://github.com/salibhdr/typhoon-iran-cities/issues
+[link-github]: https://github.com/salibhdr/typhoon-iran-cities/issues
+[link-reference-repo]: https://github.com/salibhdr/typhoon-iran-cities/issues
