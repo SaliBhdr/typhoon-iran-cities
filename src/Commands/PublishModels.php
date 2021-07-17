@@ -1,4 +1,5 @@
 <?php
+
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
 class PublishModels extends AbstractPublish
@@ -26,13 +27,13 @@ class PublishModels extends AbstractPublish
         $target = $this->getTargetDir();
 
         $map = [
-            1 => [$src . 'IranProvince.stub'       => $target . 'IranProvince.php'],
-            2 => [$src . 'IranCounty.stub'        => $target . 'IranCounty.php'],
-            3 => [$src . 'IranSector.stub'         => $target . 'IranSector.php'],
-            4 => [$src . 'IranCity.stub'          => $target . 'IranCity.php'],
-            5 => [$src . 'IranCityDistrict.stub'  => $target . 'IranCityDistrict.php'],
-            6 => [$src . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php'],
-            7 => [$src . 'IranVillage.stub'        => $target . 'IranVillage.php'],
+            1 => [$src . 'IranProvince.stub'        => $target . 'IranProvince.php'],
+            2 => [$src . 'IranCounty.stub'          => $target . 'IranCounty.php'],
+            3 => [$src . 'IranSector.stub'          => $target . 'IranSector.php'],
+            4 => [$src . 'IranCity.stub'            => $target . 'IranCity.php'],
+            5 => [$src . 'IranCityDistrict.stub'    => $target . 'IranCityDistrict.php'],
+            6 => [$src . 'IranRuralDistrict.stub'   => $target . 'IranRuralDistrict.php'],
+            7 => [$src . 'IranVillage.stub'         => $target . 'IranVillage.php'],
         ];
 
         $result = [];
@@ -52,7 +53,7 @@ class PublishModels extends AbstractPublish
      */
     protected function getSrcDir()
     {
-        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
+        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
     }
 
     /**

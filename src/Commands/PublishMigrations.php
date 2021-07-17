@@ -31,13 +31,13 @@ class PublishMigrations extends AbstractPublish
         $timestamp = time();
 
         $map = [
-            1 => [$src . '1_create_iran_provinces_table.stub' => $this->getMigrationFileName('create_iran_provinces_table.php', $timestamp)],
-            2 => [$src . '2_create_iran_counties_table.stub' => $this->getMigrationFileName('create_iran_counties_table.php', ++$timestamp)],
-            3 => [$src . '3_create_iran_sectors_table.stub' => $this->getMigrationFileName('create_iran_sectors_table.php', ++$timestamp)],
-            4 => [$src . '4_create_iran_cities_table.stub' => $this->getMigrationFileName('create_iran_cities_table.php', ++$timestamp)],
-            5 => [$src . '5_create_iran_city_districts_table.stub' => $this->getMigrationFileName('create_iran_city_districts_table.php', ++$timestamp)],
+            1 => [$src . '1_create_iran_provinces_table.stub'       => $this->getMigrationFileName('create_iran_provinces_table.php', $timestamp)],
+            2 => [$src . '2_create_iran_counties_table.stub'        => $this->getMigrationFileName('create_iran_counties_table.php', ++$timestamp)],
+            3 => [$src . '3_create_iran_sectors_table.stub'         => $this->getMigrationFileName('create_iran_sectors_table.php', ++$timestamp)],
+            4 => [$src . '4_create_iran_cities_table.stub'          => $this->getMigrationFileName('create_iran_cities_table.php', ++$timestamp)],
+            5 => [$src . '5_create_iran_city_districts_table.stub'  => $this->getMigrationFileName('create_iran_city_districts_table.php', ++$timestamp)],
             6 => [$src . '6_create_iran_rural_districts_table.stub' => $this->getMigrationFileName('create_iran_rural_districts_table.php', ++$timestamp)],
-            7 => [$src . '7_create_iran_villages_table.stub' => $this->getMigrationFileName('create_iran_villages_table.php', ++$timestamp)],
+            7 => [$src . '7_create_iran_villages_table.stub'        => $this->getMigrationFileName('create_iran_villages_table.php', ++$timestamp)],
         ];
 
         $result = [];
