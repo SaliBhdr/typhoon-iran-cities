@@ -1,6 +1,6 @@
 # Iran Regions such as Provinces, Counties, Cities, City Districts, Rural Districts and Villages
 
-![Salibhdr|typhoon][link-logo]
+![SaliBhdr|typhoon][link-logo]
 
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Required Laravel Version][ico-laravel]][link-packagist]
@@ -49,19 +49,19 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 
      # Other service providers...
      
-     Salibhdr\TyphoonIranCities\IranCitiesServiceProvider::class,
+     SaliBhdr\TyphoonIranCities\IranCitiesServiceProvider::class,
 ],
 ```
 
 
 
-Run the `php artisan Iran:init` command. This command has two options :
+Run the `php artisan iran:init` command. This command has two options :
 
 1. `--force` : to overwrite the files and db data (if exists)
 2. `--region` : select the target regions that you want to use from one
 of these options [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]
 
-You can use `php artisan Iran:init -h` to see the available options.
+You can use `php artisan iran:init -h` to see the available options.
 
 This command will run these commands step by step:
 
@@ -80,7 +80,7 @@ The init command will generate migrations, models to your project and import dat
 
 You can select the level of usage that you want by adding `--region=[REGION]` tag to any command.
 For example, if you need cities in your project and don't want to add extra villages data to your database
-you can run `php artisan Iran:init --region=cities`. 
+you can run `php artisan iran:init --region=cities`. 
 
 **By default, all regions will be added if not specified.**
 

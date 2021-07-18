@@ -4,8 +4,8 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Console\BufferedConsoleOutput;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Console\BufferedConsoleOutput as ConsoleBuffer;
 
 class IranInit extends Command
 {
@@ -33,33 +33,31 @@ class IranInit extends Command
 
     public function handle()
     {
-        $buffer = new BufferedConsoleOutput();
-
         if ($this->askBoolQuestion('Do you want to publish package migrations?')) {
-            Artisan::call('iran:publish:migrations', [
+            $this->artisanCall('iran:publish:migrations', [
                 '--force'  => $this->option('force'),
                 '--region' => $this->option('region'),
-            ], $buffer);
+            ]);
         }
 
         if ($this->askBoolQuestion('Do you want to publish package models?')) {
-            Artisan::call('iran:publish:models', [
+            $this->artisanCall('iran:publish:models', [
                 '--force'  => $this->option('force'),
                 '--region' => $this->option('region'),
-            ], $buffer);
+            ]);
         }
 
-        if ($this->askBoolQuestion('Do you want to run `php artisan migrate` to migrate package migrations?')) {
-            Artisan::call('migrate', [], $buffer);
+        if (!$this->askBoolQuestion('Do you want to run `php artisan migrate` to migrate package migrations?'))
+            return;
 
-            if ($this->askBoolQuestion('Do you want to import data?')) {
-                Artisan::call('iran:import', [
-                    '--force'  => $this->option('force'),
-                    '--region' => $this->option('region'),
-                ], $buffer);
-            }
+        $this->artisanCall('migrate');
+
+        if ($this->askBoolQuestion('Do you want to import data?')) {
+            $this->artisanCall('iran:import', [
+                '--force'  => $this->option('force'),
+                '--region' => $this->option('region'),
+            ]);
         }
-
     }
 
     /**
@@ -83,5 +81,16 @@ class IranInit extends Command
         $this->error('Unknown Answer');
 
         return $this->askBoolQuestion($question);
+    }
+
+    private function artisanCall($command, array $parameters = [])
+    {
+        $laravelVersion = $this->laravel->version();
+
+        if ($laravelVersion < 5.6) {
+            Artisan::call($command, $parameters);
+        } else {
+            Artisan::call($command, $parameters, new ConsoleBuffer);
+        }
     }
 }
