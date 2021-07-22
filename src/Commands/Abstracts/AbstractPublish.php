@@ -1,10 +1,10 @@
 <?php
-namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use Illuminate\Console\Command;
+namespace SaliBhdr\TyphoonIranCities\Commands\Abstracts;
+
 use Symfony\Component\Console\Input\InputOption;
 
-abstract class AbstractPublish extends Command
+abstract class AbstractPublish extends AbstractCommand
 {
     public function __construct()
     {
@@ -25,7 +25,11 @@ abstract class AbstractPublish extends Command
 
         foreach ($map as $src => $destination) {
             if ($this->option('force') || !file_exists($destination)) {
-                $this->copyFile($src,$destination);
+                $this->copyFile($src, $destination);
+            } elseif (file_exists($destination) && !$this->option('force')) {
+                if ($this->askBoolQuestion('The file ' . $destination . ' is exists. do you want to overwrite it?')) {
+                    $this->copyFile($src, $destination);
+                }
             }
         }
 
