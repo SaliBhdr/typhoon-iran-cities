@@ -416,4 +416,4 @@ Based on [ahmadazizi/iran-cities][link-reference-repo] git repository version 3.
 [link-packegist]: https://packagist.org/packages/salibhdr/typhoon-iran-cities
 [link-issues]: https://github.com/salibhdr/typhoon-iran-cities/issues
 [link-github]: https://github.com/salibhdr/typhoon-iran-cities/issues
-[link-reference-repo]: https://github.com/salibhdr/typhoon-iran-cities/issues
+[link-reference-repo]: https://github.com/ahmadazizi/iran-cities
