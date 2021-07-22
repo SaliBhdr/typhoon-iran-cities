@@ -2,6 +2,8 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
+use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractPublish;
+
 class PublishModels extends AbstractPublish
 {
     /**
