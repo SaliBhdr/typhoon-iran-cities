@@ -4,6 +4,7 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
+use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractPublish;
 
 class PublishMigrations extends AbstractPublish
 {

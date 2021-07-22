@@ -3,6 +3,7 @@
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use SaliBhdr\TyphoonIranCities\IranCsvEnum;
+use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
 class ImportCounties extends AbstractImport
 {

@@ -2,12 +2,10 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Console\BufferedConsoleOutput as ConsoleBuffer;
+use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractCommand;
 
-class IranInit extends Command
+class IranInit extends AbstractCommand
 {
     /**
      * The name and signature of the console command.
@@ -34,14 +32,14 @@ class IranInit extends Command
     public function handle()
     {
         if ($this->askBoolQuestion('Do you want to publish package migrations?')) {
-            $this->artisanCall('iran:publish:migrations', [
+            $this->call('iran:publish:migrations', [
                 '--force'  => $this->option('force'),
                 '--region' => $this->option('region'),
             ]);
         }
 
         if ($this->askBoolQuestion('Do you want to publish package models?')) {
-            $this->artisanCall('iran:publish:models', [
+            $this->call('iran:publish:models', [
                 '--force'  => $this->option('force'),
                 '--region' => $this->option('region'),
             ]);
@@ -50,47 +48,14 @@ class IranInit extends Command
         if (!$this->askBoolQuestion('Do you want to run `php artisan migrate` to migrate package migrations?'))
             return;
 
-        $this->artisanCall('migrate');
+        $this->call('migrate');
 
         if ($this->askBoolQuestion('Do you want to import data?')) {
-            $this->artisanCall('iran:import', [
+            $this->call('iran:import', [
                 '--force'  => $this->option('force'),
                 '--region' => $this->option('region'),
             ]);
         }
     }
 
-    /**
-     * @param string $question
-     * @return bool
-     */
-    private function askBoolQuestion($question)
-    {
-        $answer = strtolower($this->ask("$question (y/n)", 'y'));
-
-        $answerMap = [
-            'y'   => true,
-            'yes' => true,
-            'n'   => false,
-            'no'  => false,
-        ];
-
-        if (isset($answerMap[$answer]))
-            return $answerMap[$answer];
-
-        $this->error('Unknown Answer');
-
-        return $this->askBoolQuestion($question);
-    }
-
-    private function artisanCall($command, array $parameters = [])
-    {
-        $laravelVersion = $this->laravel->version();
-
-        if ($laravelVersion < 5.6) {
-            Artisan::call($command, $parameters);
-        } else {
-            Artisan::call($command, $parameters, new ConsoleBuffer);
-        }
-    }
 }

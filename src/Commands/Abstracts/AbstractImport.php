@@ -1,16 +1,13 @@
 <?php
 
-namespace SaliBhdr\TyphoonIranCities\Commands;
+namespace SaliBhdr\TyphoonIranCities\Commands\Abstracts;
 
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\InputOption;
 
-abstract class AbstractImport extends Command
+abstract class AbstractImport extends AbstractCommand
 {
-    /**
-     * AbstractImportCommand constructor.
-     */
+
     public function __construct()
     {
         parent::__construct();
@@ -23,6 +20,7 @@ abstract class AbstractImport extends Command
     /**
      * Execute the console command.
      * @return void
+     * @throws \Exception
      */
     public function handle()
     {
@@ -33,7 +31,8 @@ abstract class AbstractImport extends Command
         $files = $this->getFiles();
 
         foreach ($files as $fileName) {
-            $rows = $this->csvToArray($fileName);
+
+            $rows = $this->csvToArray(__DIR__ . '/../../../csv/' . $fileName);
 
             if (empty($rows))
                 continue;
@@ -68,34 +67,11 @@ abstract class AbstractImport extends Command
     abstract protected function getFiles();
 
     /**
-     * @param string $file
-     * @return array|null
-     */
-    protected function csvToArray($file)
-    {
-        $filePath = __DIR__ . '/../../csv/' . $file;
-
-        if (!file_exists($filePath))
-            return null;
-
-        $csv = array_map('str_getcsv', file($filePath));
-
-        array_walk($csv, function (&$a) use ($csv) {
-            $a = array_combine($csv[0], $a);
-        });
-
-        array_shift($csv);
-
-        return $csv;
-    }
-
-    /**
      * @param string $dbName
      * @param array $data
      */
-    private function insertToDb($dbName, $data)
+    protected function insertToDb($dbName, $data)
     {
-
         if (!$this->option('force') && DB::table($dbName)->where('id', $data['id'])->exists())
             return;
 
@@ -104,17 +80,6 @@ abstract class AbstractImport extends Command
         }, $data);
 
         DB::table($dbName)->updateOrInsert(['id' => $data['id']], $data);
-    }
-
-    /**
-     * prevents php throw error for importing very large data sets to database based on limits
-     */
-    private function removePhpLimits()
-    {
-        @set_time_limit(0);
-        @ini_set("memory_limit", "-1");
-        @ini_set("max_execution_time", '-1');
-        @ini_set('max_input_vars', '5000');
     }
 
 }

@@ -4,6 +4,7 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use SaliBhdr\TyphoonIranCities\IranCsvEnum;
 use Symfony\Component\Console\Input\InputOption;
+use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
 class ImportIran extends AbstractImport
 {
