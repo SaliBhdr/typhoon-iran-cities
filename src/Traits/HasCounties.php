@@ -20,7 +20,7 @@ trait HasCounties
      */
     public function getCounties()
     {
-        return $this->counties()->get();
+        return $this->counties()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -28,7 +28,7 @@ trait HasCounties
      */
     public function getActiveCounties()
     {
-        return $this->counties()->active()->get();
+        return $this->counties()->active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -36,7 +36,7 @@ trait HasCounties
      */
     public function getNotActiveCounties()
     {
-        return $this->counties()->notActive()->get();
+        return $this->counties()->notActive()->orderBy('id','ASC')->get();
     }
 
 }

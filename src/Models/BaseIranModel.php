@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
 /**
+ * @property int $id
  * @property string $name
  * @property string $code
  * Class BaseIranModel
@@ -35,7 +36,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAll()
     {
-        return static::all();
+        return static::query()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -43,7 +44,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAllActive()
     {
-        return static::active()->get();
+        return static::active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -51,7 +52,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAllNotActive()
     {
-        return static::notActive()->get();
+        return static::notActive()->orderBy('id','ASC')->get();
     }
 
     /**

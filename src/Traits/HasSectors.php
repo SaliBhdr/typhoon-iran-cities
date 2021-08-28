@@ -20,7 +20,7 @@ trait HasSectors
      */
     public function getSectors()
     {
-        return $this->sectors()->get();
+        return $this->sectors()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -28,7 +28,7 @@ trait HasSectors
      */
     public function getActiveSectors()
     {
-        return $this->sectors()->active()->get();
+        return $this->sectors()->active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -36,7 +36,7 @@ trait HasSectors
      */
     public function getNotActiveSectors()
     {
-        return $this->sectors()->notActive()->get();
+        return $this->sectors()->notActive()->orderBy('id','ASC')->get();
     }
 
 }

@@ -20,7 +20,7 @@ trait HasRuralDistricts
      */
     public function getRuralDistricts()
     {
-        return $this->ruralDistricts()->get();
+        return $this->ruralDistricts()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -28,7 +28,7 @@ trait HasRuralDistricts
      */
     public function getActiveRuralDistricts()
     {
-        return $this->ruralDistricts()->active()->get();
+        return $this->ruralDistricts()->active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -36,6 +36,6 @@ trait HasRuralDistricts
      */
     public function getNotActiveRuralDistricts()
     {
-        return $this->ruralDistricts()->notActive()->get();
+        return $this->ruralDistricts()->notActive()->orderBy('id','ASC')->get();
     }
 }

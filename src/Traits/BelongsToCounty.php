@@ -4,6 +4,9 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use SaliBhdr\TyphoonIranCities\Models\IranCounty;
 
+/**
+ * @property int $county_id
+ */
 trait BelongsToCounty
 {
     /**

@@ -20,7 +20,7 @@ trait HasVillages
      */
     public function getVillages()
     {
-        return $this->villages()->get();
+        return $this->villages()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -28,7 +28,7 @@ trait HasVillages
      */
     public function getActiveVillages()
     {
-        return $this->villages()->active()->get();
+        return $this->villages()->active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -36,6 +36,6 @@ trait HasVillages
      */
     public function getNotActiveVillages()
     {
-        return $this->villages()->notActive()->get();
+        return $this->villages()->notActive()->orderBy('id','ASC')->get();
     }
 }

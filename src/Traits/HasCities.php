@@ -21,7 +21,7 @@ trait HasCities
      */
     public function getCities()
     {
-        return $this->cities()->get();
+        return $this->cities()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -29,7 +29,7 @@ trait HasCities
      */
     public function getActiveCities()
     {
-        return $this->cities()->active()->get();
+        return $this->cities()->active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -37,6 +37,6 @@ trait HasCities
      */
     public function getNotActiveCities()
     {
-        return $this->cities()->notActive()->get();
+        return $this->cities()->notActive()->orderBy('id','ASC')->get();
     }
 }

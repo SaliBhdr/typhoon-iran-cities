@@ -20,7 +20,7 @@ trait HasCityDistricts
      */
     public function getCityDistricts()
     {
-        return $this->cityDistricts()->get();
+        return $this->cityDistricts()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -28,7 +28,7 @@ trait HasCityDistricts
      */
     public function getActiveCityDistricts()
     {
-        return $this->cityDistricts()->active()->get();
+        return $this->cityDistricts()->active()->orderBy('id','ASC')->get();
     }
 
     /**
@@ -36,6 +36,6 @@ trait HasCityDistricts
      */
     public function getNotActiveCityDistricts()
     {
-        return $this->cityDistricts()->notActive()->get();
+        return $this->cityDistricts()->notActive()->orderBy('id','ASC')->get();
     }
 }

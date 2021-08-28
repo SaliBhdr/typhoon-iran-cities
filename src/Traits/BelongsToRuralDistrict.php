@@ -4,6 +4,9 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use SaliBhdr\TyphoonIranCities\Models\IranRuralDistrict;
 
+/**
+ * @property int $rural_district_id
+ */
 trait BelongsToRuralDistrict
 {
     /**

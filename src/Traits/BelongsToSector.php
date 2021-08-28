@@ -4,6 +4,9 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use SaliBhdr\TyphoonIranCities\Models\IranSector;
 
+/**
+ * @property int $sector_id
+ */
 trait BelongsToSector
 {
     /**
