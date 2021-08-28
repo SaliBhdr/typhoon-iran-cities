@@ -2,7 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use SaliBhdr\TyphoonIranCities\Enums\IranCsvEnum;
+use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
 class ImportRegions extends AbstractImport
@@ -24,6 +24,11 @@ class ImportRegions extends AbstractImport
      */
     protected function getFiles()
     {
-        return IranCsvEnum::REGIONS;
+        return TargetTypeEnum::REGIONS;
+    }
+
+    protected function canImport($data)
+    {
+        $target = $this->option('target');
     }
 }

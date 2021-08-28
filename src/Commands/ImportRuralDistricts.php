@@ -2,7 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use SaliBhdr\TyphoonIranCities\Enums\IranCsvEnum;
+use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
 class ImportRuralDistricts extends AbstractImport
@@ -24,6 +24,6 @@ class ImportRuralDistricts extends AbstractImport
      */
     protected function getFiles()
     {
-        return IranCsvEnum::RURAL_DISTRICTS;
+        return TargetTypeEnum::RURAL_DISTRICTS;
     }
 }

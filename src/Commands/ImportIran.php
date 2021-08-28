@@ -2,7 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use SaliBhdr\TyphoonIranCities\Enums\IranCsvEnum;
+use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
 use Symfony\Component\Console\Input\InputOption;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
@@ -25,7 +25,8 @@ class ImportIran extends AbstractImport
         parent::__construct();
 
         $this->getDefinition()->addOptions([
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, regions, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [separate, unite]', 'separate'),
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
 
@@ -37,15 +38,18 @@ class ImportIran extends AbstractImport
     {
         $target = $this->option('target');
 
+        if($this->option('mode') == 'unite')
+            return TargetTypeEnum::REGIONS;
+
         $map = [
-            'all'             => IranCsvEnum::ALL,
-            'provinces'       => IranCsvEnum::PROVINCES,
-            'counties'        => IranCsvEnum::COUNTIES,
-            'sectors'         => IranCsvEnum::SECTORS,
-            'cities'          => IranCsvEnum::CITIES,
-            'city_districts'  => IranCsvEnum::CITY_DISTRICTS,
-            'rural_districts' => IranCsvEnum::RURAL_DISTRICTS,
-            'villages'        => IranCsvEnum::VILLAGES
+            'all'             => TargetTypeEnum::ALL,
+            'provinces'       => TargetTypeEnum::PROVINCES,
+            'counties'        => TargetTypeEnum::COUNTIES,
+            'sectors'         => TargetTypeEnum::SECTORS,
+            'cities'          => TargetTypeEnum::CITIES,
+            'city_districts'  => TargetTypeEnum::CITY_DISTRICTS,
+            'rural_districts' => TargetTypeEnum::RURAL_DISTRICTS,
+            'villages'        => TargetTypeEnum::VILLAGES
         ];
 
         if (isset($map[$target]))

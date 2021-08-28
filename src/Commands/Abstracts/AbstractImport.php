@@ -2,6 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands\Abstracts;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -32,7 +33,9 @@ abstract class AbstractImport extends AbstractCommand
 
         foreach ($files as $fileName) {
 
-            $rows = $this->csvToArray(__DIR__ . '/../../../csv/' . $fileName);
+            $fileName = Str::plural($fileName);
+
+            $rows = $this->csvToArray(__DIR__ . '/../../../csv/' . $fileName . '.csv');
 
             if (empty($rows))
                 continue;
@@ -67,6 +70,14 @@ abstract class AbstractImport extends AbstractCommand
     abstract protected function getFiles();
 
     /**
+     * @return boolean
+     */
+    protected function canImport($data)
+    {
+        return true;
+    }
+
+    /**
      * @param string $dbName
      * @param array $data
      */
@@ -79,7 +90,8 @@ abstract class AbstractImport extends AbstractCommand
             return $value === "" ? null : $value;
         }, $data);
 
-        DB::table($dbName)->updateOrInsert(['id' => $data['id']], $data);
+        if ($this->canImport($data))
+            DB::table($dbName)->updateOrInsert(['id' => $data['id']], $data);
     }
 
 }

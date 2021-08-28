@@ -12,7 +12,8 @@ abstract class AbstractPublish extends AbstractCommand
 
         $this->getDefinition()->addOptions([
             new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [all, regions, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [separate, unite]', 'separate'),
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
 
@@ -44,6 +45,9 @@ abstract class AbstractPublish extends AbstractCommand
     {
         $target = $this->option('target');
 
+        if($this->option('mode') == 'unite')
+            return $this->getTargets([8]);
+
         $map = [
             'all'             => $this->getTargets([1, 2, 3, 4, 5, 6, 7]),
             'provinces'       => $this->getTargets([1]),
@@ -53,7 +57,6 @@ abstract class AbstractPublish extends AbstractCommand
             'city_districts'  => $this->getTargets([1, 2, 3, 4, 5]),
             'rural_districts' => $this->getTargets([1, 2, 3, 6]),
             'villages'        => $this->getTargets([1, 2, 3, 6, 7]),
-            'regions'         => $this->getTargets([8])
         ];
 
         if (isset($map[$target]))
