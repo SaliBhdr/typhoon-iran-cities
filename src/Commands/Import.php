@@ -6,7 +6,7 @@ use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
 use Symfony\Component\Console\Input\InputOption;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
-class ImportIran extends AbstractImport
+class Import extends AbstractImport
 {
     /**
      * The name and signature of the console command.
@@ -25,7 +25,7 @@ class ImportIran extends AbstractImport
         parent::__construct();
 
         $this->getDefinition()->addOptions([
-            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [separate, unite]', 'separate'),
+            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'The method of importing data. separate will put data in separate database and unite will put all regions into one region table, options : [separate, unite]', 'separate'),
             new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
@@ -36,10 +36,28 @@ class ImportIran extends AbstractImport
      */
     protected function getFiles()
     {
-        $target = $this->option('target');
-
-        if($this->option('mode') == 'unite')
+        if ($this->option('mode') == 'unite')
             return TargetTypeEnum::REGIONS;
+
+        return $this->getTarget();
+    }
+
+    protected function canImport($data)
+    {
+        if ($this->option('mode') == 'separate' || !isset($data['type']))
+            return true;
+
+        $target = $this->getTarget();
+
+        if (in_array($data['type'], $target))
+            return true;
+
+        return false;
+    }
+
+    private function getTarget()
+    {
+        $target = $this->option('target');
 
         $map = [
             'all'             => TargetTypeEnum::ALL,

@@ -5,7 +5,7 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 use Symfony\Component\Console\Input\InputOption;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractCommand;
 
-class IranInit extends AbstractCommand
+class Init extends AbstractCommand
 {
     /**
      * The name and signature of the console command.
@@ -25,7 +25,7 @@ class IranInit extends AbstractCommand
 
         $this->getDefinition()->addOptions([
             new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files'),
-            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [separate, unite]', 'separate'),
+            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'The method of importing data. separate will put data in separate database and unite will put all regions into one region table, options : [separate, unite]', 'separate'),
             new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
@@ -48,10 +48,8 @@ class IranInit extends AbstractCommand
             ]);
         }
 
-        if (!$this->askBoolQuestion('Do you want to run `php artisan migrate` to migrate package migrations?'))
-            return;
-
-        $this->call('migrate');
+        if ($this->askBoolQuestion('Do you want to run `php artisan migrate` to migrate package migrations?'))
+            $this->call('migrate');
 
         if ($this->askBoolQuestion('Do you want to import data?')) {
             $this->call('iran:import', [

@@ -29,14 +29,14 @@ class PublishModels extends AbstractPublish
         $target = $this->getTargetDir();
 
         $map = [
-            1 => [$src . 'IranProvince.stub'        => $target . 'IranProvince.php'],
-            2 => [$src . 'IranCounty.stub'          => $target . 'IranCounty.php'],
-            3 => [$src . 'IranSector.stub'          => $target . 'IranSector.php'],
-            4 => [$src . 'IranCity.stub'            => $target . 'IranCity.php'],
-            5 => [$src . 'IranCityDistrict.stub'    => $target . 'IranCityDistrict.php'],
-            6 => [$src . 'IranRuralDistrict.stub'   => $target . 'IranRuralDistrict.php'],
-            7 => [$src . 'IranVillage.stub'         => $target . 'IranVillage.php'],
-            8 => [$src . 'IranRegion.stub'          => $target . 'IranRegion.php'],
+            1 => [$src . 'IranProvince.stub' => $target . 'IranProvince.php'],
+            2 => [$src . 'IranCounty.stub' => $target . 'IranCounty.php'],
+            3 => [$src . 'IranSector.stub' => $target . 'IranSector.php'],
+            4 => [$src . 'IranCity.stub' => $target . 'IranCity.php'],
+            5 => [$src . 'IranCityDistrict.stub' => $target . 'IranCityDistrict.php'],
+            6 => [$src . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php'],
+            7 => [$src . 'IranVillage.stub' => $target . 'IranVillage.php'],
+            8 => [$src . 'IranRegion.stub' => $target . 'IranRegion.php'],
         ];
 
         $result = [];
@@ -76,10 +76,7 @@ class PublishModels extends AbstractPublish
      */
     protected function copyFile($src, $destination)
     {
-        $namespace = $this->getTargetNamespace();
-
-        $modelContent = file_get_contents($src);
-        $modelContent = str_replace("{{ namespace }}", $namespace, $modelContent);
+        $modelContent = str_replace("{{ namespace }}", $this->getTargetNamespace(), file_get_contents($src));
 
         file_put_contents($destination, $modelContent);
     }

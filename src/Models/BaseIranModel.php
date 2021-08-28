@@ -9,6 +9,7 @@ use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
  * @property int $id
  * @property string $name
  * @property string $code
+ * @property string $short_code
  * Class BaseIranModel
  * @package SaliBhdr\TyphoonIranCities\Models
  */
@@ -29,8 +30,9 @@ abstract class BaseIranModel extends Model
      * @var array
      */
     protected $casts = [
-        'status' => 'boolean',
-        'code'   => 'string',
+        'status'     => 'boolean',
+        'code'       => 'string',
+        'short_code' => 'string',
     ];
 
     /**
