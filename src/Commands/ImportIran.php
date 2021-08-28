@@ -2,7 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use SaliBhdr\TyphoonIranCities\IranCsvEnum;
+use SaliBhdr\TyphoonIranCities\Enums\IranCsvEnum;
 use Symfony\Component\Console\Input\InputOption;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
@@ -25,7 +25,7 @@ class ImportIran extends AbstractImport
         parent::__construct();
 
         $this->getDefinition()->addOptions([
-            new InputOption('region', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, regions, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
 
@@ -35,9 +35,9 @@ class ImportIran extends AbstractImport
      */
     protected function getFiles()
     {
-        $region = $this->option('region');
+        $target = $this->option('target');
 
-        $target = [
+        $map = [
             'all'             => IranCsvEnum::ALL,
             'provinces'       => IranCsvEnum::PROVINCES,
             'counties'        => IranCsvEnum::COUNTIES,
@@ -48,9 +48,9 @@ class ImportIran extends AbstractImport
             'villages'        => IranCsvEnum::VILLAGES
         ];
 
-        if (isset($target[$region]))
-            return $target[$region];
+        if (isset($map[$target]))
+            return $map[$target];
 
-        throw new \Exception("Target Region ({$region}) Not Found", 404);
+        throw new \Exception("Target Region ({$target}) Not Found", 404);
     }
 }

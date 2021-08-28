@@ -8,6 +8,7 @@ use SaliBhdr\TyphoonIranCities\Commands\ImportIran;
 use SaliBhdr\TyphoonIranCities\Commands\ImportCities;
 use SaliBhdr\TyphoonIranCities\Commands\ImportSectors;
 use SaliBhdr\TyphoonIranCities\Commands\PublishModels;
+use SaliBhdr\TyphoonIranCities\Commands\ImportRegions;
 use SaliBhdr\TyphoonIranCities\Commands\ImportVillages;
 use SaliBhdr\TyphoonIranCities\Commands\ImportCounties;
 use SaliBhdr\TyphoonIranCities\Commands\ImportProvinces;
@@ -34,6 +35,7 @@ class IranCitiesServiceProvider extends ServiceProvider
             ImportCityDistricts::class,
             ImportRuralDistricts::class,
             ImportVillages::class,
+            ImportRegions::class,
         ]);
     }
 }

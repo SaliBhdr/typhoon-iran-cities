@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+use SaliBhdr\TyphoonIranCities\Models\IranRegion as BaseModel;
+
+/**
+ * Class IranCity (Shahr)
+ */
+class IranRegion extends BaseModel
+{
+
+}

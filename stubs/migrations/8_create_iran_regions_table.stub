@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use SaliBhdr\TyphoonIranCities\Enums\RegionTypeEnum;
+
+class CreateIranRegionsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('iran_regions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->enum('type', [RegionTypeEnum::PROVINCE, RegionTypeEnum::COUNTY, RegionTypeEnum::SECTOR, RegionTypeEnum::CITY, RegionTypeEnum::CITY_DISTRICT, RegionTypeEnum::RURAL_DISTRICT, RegionTypeEnum::VILLAGE]);
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('name');
+            $table->string('code', 50)->unique();
+            $table->boolean('status')->default(1);
+
+            $table->foreign('parent_id')->references('id')->on('regions')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('iran_regions');
+    }
+}

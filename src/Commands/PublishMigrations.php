@@ -39,6 +39,7 @@ class PublishMigrations extends AbstractPublish
             5 => [$src . '5_create_iran_city_districts_table.stub'  => $this->getMigrationFileName('create_iran_city_districts_table.php', ++$timestamp)],
             6 => [$src . '6_create_iran_rural_districts_table.stub' => $this->getMigrationFileName('create_iran_rural_districts_table.php', ++$timestamp)],
             7 => [$src . '7_create_iran_villages_table.stub'        => $this->getMigrationFileName('create_iran_villages_table.php', ++$timestamp)],
+            8 => [$src . '8_create_iran_regions_table.stub'         => $this->getMigrationFileName('create_iran_regions_table.php', ++$timestamp)],
         ];
 
         $result = [];

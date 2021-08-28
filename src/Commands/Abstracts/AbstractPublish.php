@@ -12,7 +12,7 @@ abstract class AbstractPublish extends AbstractCommand
 
         $this->getDefinition()->addOptions([
             new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files'),
-            new InputOption('region', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [all, regions, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
 
@@ -42,7 +42,7 @@ abstract class AbstractPublish extends AbstractCommand
      */
     protected function getFileMap()
     {
-        $region = $this->option('region');
+        $target = $this->option('target');
 
         $map = [
             'all'             => $this->getTargets([1, 2, 3, 4, 5, 6, 7]),
@@ -52,13 +52,14 @@ abstract class AbstractPublish extends AbstractCommand
             'cities'          => $this->getTargets([1, 2, 3, 4]),
             'city_districts'  => $this->getTargets([1, 2, 3, 4, 5]),
             'rural_districts' => $this->getTargets([1, 2, 3, 6]),
-            'villages'        => $this->getTargets([1, 2, 3, 6, 7])
+            'villages'        => $this->getTargets([1, 2, 3, 6, 7]),
+            'regions'         => $this->getTargets([8])
         ];
 
-        if (isset($map[$region]))
-            return $map[$region];
+        if (isset($map[$target]))
+            return $map[$target];
 
-        throw new \Exception("Target Region ({$region}) Not Found", 404);
+        throw new \Exception("Target Region ({$target}) Not Found", 404);
     }
 
     /**

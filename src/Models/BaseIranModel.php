@@ -1,4 +1,5 @@
 <?php
+
 namespace SaliBhdr\TyphoonIranCities\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,7 @@ abstract class BaseIranModel extends Model
      */
     protected $casts = [
         'status' => 'boolean',
+        'code'   => 'string',
     ];
 
     /**
@@ -36,7 +38,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAll()
     {
-        return static::query()->orderBy('id','ASC')->get();
+        return static::query()->orderBy('id', 'ASC')->get();
     }
 
     /**
@@ -44,7 +46,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAllActive()
     {
-        return static::active()->orderBy('id','ASC')->get();
+        return static::active()->orderBy('id', 'ASC')->get();
     }
 
     /**
@@ -52,7 +54,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAllNotActive()
     {
-        return static::notActive()->orderBy('id','ASC')->get();
+        return static::notActive()->orderBy('id', 'ASC')->get();
     }
 
     /**

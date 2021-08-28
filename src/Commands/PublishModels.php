@@ -36,6 +36,7 @@ class PublishModels extends AbstractPublish
             5 => [$src . 'IranCityDistrict.stub'    => $target . 'IranCityDistrict.php'],
             6 => [$src . 'IranRuralDistrict.stub'   => $target . 'IranRuralDistrict.php'],
             7 => [$src . 'IranVillage.stub'         => $target . 'IranVillage.php'],
+            8 => [$src . 'IranRegion.stub'          => $target . 'IranRegion.php'],
         ];
 
         $result = [];

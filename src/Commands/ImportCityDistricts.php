@@ -2,7 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use SaliBhdr\TyphoonIranCities\IranCsvEnum;
+use SaliBhdr\TyphoonIranCities\Enums\IranCsvEnum;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractImport;
 
 class ImportCityDistricts extends AbstractImport
