@@ -8,7 +8,7 @@ trait HasCities
 {
     /**
      * Sector has many cities
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      *
      */
     public function cities()

@@ -12,7 +12,7 @@ final class RegionTypeEnum
 
     public const CITY = 'city';
 
-    public const CITY_DISTRICT = 'city_districts';
+    public const CITY_DISTRICT = 'city_district';
 
     public const RURAL_DISTRICT = 'rural_district';
 

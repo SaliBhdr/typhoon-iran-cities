@@ -8,7 +8,7 @@ trait HasCounties
 {
     /**
      * Province has many counties
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function counties()
     {

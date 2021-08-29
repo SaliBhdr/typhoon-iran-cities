@@ -8,7 +8,7 @@ trait HasCityDistricts
 {
     /**
      * city has many city districts
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cityDistricts()
     {

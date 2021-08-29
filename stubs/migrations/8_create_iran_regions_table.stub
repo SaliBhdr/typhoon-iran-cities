@@ -18,12 +18,22 @@ class CreateIranRegionsTable extends Migration
             $table->increments('id');
             $table->enum('type', TargetTypeEnum::ALL);
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('province_id')->nullable();
+            $table->unsignedBigInteger('county_id')->nullable();
+            $table->unsignedBigInteger('sector_id')->nullable();
+            $table->unsignedBigInteger('city_id')->nullable();
+            $table->unsignedBigInteger('rural_district_id')->nullable();
             $table->string('name');
             $table->string('code', 50)->unique();
             $table->string('short_code', 20);
             $table->boolean('status')->default(1);
 
             $table->foreign('parent_id')->references('id')->on('iran_regions')->onDelete('cascade');
+            $table->foreign('province_id')->references('id')->on('iran_regions')->onDelete('cascade');
+            $table->foreign('county_id')->references('id')->on('iran_regions')->onDelete('cascade');
+            $table->foreign('sector_id')->references('id')->on('iran_regions')->onDelete('cascade');
+            $table->foreign('city_id')->references('id')->on('iran_regions')->onDelete('cascade');
+            $table->foreign('rural_district_id')->references('id')->on('iran_regions')->onDelete('cascade');
         });
     }
 
