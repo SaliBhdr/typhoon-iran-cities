@@ -35,7 +35,7 @@ class Init extends AbstractCommand
         if ($this->askBoolQuestion('Do you want to publish package migrations?')) {
             $this->call('iran:publish:migrations', [
                 '--force'  => $this->option('force'),
-                '--mode'   => $this->option('mode'),
+                '--unite'   => $this->option('unite'),
                 '--target' => $this->option('target'),
             ]);
         }
@@ -43,7 +43,7 @@ class Init extends AbstractCommand
         if ($this->askBoolQuestion('Do you want to publish package models?')) {
             $this->call('iran:publish:models', [
                 '--force'  => $this->option('force'),
-                '--mode'   => $this->option('mode'),
+                '--unite'   => $this->option('unite'),
                 '--target' => $this->option('target'),
             ]);
         }
@@ -53,7 +53,7 @@ class Init extends AbstractCommand
 
         if ($this->askBoolQuestion('Do you want to import data?')) {
             $this->call('iran:import', [
-                '--mode'   => $this->option('mode'),
+                '--unite'   => $this->option('unite'),
                 '--target' => $this->option('target'),
             ]);
         }
