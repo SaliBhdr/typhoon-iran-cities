@@ -2,12 +2,6 @@
 
 namespace SaliBhdr\TyphoonIranCities\Models;
 
-use SaliBhdr\TyphoonIranCities\Enums\RegionTypeEnum;
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToCounty;
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToSector;
-use SaliBhdr\TyphoonIranCities\Traits\HasCityDistricts;
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToProvince;
-
 /**
  * @property int id
  * @property string $type
@@ -22,6 +16,8 @@ use SaliBhdr\TyphoonIranCities\Traits\BelongsToProvince;
  */
 class IranRegion extends BaseIranModel
 {
+    protected $table = 'iran_regions';
+
     /**
      * @inheritdoc
      */
@@ -126,38 +122,4 @@ class IranRegion extends BaseIranModel
         return $this->hasMany(static::class, 'rural_district_id');
     }
 
-    public function scopeProvinceType($q)
-    {
-        return $q->where('type', RegionTypeEnum::PROVINCE);
-    }
-
-    public function scopeCountyType($q)
-    {
-        return $q->where('type', RegionTypeEnum::COUNTY);
-    }
-
-    public function scopeSectorType($q)
-    {
-        return $q->where('type', RegionTypeEnum::SECTOR);
-    }
-
-    public function scopeCityType($q)
-    {
-        return $q->where('type', RegionTypeEnum::CITY);
-    }
-
-    public function scopeCityDistrictType($q)
-    {
-        return $q->where('type', RegionTypeEnum::CITY_DISTRICT);
-    }
-
-    public function scopeRuralDistrictType($q)
-    {
-        return $q->where('type', RegionTypeEnum::RURAL_DISTRICT);
-    }
-
-    public function scopeVillageType($q)
-    {
-        return $q->where('type', RegionTypeEnum::VILLAGE);
-    }
 }

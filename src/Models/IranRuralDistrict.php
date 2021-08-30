@@ -14,6 +14,8 @@ class IranRuralDistrict extends BaseIranModel
 {
     use BelongsToProvince, BelongsToCounty, BelongsToSector, HasVillages;
 
+    protected $table = 'iran_rural_districts';
+
     /**
      * @inheritdoc
      */
