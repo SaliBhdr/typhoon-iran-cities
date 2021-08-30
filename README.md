@@ -254,7 +254,9 @@ All models have these methods:
 | isNotActive()                             | dynamic               | Get all the counties of a province   |
 
 ---
+
 #### Unite Mode
+
 
 **IranRegion Model:**
 
@@ -275,7 +277,9 @@ All models have these methods:
 
 
 ---
+
 #### Separate Mode
+
 
 **IranProvince Model:**
 
