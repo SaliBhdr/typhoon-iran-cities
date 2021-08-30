@@ -36,7 +36,7 @@ or divide them in their own separate table, Or even you can select the data that
 
 ## Installation
 
-#### Install with Composer
+Install with composer:
 
 ```sh
  $ composer require salibhdr/typhoon-iran-cities
@@ -102,7 +102,7 @@ Here are the list of all commands that are available:
   iran:import                  Imports all regions into the database (Can be selected by option)
 
 ```
-####Commands Explanations:
+#### Commands Explanations:
 
 **The `iran:init` command:**
 
@@ -254,7 +254,7 @@ All models have these methods:
 | isNotActive()                             | dynamic               | Get all the counties of a province   |
 
 ---
-#####Unite Mode
+#### Unite Mode
 
 **IranRegion Model:**
 
@@ -275,7 +275,7 @@ All models have these methods:
 
 
 ---
-#####Separate Mode
+#### Separate Mode
 
 **IranProvince Model:**
 
