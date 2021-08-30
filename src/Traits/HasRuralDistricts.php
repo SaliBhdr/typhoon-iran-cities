@@ -8,7 +8,7 @@ trait HasRuralDistricts
 {
     /**
      * Sector has many rural districts
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function ruralDistricts()
     {
@@ -16,26 +16,41 @@ trait HasRuralDistricts
     }
 
     /**
-     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranRuralDistrict[]
      */
-    public function getRuralDistricts()
+    public function getRuralDistricts($paginate = false)
     {
-        return $this->ruralDistricts()->get();
+        $query = $this->ruralDistricts()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranRuralDistrict[]
      */
-    public function getActiveRuralDistricts()
+    public function getActiveRuralDistricts($paginate = false)
     {
-        return $this->ruralDistricts()->active()->get();
+        $query = $this->ruralDistricts()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranRuralDistrict[]
      */
-    public function getNotActiveRuralDistricts()
+    public function getNotActiveRuralDistricts($paginate = false)
     {
-        return $this->ruralDistricts()->notActive()->get();
+        $query = $this->ruralDistricts()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 }

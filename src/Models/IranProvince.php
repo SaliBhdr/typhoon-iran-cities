@@ -16,6 +16,8 @@ class IranProvince extends BaseIranModel
 {
     use HasCounties, HasSectors, HasCities, HasCityDistricts, HasRuralDistricts, HasVillages;
 
+    protected $table = 'iran_provinces';
+
     /**
      * @return string
      */

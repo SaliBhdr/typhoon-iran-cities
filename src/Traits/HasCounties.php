@@ -8,7 +8,7 @@ trait HasCounties
 {
     /**
      * Province has many counties
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function counties()
     {
@@ -16,27 +16,42 @@ trait HasCounties
     }
 
     /**
-     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCounty[]
      */
-    public function getCounties()
+    public function getCounties($paginate = false)
     {
-        return $this->counties()->get();
+        $query = $this->counties()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCounty[]
      */
-    public function getActiveCounties()
+    public function getActiveCounties($paginate = false)
     {
-        return $this->counties()->active()->get();
+        $query = $this->counties()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCounty[]
      */
-    public function getNotActiveCounties()
+    public function getNotActiveCounties($paginate = false)
     {
-        return $this->counties()->notActive()->get();
+        $query = $this->counties()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
 }

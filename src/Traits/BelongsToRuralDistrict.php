@@ -4,11 +4,14 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use SaliBhdr\TyphoonIranCities\Models\IranRuralDistrict;
 
+/**
+ * @property int $rural_district_id
+ */
 trait BelongsToRuralDistrict
 {
     /**
      * village belongs to a rural district
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranRuralDistrict
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function ruralDistrict()
     {

@@ -22,6 +22,7 @@ class CreateIranProvincesTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('code', 50)->unique();
+            $table->string('short_code', 20);
             $table->boolean('status')->default(1);
         });
     }

@@ -4,11 +4,14 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use SaliBhdr\TyphoonIranCities\Models\IranCounty;
 
+/**
+ * @property int $county_id
+ */
 trait BelongsToCounty
 {
     /**
      * city belongs to a county
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranCounty
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function county()
     {

@@ -4,11 +4,14 @@ namespace SaliBhdr\TyphoonIranCities\Traits;
 
 use SaliBhdr\TyphoonIranCities\Models\IranProvince;
 
+/**
+ * @property int $province_id
+ */
 trait BelongsToProvince
 {
     /**
      * city belongs to a province
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel|IranProvince
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function province()
     {

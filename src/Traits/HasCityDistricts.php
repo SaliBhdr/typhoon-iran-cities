@@ -8,7 +8,7 @@ trait HasCityDistricts
 {
     /**
      * city has many city districts
-     * @return \Illuminate\Database\Eloquent\Builder|\SaliBhdr\TyphoonIranCities\Models\BaseIranModel
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cityDistricts()
     {
@@ -16,26 +16,42 @@ trait HasCityDistricts
     }
 
     /**
-     * @return IranCityDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @param boolean $paginate
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCityDistrict[]
      */
-    public function getCityDistricts()
+    public function getCityDistricts($paginate = false)
     {
-        return $this->cityDistricts()->get();
+        $query = $this->cityDistricts()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCityDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCityDistrict[]
      */
-    public function getActiveCityDistricts()
+    public function getActiveCityDistricts($paginate = false)
     {
-        return $this->cityDistricts()->active()->get();
+        $query = $this->cityDistricts()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCityDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCityDistrict[]
      */
-    public function getNotActiveCityDistricts()
+    public function getNotActiveCityDistricts($paginate = false)
     {
-        return $this->cityDistricts()->notActive()->get();
+        $query = $this->cityDistricts()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 }

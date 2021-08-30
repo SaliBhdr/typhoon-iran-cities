@@ -1,12 +1,15 @@
 <?php
+
 namespace SaliBhdr\TyphoonIranCities\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
 
 /**
+ * @property int $id
  * @property string $name
  * @property string $code
+ * @property string $short_code
  * Class BaseIranModel
  * @package SaliBhdr\TyphoonIranCities\Models
  */
@@ -27,7 +30,9 @@ abstract class BaseIranModel extends Model
      * @var array
      */
     protected $casts = [
-        'status' => 'boolean',
+        'status'     => 'boolean',
+        'code'       => 'string',
+        'short_code' => 'string',
     ];
 
     /**
@@ -35,7 +40,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAll()
     {
-        return static::all();
+        return static::query()->orderBy('id', 'ASC')->get();
     }
 
     /**
@@ -43,7 +48,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAllActive()
     {
-        return static::active()->get();
+        return static::active()->orderBy('id', 'ASC')->get();
     }
 
     /**
@@ -51,7 +56,7 @@ abstract class BaseIranModel extends Model
      */
     public static function getAllNotActive()
     {
-        return static::notActive()->get();
+        return static::notActive()->orderBy('id', 'ASC')->get();
     }
 
     /**
