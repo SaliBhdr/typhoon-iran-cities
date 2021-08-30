@@ -17,26 +17,44 @@ trait HasCities
     }
 
     /**
-     * @return IranCity[]|\Illuminate\Database\Eloquent\Collection
+     * @param boolean $paginate
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCity[]
      */
-    public function getCities()
+    public function getCities($paginate = false)
     {
-        return $this->cities()->orderBy('id','ASC')->get();
+        $query = $this->cities()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCity[]|\Illuminate\Database\Eloquent\Collection
+     * @param boolean $paginate
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCity[]
      */
-    public function getActiveCities()
+    public function getActiveCities($paginate = false)
     {
-        return $this->cities()->active()->orderBy('id','ASC')->get();
+        $query = $this->cities()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCity[]|\Illuminate\Database\Eloquent\Collection
+     * @param boolean $paginate
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCity[]
      */
-    public function getNotActiveCities()
+    public function getNotActiveCities($paginate = false)
     {
-        return $this->cities()->notActive()->orderBy('id','ASC')->get();
+        $query = $this->cities()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 }

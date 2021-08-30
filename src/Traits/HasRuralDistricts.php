@@ -16,26 +16,41 @@ trait HasRuralDistricts
     }
 
     /**
-     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranRuralDistrict[]
      */
-    public function getRuralDistricts()
+    public function getRuralDistricts($paginate = false)
     {
-        return $this->ruralDistricts()->orderBy('id','ASC')->get();
+        $query = $this->ruralDistricts()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranRuralDistrict[]
      */
-    public function getActiveRuralDistricts()
+    public function getActiveRuralDistricts($paginate = false)
     {
-        return $this->ruralDistricts()->active()->orderBy('id','ASC')->get();
+        $query = $this->ruralDistricts()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranRuralDistrict[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranRuralDistrict[]
      */
-    public function getNotActiveRuralDistricts()
+    public function getNotActiveRuralDistricts($paginate = false)
     {
-        return $this->ruralDistricts()->notActive()->orderBy('id','ASC')->get();
+        $query = $this->ruralDistricts()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 }

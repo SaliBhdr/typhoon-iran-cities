@@ -16,27 +16,42 @@ trait HasCounties
     }
 
     /**
-     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCounty[]
      */
-    public function getCounties()
+    public function getCounties($paginate = false)
     {
-        return $this->counties()->orderBy('id','ASC')->get();
+        $query = $this->counties()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCounty[]
      */
-    public function getActiveCounties()
+    public function getActiveCounties($paginate = false)
     {
-        return $this->counties()->active()->orderBy('id','ASC')->get();
+        $query = $this->counties()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranCounty[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranCounty[]
      */
-    public function getNotActiveCounties()
+    public function getNotActiveCounties($paginate = false)
     {
-        return $this->counties()->notActive()->orderBy('id','ASC')->get();
+        $query = $this->counties()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
 }

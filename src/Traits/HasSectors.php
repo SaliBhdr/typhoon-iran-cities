@@ -16,27 +16,42 @@ trait HasSectors
     }
 
     /**
-     * @return IranSector[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranSector[]
      */
-    public function getSectors()
+    public function getSectors($paginate = false)
     {
-        return $this->sectors()->orderBy('id','ASC')->get();
+        $query = $this->sectors()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranSector[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranSector[]
      */
-    public function getActiveSectors()
+    public function getActiveSectors($paginate = false)
     {
-        return $this->sectors()->active()->orderBy('id','ASC')->get();
+        $query = $this->sectors()->active()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranSector[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranSector[]
      */
-    public function getNotActiveSectors()
+    public function getNotActiveSectors($paginate = false)
     {
-        return $this->sectors()->notActive()->orderBy('id','ASC')->get();
+        $query = $this->sectors()->notActive()->orderBy('id', 'ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
 }

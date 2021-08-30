@@ -16,26 +16,41 @@ trait HasVillages
     }
 
     /**
-     * @return IranVillage[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranVillage[]
      */
-    public function getVillages()
+    public function getVillages($paginate = false)
     {
-        return $this->villages()->orderBy('id','ASC')->get();
+        $query = $this->villages()->orderBy('id','ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranVillage[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranVillage[]
      */
-    public function getActiveVillages()
+    public function getActiveVillages($paginate = false)
     {
-        return $this->villages()->active()->orderBy('id','ASC')->get();
+        $query = $this->villages()->active()->orderBy('id','ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 
     /**
-     * @return IranVillage[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|IranVillage[]
      */
-    public function getNotActiveVillages()
+    public function getNotActiveVillages($paginate = false)
     {
-        return $this->villages()->notActive()->orderBy('id','ASC')->get();
+        $query = $this->villages()->notActive()->orderBy('id','ASC');
+
+        if ($paginate)
+            return $query->paginate();
+
+        return $query->get();
     }
 }

@@ -11,9 +11,9 @@ abstract class AbstractPublish extends AbstractCommand
         parent::__construct();
 
         $this->getDefinition()->addOptions([
-            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to copy and overwrite files'),
-            new InputOption('mode', null, InputOption::VALUE_OPTIONAL, 'The method of importing data. separate will put data in separate database and unite will put all regions into one region table, options : [separate, unite]', 'separate'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to copy files, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to overwrite copied files'),
+            new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
         ]);
     }
 
@@ -45,7 +45,7 @@ abstract class AbstractPublish extends AbstractCommand
     {
         $target = $this->option('target');
 
-        if($this->option('mode') == 'unite')
+        if($this->option('unite'))
             return $this->getTargets([8]);
 
         $map = [
