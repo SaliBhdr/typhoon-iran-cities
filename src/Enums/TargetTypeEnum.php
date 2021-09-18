@@ -1,19 +1,9 @@
 <?php
 
 namespace SaliBhdr\TyphoonIranCities\Enums;
-
-final class TargetTypeEnum
+use SaliBhdr\TyphoonIranCities\Enums;
+final class TargetTypeEnum extends Enum
 {
-    const ALL = [
-        RegionTypeEnum::PROVINCE,
-        RegionTypeEnum::COUNTY,
-        RegionTypeEnum::SECTOR,
-        RegionTypeEnum::CITY,
-        RegionTypeEnum::CITY_DISTRICT,
-        RegionTypeEnum::RURAL_DISTRICT,
-        RegionTypeEnum::VILLAGE,
-    ];
-
     const PROVINCES = [
         RegionTypeEnum::PROVINCE,
     ];
