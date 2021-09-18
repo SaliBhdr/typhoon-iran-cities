@@ -1,7 +1,7 @@
 <?php
 
 namespace SaliBhdr\TyphoonIranCities\Enums;
-use SaliBhdr\TyphoonIranCities\Enums;
+use SaliBhdr\TyphoonIranCities\Enums\Enum;
 final class TargetTypeEnum extends Enum
 {
     const PROVINCES = [
