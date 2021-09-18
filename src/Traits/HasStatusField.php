@@ -44,33 +44,39 @@ trait HasStatusField
     {
         $query->where('status', $status);
 
+        if (method_exists($this, 'parent')) {
+            $query->whereHas('parent', function ($q) use ($status) {
+                return $q->where('status', $status);
+            });
+        }
+
         if (method_exists($this, 'province')) {
             $query->whereHas('province', function ($q) use ($status) {
-                return $q->where('provinces.status', $status);
+                return $q->where('status', $status);
             });
         }
 
         if (method_exists($this, 'county')) {
             $query->whereHas('county', function ($q) use ($status) {
-                return $q->where('counties.status', $status);
+                return $q->where('status', $status);
             });
         }
 
         if (method_exists($this, 'sector')) {
             $query->whereHas('sector', function ($q) use ($status) {
-                return $q->where('sectors.status', $status);
+                return $q->where('status', $status);
             });
         }
 
         if (method_exists($this, 'city')) {
             $query->whereHas('city', function ($q) use ($status) {
-                return $q->where('cities.status', $status);
+                return $q->where('status', $status);
             });
         }
 
         if (method_exists($this, 'ruralDistrict')) {
             $query->whereHas('ruralDistrict', function ($q) use ($status) {
-                return $q->where('rural_districts.status', $status);
+                return $q->where('status', $status);
             });
         }
 
@@ -132,11 +138,19 @@ trait HasStatusField
         if ($this->status != $status)
             return false;
 
+        if (method_exists($this, 'parent')) {
+            /** @var \SaliBhdr\TyphoonIranCities\Models\IranRegion $parent */
+            $parent = $this->parent()->first();
+
+            if ($parent && $parent->status != $status)
+                return false;
+        }
+
         if (method_exists($this, 'province')) {
             /** @var \SaliBhdr\TyphoonIranCities\Models\IranProvince $province */
             $province = $this->province()->first();
 
-            if ($province && $this->status != $province->status)
+            if ($province && $province->status != $status)
                 return false;
         }
 
@@ -144,7 +158,7 @@ trait HasStatusField
             /** @var \SaliBhdr\TyphoonIranCities\Models\IranCounty $county */
             $county = $this->county()->first();
 
-            if ($county && $this->status != $county->status)
+            if ($county && $county->status != $status)
                 return false;
         }
 
@@ -152,7 +166,7 @@ trait HasStatusField
             /** @var \SaliBhdr\TyphoonIranCities\Models\IranSector $sector */
             $sector = $this->sector()->first();
 
-            if ($sector && $this->status != $sector->status)
+            if ($sector && $sector->status != $status)
                 return false;
         }
 
@@ -160,7 +174,7 @@ trait HasStatusField
             /** @var \SaliBhdr\TyphoonIranCities\Models\IranCity $city */
             $city = $this->city()->first();
 
-            if ($city && $this->status != $city->status)
+            if ($city && $city->status != $status)
                 return false;
         }
 
@@ -168,7 +182,7 @@ trait HasStatusField
             /** @var \SaliBhdr\TyphoonIranCities\Models\IranRuralDistrict $ruralDistrict */
             $ruralDistrict = $this->ruralDistrict()->first();
 
-            if ($ruralDistrict && $this->status != $ruralDistrict->status)
+            if ($ruralDistrict && $ruralDistrict->status != $status)
                 return false;
         }
 
