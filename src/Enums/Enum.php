@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Constants;
+namespace SaliBhdr\TyphoonIranCities\Enums;
 
 use League\Flysystem\NotSupportedException;
 use ReflectionClass;
