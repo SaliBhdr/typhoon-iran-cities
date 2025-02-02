@@ -2,6 +2,7 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
+use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
@@ -155,11 +156,11 @@ class Import extends AbstractCommand
 
     /**
      * @param $path
-     * @param \Closure|null $accept filters if data is accepted or not
+     * @param Closure|null $accept filters if data is accepted or not
      * @return array|null
      * @throws \Exception
      */
-    protected function csvToArray($path, \Closure $accept = null)
+    protected function csvToArray($path, ?Closure $accept = null)
     {
         if (!$path || !file_exists($path))
             throw new \Exception('File ' . $path . ' not exists');
