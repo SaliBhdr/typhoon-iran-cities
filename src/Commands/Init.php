@@ -26,7 +26,8 @@ class Init extends AbstractCommand
         $this->getDefinition()->addOptions([
             new InputOption('force', null, InputOption::VALUE_NONE, 'Force to overwrite copied files'),
             new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
+            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Publish city coordinates migration and import lat/lon when cities are included in the target'),
         ]);
     }
 
@@ -34,9 +35,10 @@ class Init extends AbstractCommand
     {
         if ($this->askBoolQuestion('Do you want to publish package migrations?')) {
             $this->call('iran:publish:migrations', [
-                '--force'  => $this->option('force'),
-                '--unite'  => $this->option('unite'),
-                '--target' => $this->option('target'),
+                '--force'            => $this->option('force'),
+                '--unite'            => $this->option('unite'),
+                '--target'           => $this->option('target'),
+                '--with-city-coordinates' => $this->option('with-city-coordinates'),
             ]);
         }
 
@@ -53,10 +55,10 @@ class Init extends AbstractCommand
 
         if ($this->askBoolQuestion('Do you want to import data?')) {
             $this->call('iran:import', [
-                '--unite'  => $this->option('unite'),
-                '--target' => $this->option('target'),
+                '--unite'            => $this->option('unite'),
+                '--target'           => $this->option('target'),
+                '--with-city-coordinates' => $this->option('with-city-coordinates'),
             ]);
         }
     }
-
 }

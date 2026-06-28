@@ -13,7 +13,8 @@ abstract class AbstractPublish extends AbstractCommand
         $this->getDefinition()->addOptions([
             new InputOption('force', null, InputOption::VALUE_NONE, 'Force to overwrite copied files'),
             new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
+            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Publish city coordinates migration (lat/lon) when cities are included in the target'),
         ]);
     }
 
@@ -45,16 +46,16 @@ abstract class AbstractPublish extends AbstractCommand
     {
         $target = $this->option('target');
 
-        if($this->option('unite'))
+        if ($this->option('unite'))
             return $this->getTargets([8]);
 
         $map = [
-            'all'             => $this->getTargets([1, 2, 3, 4, 5, 6, 7]),
+            'all'             => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4, 5, 6, 7])),
             'provinces'       => $this->getTargets([1]),
             'counties'        => $this->getTargets([1, 2]),
             'sectors'         => $this->getTargets([1, 2, 3,]),
-            'cities'          => $this->getTargets([1, 2, 3, 4]),
-            'city_districts'  => $this->getTargets([1, 2, 3, 4, 5]),
+            'cities'          => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4])),
+            'city_districts'  => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4, 5])),
             'rural_districts' => $this->getTargets([1, 2, 3, 6]),
             'villages'        => $this->getTargets([1, 2, 3, 6, 7]),
         ];
@@ -63,6 +64,18 @@ abstract class AbstractPublish extends AbstractCommand
             return $map[$target];
 
         throw new \Exception("Target Region ({$target}) Not Found", 404);
+    }
+
+    /**
+     * @param array $targets
+     * @return array
+     */
+    protected function withCoordinatesMigration(array $targets): array
+    {
+        if (!$this->option('with-city-coordinates') || $this->option('unite') || !in_array(4, $targets))
+            return $targets;
+
+        return array_merge($targets, [9]);
     }
 
     /**
