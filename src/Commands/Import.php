@@ -5,6 +5,7 @@ namespace SaliBhdr\TyphoonIranCities\Commands;
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use SaliBhdr\TyphoonIranCities\Enums\RegionTypeEnum;
 use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
 use Symfony\Component\Console\Input\InputOption;
 use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractCommand;
@@ -43,7 +44,8 @@ class Import extends AbstractCommand
 
         $this->getDefinition()->addOptions([
             new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all')
+            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
+            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Import city coordinates (lat/lon) into iran_cities when cities are included in the target'),
         ]);
     }
 
@@ -109,8 +111,67 @@ class Import extends AbstractCommand
             $this->line("   {$runTime}ms");
         }
 
+        if ($this->option('with-city-coordinates') && !$this->option('unite') && $this->targetsIncludeCities($targets))
+            $this->importCityCoordinates();
+
         $this->line('');
         $this->info('Data has been imported successfully!!!');
+    }
+
+    /**
+     * @param array $targets
+     * @return bool
+     */
+    protected function targetsIncludeCities(array $targets): bool
+    {
+        return in_array(RegionTypeEnum::CITY, $targets);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    protected function importCityCoordinates()
+    {
+        $startTime = microtime(true);
+
+        $rows = $this->csvToArray(__DIR__ . '/../../csv/city_coordinates.csv');
+
+        if (empty($rows))
+            return;
+
+        $coordinates = array_map(function ($row) {
+            return [
+                'id'  => $row['city_id'],
+                'lat' => $row['lat'],
+                'lon' => $row['lon'],
+            ];
+        }, $rows);
+
+        $chunkLength = 4000;
+
+        $chunks = array_chunk($coordinates, $chunkLength);
+
+        $chunksCount = count($chunks);
+
+        $this->info("\nImporting city coordinates...");
+        $this->line("{$chunksCount} data chunks with maximum {$chunkLength} row per chunk");
+
+        $task = $this->output->createProgressBar($chunksCount);
+
+        $task->start();
+
+        foreach ($chunks as $chunk) {
+            DB::table('iran_cities')->upsert($chunk, ['id'], ['lat', 'lon']);
+
+            $task->advance();
+        }
+
+        $task->finish();
+
+        $runTime = number_format((microtime(true) - $startTime) * 1000, 2);
+
+        $this->line("   {$runTime}ms");
     }
 
     /**
