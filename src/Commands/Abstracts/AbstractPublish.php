@@ -46,8 +46,14 @@ abstract class AbstractPublish extends AbstractCommand
     {
         $target = $this->option('target');
 
-        if ($this->option('unite'))
-            return $this->getTargets([8]);
+        if ($this->option('unite')) {
+            $targets = [8];
+
+            if ($this->option('with-city-coordinates') && $this->targetIncludesCities())
+                $targets[] = 10;
+
+            return $this->getTargets($targets);
+        }
 
         $map = [
             'all'             => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4, 5, 6, 7])),
@@ -72,10 +78,18 @@ abstract class AbstractPublish extends AbstractCommand
      */
     protected function withCoordinatesMigration(array $targets): array
     {
-        if (!$this->option('with-city-coordinates') || $this->option('unite') || !in_array(4, $targets))
+        if (!$this->option('with-city-coordinates') || !in_array(4, $targets))
             return $targets;
 
         return array_merge($targets, [9]);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function targetIncludesCities(): bool
+    {
+        return in_array($this->option('target'), ['all', 'cities', 'city_districts']);
     }
 
     /**

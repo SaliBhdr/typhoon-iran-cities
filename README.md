@@ -86,20 +86,26 @@ The default value of the `--target` option is set to all. So if you want all reg
 
 **`--with-city-coordinates` option:**
 
-This option allows you to import latitude and longitude coordinates for cities into the `iran_cities` table.
+This option allows you to import latitude and longitude coordinates for cities.
 
 When you use this option with `iran:publish:migrations` or `iran:import`, and your target includes cities
 (all, cities, or city_districts), the package will publish the related migration and import coordinates
-into the `iran_cities` table.
+into the `iran_cities` table in separate tables mode, or into the `iran_regions` table when using the `--unite` option.
 
-This option only works in separate tables mode and will be ignored if you use the `--unite` option.
-
-Example:
+Example (separate tables):
 
 ```sh
   php artisan iran:publish:migrations --target=cities --with-city-coordinates
   php artisan migrate
   php artisan iran:import --target=cities --with-city-coordinates
+```
+
+Example (one `regions` table):
+
+```sh
+  php artisan iran:publish:migrations --unite --target=cities --with-city-coordinates
+  php artisan migrate
+  php artisan iran:import --unite --target=cities --with-city-coordinates
 ```
 
 ## Usage

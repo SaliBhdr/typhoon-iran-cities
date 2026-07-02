@@ -45,7 +45,7 @@ class Import extends AbstractCommand
         $this->getDefinition()->addOptions([
             new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
             new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
-            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Import city coordinates (lat/lon) into iran_cities when cities are included in the target'),
+            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Import city coordinates (lat/lon) when cities are included in the target'),
         ]);
     }
 
@@ -111,7 +111,7 @@ class Import extends AbstractCommand
             $this->line("   {$runTime}ms");
         }
 
-        if ($this->option('with-city-coordinates') && !$this->option('unite') && $this->targetsIncludeCities($targets))
+        if ($this->option('with-city-coordinates') && $this->targetsIncludeCities($targets))
             $this->importCityCoordinates();
 
         $this->line('');
@@ -140,6 +140,19 @@ class Import extends AbstractCommand
         if (empty($rows))
             return;
 
+        if ($this->option('unite'))
+            $this->importCityCoordinatesToRegions($rows, $startTime);
+        else
+            $this->importCityCoordinatesToCities($rows, $startTime);
+    }
+
+    /**
+     * @param array $rows
+     * @param float $startTime
+     * @return void
+     */
+    protected function importCityCoordinatesToCities(array $rows, float $startTime)
+    {
         $coordinates = array_map(function ($row) {
             return [
                 'id'  => $row['city_id'],
@@ -147,6 +160,60 @@ class Import extends AbstractCommand
                 'lon' => $row['lon'],
             ];
         }, $rows);
+
+        $this->importCoordinatesInChunks($coordinates, function ($chunk) {
+            DB::table('iran_cities')->upsert($chunk, ['id'], ['lat', 'lon']);
+        }, $startTime);
+    }
+
+    /**
+     * @param array $rows
+     * @param float $startTime
+     * @return void
+     * @throws \Exception
+     */
+    protected function importCityCoordinatesToRegions(array $rows, float $startTime)
+    {
+        $cities = $this->csvToArray(__DIR__ . '/../../csv/cities.csv');
+
+        $cityCodes = [];
+
+        foreach ($cities as $city)
+            $cityCodes[$city['id']] = $city['code'];
+
+        $coordinates = [];
+
+        foreach ($rows as $row) {
+            if (!isset($cityCodes[$row['city_id']]))
+                continue;
+
+            $coordinates[] = [
+                'code' => $cityCodes[$row['city_id']],
+                'lat'  => $row['lat'],
+                'lon'  => $row['lon'],
+            ];
+        }
+
+        $this->importCoordinatesInChunks($coordinates, function ($chunk) {
+            foreach ($chunk as $row) {
+                DB::table('iran_regions')
+                    ->where('type', RegionTypeEnum::CITY)
+                    ->where('code', $row['code'])
+                    ->update(['lat' => $row['lat'], 'lon' => $row['lon']]);
+            }
+        }, $startTime);
+    }
+
+    /**
+     * @param array $coordinates
+     * @param Closure $importer
+     * @param float $startTime
+     * @return void
+     */
+    protected function importCoordinatesInChunks(array $coordinates, Closure $importer, float $startTime)
+    {
+        if (empty($coordinates))
+            return;
 
         $chunkLength = 4000;
 
@@ -162,7 +229,7 @@ class Import extends AbstractCommand
         $task->start();
 
         foreach ($chunks as $chunk) {
-            DB::table('iran_cities')->upsert($chunk, ['id'], ['lat', 'lon']);
+            $importer($chunk);
 
             $task->advance();
         }
