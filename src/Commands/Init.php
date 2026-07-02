@@ -2,34 +2,20 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use Symfony\Component\Console\Input\InputOption;
-use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractCommand;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+use Illuminate\Console\Command;
+use SaliBhdr\TyphoonIranCities\Commands\Traits\AsksBoolQuestions;
 
-class Init extends AbstractCommand
+#[Signature('iran:init
+    {--force : Force to overwrite copied files}
+    {--unite : Unite will put all regions into one region table and will not separate regional tables}
+    {--target=all : Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]}
+    {--with-city-coordinates : Publish city coordinates migration and import lat/lon when cities are included in the target}')]
+#[Description('Copies models and migrations then imports data')]
+class Init extends Command
 {
-    /**
-     * The name and signature of the console command.
-     * @var string
-     */
-    protected $signature = 'iran:init';
-
-    /**
-     * The console command description.
-     * @var string
-     */
-    protected $description = 'Copies models and migrations then imports data';
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->getDefinition()->addOptions([
-            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to overwrite copied files'),
-            new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
-            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Publish city coordinates migration and import lat/lon when cities are included in the target'),
-        ]);
-    }
+    use AsksBoolQuestions;
 
     public function handle()
     {

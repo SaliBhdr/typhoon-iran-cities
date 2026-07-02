@@ -1,10 +1,8 @@
 <?php
 
-namespace SaliBhdr\TyphoonIranCities\Commands\Abstracts;
+namespace SaliBhdr\TyphoonIranCities\Commands\Traits;
 
-use Illuminate\Console\Command;
-
-abstract class AbstractCommand extends Command
+trait AsksBoolQuestions
 {
     /**
      * @param string $question
@@ -26,5 +24,4 @@ abstract class AbstractCommand extends Command
 
         return $this->askBoolQuestion($question);
     }
-
 }

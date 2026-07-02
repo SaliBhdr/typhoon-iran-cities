@@ -2,23 +2,18 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
-use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractPublish;
+use SaliBhdr\TyphoonIranCities\Commands\Traits\PublishesIranCities;
 
-class PublishMigrations extends AbstractPublish
+#[Signature('iran:publish:migrations' . PublishMigrations::SIGNATURE_OPTIONS)]
+#[Description('Copies migrations into migrations directory')]
+class PublishMigrations extends Command
 {
-    /**
-     * The name and signature of the console command.
-     * @var string
-     */
-    protected $signature = 'iran:publish:migrations';
-
-    /**
-     * The console command description.
-     * @var string
-     */
-    protected $description = 'Copies migrations into migrations directory';
+    use PublishesIranCities;
 
     /**
      * @param array[int] $targets

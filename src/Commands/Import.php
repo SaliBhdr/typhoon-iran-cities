@@ -3,27 +3,21 @@
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
 use Closure;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use SaliBhdr\TyphoonIranCities\Enums\RegionTypeEnum;
 use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
-use Symfony\Component\Console\Input\InputOption;
-use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractCommand;
 
-class Import extends AbstractCommand
+#[Signature('iran:import
+    {--unite : Unite will put all regions into one region table and will not separate regional tables}
+    {--target=all : Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]}
+    {--with-city-coordinates : Import city coordinates (lat/lon) when cities are included in the target}')]
+#[Description('Imports all regions into the database (Can be selected by option)')]
+class Import extends Command
 {
-    /**
-     * The name and signature of the console command.
-     * @var string
-     */
-    protected $signature = 'iran:import';
-
-    /**
-     * The console command description.
-     * @var string
-     */
-    protected $description = 'Imports all regions into the database (Can be selected by option)';
-
     /**
      * @var array
      */
@@ -37,17 +31,6 @@ class Import extends AbstractCommand
         'rural_districts' => TargetTypeEnum::RURAL_DISTRICTS,
         'villages'        => TargetTypeEnum::VILLAGES
     ];
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->getDefinition()->addOptions([
-            new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
-            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Import city coordinates (lat/lon) when cities are included in the target'),
-        ]);
-    }
 
     /**
      * Execute the console command.
