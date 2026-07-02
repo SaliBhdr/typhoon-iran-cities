@@ -10,6 +10,10 @@ trait AsksBoolQuestions
      */
     protected function askBoolQuestion($question)
     {
+        if (!$this->input->isInteractive()) {
+            return true;
+        }
+
         $answer = strtolower($this->ask("$question (y/n)", 'y'));
 
         $answerMap = [

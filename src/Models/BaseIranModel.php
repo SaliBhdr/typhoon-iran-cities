@@ -3,7 +3,7 @@
 namespace SaliBhdr\TyphoonIranCities\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use SaliBhdr\TyphoonIranCities\Traits\HasStatusField;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasStatusField;
 
 /**
  * @property int $id
@@ -34,6 +34,8 @@ abstract class BaseIranModel extends Model
         'code'       => 'string',
         'short_code' => 'string',
     ];
+
+    protected $guarded = ['id'];
 
     /**
      * @return self[]\Illuminate\Database\Eloquent\Collection

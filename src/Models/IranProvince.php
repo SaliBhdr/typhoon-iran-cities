@@ -2,12 +2,12 @@
 
 namespace SaliBhdr\TyphoonIranCities\Models;
 
-use SaliBhdr\TyphoonIranCities\Traits\HasCities;
-use SaliBhdr\TyphoonIranCities\Traits\HasSectors;
-use SaliBhdr\TyphoonIranCities\Traits\HasVillages;
-use SaliBhdr\TyphoonIranCities\Traits\HasCounties;
-use SaliBhdr\TyphoonIranCities\Traits\HasCityDistricts;
-use SaliBhdr\TyphoonIranCities\Traits\HasRuralDistricts;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasCities;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasSectors;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasVillages;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasCounties;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasCityDistricts;
+use SaliBhdr\TyphoonIranCities\Models\Traits\HasRuralDistricts;
 
 /**
  * Class IranProvince (Ostan)

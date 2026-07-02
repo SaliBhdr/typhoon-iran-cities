@@ -6,34 +6,41 @@ use Closure;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use SaliBhdr\TyphoonIranCities\Enums\RegionTypeEnum;
-use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use RuntimeException;
+use SaliBhdr\TyphoonIranCities\Enums\RegionType;
+use SaliBhdr\TyphoonIranCities\Support\ImportTargetMap;
+use SaliBhdr\TyphoonIranCities\Support\PackagePath;
 
 #[Signature('iran:import
     {--unite : Unite will put all regions into one region table and will not separate regional tables}
     {--target=all : Target region that you want to import, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]}
-    {--with-city-coordinates : Import city coordinates (lat/lon) when cities are included in the target}')]
+    {--with-city-coordinates : Import city coordinates (lat/lon) when cities are included in the target}
+    {--fresh : Truncate target tables before importing}')]
 #[Description('Imports all regions into the database (Can be selected by option)')]
 class Import extends Command
 {
+    protected ?string $csvBasePath = null;
+
     /**
-     * @var array
+     * Tables in reverse FK dependency order for truncation.
+     *
+     * @var list<string>
      */
-    protected $map = [
-        'all'             => TargetTypeEnum::ALL,
-        'provinces'       => TargetTypeEnum::PROVINCES,
-        'counties'        => TargetTypeEnum::COUNTIES,
-        'sectors'         => TargetTypeEnum::SECTORS,
-        'cities'          => TargetTypeEnum::CITIES,
-        'city_districts'  => TargetTypeEnum::CITY_DISTRICTS,
-        'rural_districts' => TargetTypeEnum::RURAL_DISTRICTS,
-        'villages'        => TargetTypeEnum::VILLAGES
+    protected const TABLE_TRUNCATE_ORDER = [
+        'iran_villages',
+        'iran_city_districts',
+        'iran_cities',
+        'iran_rural_districts',
+        'iran_sectors',
+        'iran_counties',
+        'iran_provinces',
+        'iran_regions',
     ];
 
     /**
-     * Execute the console command.
      * @return void
      * @throws \Exception
      */
@@ -47,21 +54,31 @@ class Import extends Command
 
         $files = $this->getFiles($targets);
 
+        $tables = $this->resolveTables($files);
+
+        $this->assertTablesExist($tables);
+
+        if ($this->option('fresh')) {
+            $this->truncateTables($tables);
+        }
+
         foreach ($files as $fileName) {
 
             $startTime = microtime(true);
 
             $fileName = Str::plural($fileName);
 
-            $rows = $this->csvToArray(__DIR__ . '/../../csv/' . $fileName . '.csv', function ($key, $data) use ($targets) {
-                if ($this->option('unite') && !in_array($data['type'], $targets))
+            $rows = $this->csvToArray($this->getCsvPath($fileName . '.csv'), function ($key, $data) use ($targets) {
+                if ($this->option('unite') && !in_array($data['type'], $targets, true)) {
                     return false;
+                }
 
                 return true;
             });
 
-            if (empty($rows))
+            if (empty($rows)) {
                 continue;
+            }
 
             $targetName = str_replace('.csv', '', $fileName);
 
@@ -80,12 +97,13 @@ class Import extends Command
 
             $task->start();
 
-            foreach ($chunks as $chunk) {
+            DB::transaction(function () use ($dbName, $chunks, $task) {
+                foreach ($chunks as $chunk) {
+                    DB::table($dbName)->insertOrIgnore($chunk);
 
-                DB::table($dbName)->insertOrIgnore($chunk);
-
-                $task->advance();
-            }
+                    $task->advance();
+                }
+            });
 
             $task->finish();
 
@@ -94,8 +112,9 @@ class Import extends Command
             $this->line("   {$runTime}ms");
         }
 
-        if ($this->option('with-city-coordinates') && $this->targetsIncludeCities($targets))
+        if ($this->option('with-city-coordinates') && $this->targetsIncludeCities($targets)) {
             $this->importCityCoordinates();
+        }
 
         $this->line('');
         $this->info('Data has been imported successfully!!!');
@@ -107,7 +126,7 @@ class Import extends Command
      */
     protected function targetsIncludeCities(array $targets): bool
     {
-        return in_array(RegionTypeEnum::CITY, $targets);
+        return in_array(RegionType::City->value, $targets, true);
     }
 
     /**
@@ -118,15 +137,17 @@ class Import extends Command
     {
         $startTime = microtime(true);
 
-        $rows = $this->csvToArray(__DIR__ . '/../../csv/city_coordinates.csv');
+        $rows = $this->csvToArray($this->getCsvPath('city_coordinates.csv'));
 
-        if (empty($rows))
+        if (empty($rows)) {
             return;
+        }
 
-        if ($this->option('unite'))
+        if ($this->option('unite')) {
             $this->importCityCoordinatesToRegions($rows, $startTime);
-        else
+        } else {
             $this->importCityCoordinatesToCities($rows, $startTime);
+        }
     }
 
     /**
@@ -145,7 +166,11 @@ class Import extends Command
         }, $rows);
 
         $this->importCoordinatesInChunks($coordinates, function ($chunk) {
-            DB::table('iran_cities')->upsert($chunk, ['id'], ['lat', 'lon']);
+            foreach ($chunk as $row) {
+                DB::table('iran_cities')
+                    ->where('id', $row['id'])
+                    ->update(['lat' => $row['lat'], 'lon' => $row['lon']]);
+            }
         }, $startTime);
     }
 
@@ -157,18 +182,20 @@ class Import extends Command
      */
     protected function importCityCoordinatesToRegions(array $rows, float $startTime)
     {
-        $cities = $this->csvToArray(__DIR__ . '/../../csv/cities.csv');
+        $cities = $this->csvToArray($this->getCsvPath('cities.csv'));
 
         $cityCodes = [];
 
-        foreach ($cities as $city)
+        foreach ($cities as $city) {
             $cityCodes[$city['id']] = $city['code'];
+        }
 
         $coordinates = [];
 
         foreach ($rows as $row) {
-            if (!isset($cityCodes[$row['city_id']]))
+            if (!isset($cityCodes[$row['city_id']])) {
                 continue;
+            }
 
             $coordinates[] = [
                 'code' => $cityCodes[$row['city_id']],
@@ -180,7 +207,7 @@ class Import extends Command
         $this->importCoordinatesInChunks($coordinates, function ($chunk) {
             foreach ($chunk as $row) {
                 DB::table('iran_regions')
-                    ->where('type', RegionTypeEnum::CITY)
+                    ->where('type', RegionType::City->value)
                     ->where('code', $row['code'])
                     ->update(['lat' => $row['lat'], 'lon' => $row['lon']]);
             }
@@ -195,8 +222,9 @@ class Import extends Command
      */
     protected function importCoordinatesInChunks(array $coordinates, Closure $importer, float $startTime)
     {
-        if (empty($coordinates))
+        if (empty($coordinates)) {
             return;
+        }
 
         $chunkLength = 4000;
 
@@ -230,29 +258,104 @@ class Import extends Command
      */
     protected function getFiles($targets = [])
     {
-        if (empty($targets))
+        if (empty($targets)) {
             $targets = $this->getTarget();
+        }
 
-        if ($this->option('unite'))
-            return TargetTypeEnum::REGIONS;
+        if ($this->option('unite')) {
+            return ImportTargetMap::uniteCsvSources();
+        }
 
         return $targets;
     }
 
     /**
-     * @return array
+     * @return list<string>
      * @throws \Exception
      */
-    private function getTarget()
+    protected function getTarget()
     {
         $target = $this->option('target');
 
-        if (isset($this->map[$target]))
-            return $this->map[$target];
+        if (ImportTargetMap::isValid($target)) {
+            return ImportTargetMap::regionTypeValues($target);
+        }
 
         throw new \Exception("Target Region ({$target}) Not Found", 404);
     }
 
+    /**
+     * @param list<string> $files
+     * @return list<string>
+     */
+    protected function resolveTables(array $files): array
+    {
+        if ($this->option('unite')) {
+            return ['iran_regions'];
+        }
+
+        $tables = [];
+
+        foreach ($files as $fileName) {
+            $tables[] = 'iran_' . Str::plural($fileName);
+        }
+
+        return array_values(array_unique($tables));
+    }
+
+    /**
+     * @param list<string> $tables
+     * @return void
+     */
+    protected function assertTablesExist(array $tables): void
+    {
+        foreach ($tables as $table) {
+            if (!Schema::hasTable($table)) {
+                throw new RuntimeException(
+                    "Table {$table} does not exist. Run `php artisan migrate` first."
+                );
+            }
+        }
+    }
+
+    /**
+     * @param list<string> $tables
+     * @return void
+     */
+    protected function truncateTables(array $tables): void
+    {
+        Schema::disableForeignKeyConstraints();
+
+        foreach (self::TABLE_TRUNCATE_ORDER as $table) {
+            if (!in_array($table, $tables, true) || !Schema::hasTable($table)) {
+                continue;
+            }
+
+            DB::table($table)->truncate();
+        }
+
+        Schema::enableForeignKeyConstraints();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCsvPath(string $fileName): string
+    {
+        $base = $this->csvBasePath ?? PackagePath::csv();
+
+        return rtrim($base, '/') . '/' . $fileName;
+    }
+
+    /**
+     * Override the CSV directory (used in tests).
+     */
+    public function useCsvFrom(string $path): static
+    {
+        $this->csvBasePath = $path;
+
+        return $this;
+    }
 
     /**
      * prevents php throw error for importing very large data sets to database based on limits
@@ -260,46 +363,57 @@ class Import extends Command
     protected function removePhpLimits()
     {
         @set_time_limit(0);
-        @ini_set("memory_limit", "-1");
-        @ini_set("max_execution_time", '-1');
+        @ini_set('memory_limit', '-1');
+        @ini_set('max_execution_time', '-1');
         @ini_set('max_input_vars', '5000');
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @param Closure|null $accept filters if data is accepted or not
-     * @return array|null
+     * @return array<int, array<string, mixed>>
      * @throws \Exception
      */
     protected function csvToArray($path, ?Closure $accept = null)
     {
-        if (!$path || !file_exists($path))
+        if (!$path || !file_exists($path)) {
             throw new \Exception('File ' . $path . ' not exists');
+        }
 
-        $csv = array_map('str_getcsv', file($path));
+        $handle = @fopen($path, 'r');
+
+        if ($handle === false) {
+            throw new \Exception('Unable to open file ' . $path);
+        }
+
+        $headers = fgetcsv($handle);
+
+        if ($headers === false) {
+            fclose($handle);
+
+            return [];
+        }
 
         $arrFinal = [];
-        array_walk($csv, function ($data, $key) use ($csv, &$arrFinal, $accept) {
+        $key = 1;
 
-            $data = array_map(function ($a) {
-                return $a === "" ? null : $a;
-            }, $data);
+        while (($row = fgetcsv($handle)) !== false) {
+            $row = array_map(function ($value) {
+                return $value === '' ? null : $value;
+            }, $row);
 
-            $data = array_combine($csv[0], $data);
+            $data = array_combine($headers, $row);
 
-            if ($key != 0) {
-                $data = array_combine($csv[0], $data);
+            $isAccepted = is_null($accept) || $accept($key, $data);
 
-                $isAccepted = true;
-
-                if (!is_null($accept))
-                    $isAccepted = $accept($key, $data);
-
-                if (!empty($isAccepted))
-                    $arrFinal[$key] = $data;
+            if ($isAccepted) {
+                $arrFinal[$key] = $data;
             }
 
-        });
+            $key++;
+        }
+
+        fclose($handle);
 
         return $arrFinal;
     }

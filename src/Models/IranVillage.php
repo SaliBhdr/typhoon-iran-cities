@@ -2,10 +2,10 @@
 
 namespace SaliBhdr\TyphoonIranCities\Models;
 
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToCounty;
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToSector;
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToProvince;
-use SaliBhdr\TyphoonIranCities\Traits\BelongsToRuralDistrict;
+use SaliBhdr\TyphoonIranCities\Models\Traits\BelongsToCounty;
+use SaliBhdr\TyphoonIranCities\Models\Traits\BelongsToSector;
+use SaliBhdr\TyphoonIranCities\Models\Traits\BelongsToProvince;
+use SaliBhdr\TyphoonIranCities\Models\Traits\BelongsToRuralDistrict;
 
 /**
  * Class IranVillage (Abadi)

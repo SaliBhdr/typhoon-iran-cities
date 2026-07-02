@@ -8,6 +8,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use SaliBhdr\TyphoonIranCities\Commands\Traits\PublishesIranCities;
+use SaliBhdr\TyphoonIranCities\Enums\MigrationStub;
+use SaliBhdr\TyphoonIranCities\Support\PackagePath;
 
 #[Signature('iran:publish:migrations' . PublishMigrations::SIGNATURE_OPTIONS)]
 #[Description('Copies migrations into migrations directory')]
@@ -16,47 +18,50 @@ class PublishMigrations extends Command
     use PublishesIranCities;
 
     /**
-     * @param array[int] $targets
+     * @param list<MigrationStub> $targets
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function getTargets($targets)
     {
-        $src = $this->getSrcDir();
+        $stubsDir = $this->getStubsDir();
 
         $timestamp = time();
 
         $map = [
-            1 => [$src . '1_create_iran_provinces_table.stub' => $this->getMigrationFileName('create_iran_provinces_table.php', $timestamp)],
-            2 => [$src . '2_create_iran_counties_table.stub' => $this->getMigrationFileName('create_iran_counties_table.php', ++$timestamp)],
-            3 => [$src . '3_create_iran_sectors_table.stub' => $this->getMigrationFileName('create_iran_sectors_table.php', ++$timestamp)],
-            4 => [$src . '4_create_iran_cities_table.stub' => $this->getMigrationFileName('create_iran_cities_table.php', ++$timestamp)],
-            5 => [$src . '5_create_iran_city_districts_table.stub' => $this->getMigrationFileName('create_iran_city_districts_table.php', ++$timestamp)],
-            6 => [$src . '6_create_iran_rural_districts_table.stub' => $this->getMigrationFileName('create_iran_rural_districts_table.php', ++$timestamp)],
-            7 => [$src . '7_create_iran_villages_table.stub' => $this->getMigrationFileName('create_iran_villages_table.php', ++$timestamp)],
-            8 => [$src . '8_create_iran_regions_table.stub' => $this->getMigrationFileName('create_iran_regions_table.php', ++$timestamp)],
-            9 => [$src . '9_add_coordinates_to_iran_cities_table.stub' => $this->getMigrationFileName('add_coordinates_to_iran_cities_table.php', ++$timestamp)],
-            10 => [$src . '10_add_coordinates_to_iran_regions_table.stub' => $this->getMigrationFileName('add_coordinates_to_iran_regions_table.php', ++$timestamp)],
+            MigrationStub::Provinces->value => [$stubsDir . '1_create_iran_provinces_table.stub' => $this->getMigrationFileName('create_iran_provinces_table.php', $timestamp)],
+            MigrationStub::Counties->value => [$stubsDir . '2_create_iran_counties_table.stub' => $this->getMigrationFileName('create_iran_counties_table.php', ++$timestamp)],
+            MigrationStub::Sectors->value => [$stubsDir . '3_create_iran_sectors_table.stub' => $this->getMigrationFileName('create_iran_sectors_table.php', ++$timestamp)],
+            MigrationStub::Cities->value => [$stubsDir . '4_create_iran_cities_table.stub' => $this->getMigrationFileName('create_iran_cities_table.php', ++$timestamp)],
+            MigrationStub::CityDistricts->value => [$stubsDir . '5_create_iran_city_districts_table.stub' => $this->getMigrationFileName('create_iran_city_districts_table.php', ++$timestamp)],
+            MigrationStub::RuralDistricts->value => [$stubsDir . '6_create_iran_rural_districts_table.stub' => $this->getMigrationFileName('create_iran_rural_districts_table.php', ++$timestamp)],
+            MigrationStub::Villages->value => [$stubsDir . '7_create_iran_villages_table.stub' => $this->getMigrationFileName('create_iran_villages_table.php', ++$timestamp)],
+            MigrationStub::Regions->value => [$stubsDir . '8_create_iran_regions_table.stub' => $this->getMigrationFileName('create_iran_regions_table.php', ++$timestamp)],
+            MigrationStub::CoordinatesCities->value => [$stubsDir . '9_add_coordinates_to_iran_cities_table.stub' => $this->getMigrationFileName('add_coordinates_to_iran_cities_table.php', ++$timestamp)],
+            MigrationStub::CoordinatesRegions->value => [$stubsDir . '10_add_coordinates_to_iran_regions_table.stub' => $this->getMigrationFileName('add_coordinates_to_iran_regions_table.php', ++$timestamp)],
         ];
 
         $result = [];
 
         foreach ($targets as $target) {
-            if (isset($map[$target]))
-                $result = array_merge($result, $map[$target]);
+            $key = $target instanceof MigrationStub ? $target->value : $target;
+
+            if (isset($map[$key])) {
+                $result = array_merge($result, $map[$key]);
+            }
         }
 
         return $result;
     }
 
     /**
-     * Get models src dir
+     * Get migration stubs directory.
      *
      * @return string
      */
-    protected function getSrcDir()
+    protected function getStubsDir()
     {
-        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'migrations') . DIRECTORY_SEPARATOR;
+        return PackagePath::stubs('migrations') . DIRECTORY_SEPARATOR;
     }
 
     /**

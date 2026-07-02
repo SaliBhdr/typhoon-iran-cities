@@ -1,7 +1,7 @@
 {
     "name": "salibhdr/typhoon-iran-cities",
     "description": "A laravel package for importing all regions such as provinces, counties, cities, city districts, rural districts and villages of iran into database accurately",
-    "type": "package",
+    "type": "library",
     "license": "MIT",
     "keywords": [
         "salibhdr",
@@ -27,6 +27,11 @@
             "SaliBhdr\\TyphoonIranCities\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "SaliBhdr\\TyphoonIranCities\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -41,6 +46,14 @@
         "illuminate/database": "^13.0",
         "illuminate/filesystem": "^13.0",
         "illuminate/support": "^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^11.5"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-text --coverage-clover=coverage.xml"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

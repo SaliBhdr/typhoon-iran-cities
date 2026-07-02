@@ -1,21 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateIranVillagesTable extends Migration
+return new class extends Migration
 {
     /**
-     * Migration for abadi
+     * Migration for abadi.
      *
-     * Run the migrations.
-     *
-     * This table is equal to abadi in farsi
-     *
-     * @return void
+     * This table is equal to abadi in farsi.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('iran_villages', function (Blueprint $table) {
             $table->increments('id');
@@ -38,13 +34,8 @@ class CreateIranVillagesTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('iran_villages');
     }
-}
+};
