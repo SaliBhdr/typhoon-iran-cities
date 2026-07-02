@@ -36,8 +36,11 @@
         }
     },
     "require": {
-        "php": ">=5.6.0",
-        "laravel/framework": ">=5.0"
+        "php": "^8.3",
+        "illuminate/console": "^13.0",
+        "illuminate/database": "^13.0",
+        "illuminate/filesystem": "^13.0",
+        "illuminate/support": "^13.0"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

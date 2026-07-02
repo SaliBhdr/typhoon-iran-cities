@@ -10,7 +10,7 @@ class PublishModels extends AbstractPublish
      * The name and signature of the console command.
      * @var string
      */
-    protected $name = 'iran:publish:models';
+    protected $signature = 'iran:publish:models';
 
     /**
      * The console command description.

@@ -13,13 +13,15 @@ class IranCitiesServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
-        $this->commands([
-            Init::class,
-            PublishMigrations::class,
-            PublishModels::class,
-            Import::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Init::class,
+                PublishMigrations::class,
+                PublishModels::class,
+                Import::class,
+            ]);
+        }
     }
 }

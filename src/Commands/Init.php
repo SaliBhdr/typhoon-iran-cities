@@ -11,7 +11,7 @@ class Init extends AbstractCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $name = 'iran:init';
+    protected $signature = 'iran:init';
 
     /**
      * The console command description.
