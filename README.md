@@ -43,16 +43,7 @@ Install with composer:
  $ composer require salibhdr/typhoon-iran-cities
 ```
 
-For Laravel < 5.5 Register the Service provider in your config/app.php configuration file:
-
-```
-'providers' => [
-
-     # Other service providers...
-     
-     SaliBhdr\TyphoonIranCities\IranCitiesServiceProvider::class,
-],
-```
+Requires Laravel 13 and PHP 8.3 or higher (including PHP 8.5).
 
 ## Getting started
 
@@ -600,8 +591,8 @@ Reference
 
 Based on [ahmadazizi/iran-cities][link-reference-repo] git repository version 3. Take a look For more info.
 
-[ico-laravel]: https://img.shields.io/badge/Laravel-≥5.0-ff2d20?style=flat-square&logo=laravel
-[ico-php]: https://img.shields.io/badge/php-≥5.6-8892bf?style=flat-square&logo=php
+[ico-laravel]: https://img.shields.io/badge/Laravel-^13.0-ff2d20?style=flat-square&logo=laravel
+[ico-php]: https://img.shields.io/badge/php-^8.3-8892bf?style=flat-square&logo=php
 [ico-downloads]: https://poser.pugx.org/salibhdr/typhoon-iran-cities/downloads
 [ico-today-downloads]: https://img.shields.io/packagist/dd/salibhdr/typhoon-iran-cities.svg?style=flat-square
 [ico-license]: https://poser.pugx.org/salibhdr/typhoon-iran-cities/v/unstable
