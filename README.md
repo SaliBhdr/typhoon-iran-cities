@@ -33,6 +33,7 @@ or divide them in their own separate table, Or even you can select the data that
 - relational database between these tables
 - Both all in one region table and separate tables
 - Helper methods
+- City coordinates (latitude and longitude) for cities
 
 ## Installation
 
@@ -58,7 +59,7 @@ For Laravel < 5.5 Register the Service provider in your config/app.php configura
 This package provides a number of commands for you to easily use them to import migrations,
 models and data of your desired regions. 
 
-Before that, you should pay attention to explanation of the 2 options used in the commands:
+Before that, you should pay attention to explanation of the 3 options used in the commands:
 
 **`--unite` option:**
 
@@ -82,6 +83,30 @@ You can Select the target regions that you want to use from one
 of these options : all, provinces, counties, sectors, cities, city_districts, rural_districts, villages
 
 The default value of the `--target` option is set to all. So if you want all regions don't use this option.
+
+**`--with-city-coordinates` option:**
+
+This option allows you to import latitude and longitude coordinates for cities.
+
+When you use this option with `iran:publish:migrations` or `iran:import`, and your target includes cities
+(all, cities, or city_districts), the package will publish the related migration and import coordinates
+into the `iran_cities` table in separate tables mode, or into the `iran_regions` table when using the `--unite` option.
+
+Example (separate tables):
+
+```sh
+  php artisan iran:publish:migrations --target=cities --with-city-coordinates
+  php artisan migrate
+  php artisan iran:import --target=cities --with-city-coordinates
+```
+
+Example (one `regions` table):
+
+```sh
+  php artisan iran:publish:migrations --unite --target=cities --with-city-coordinates
+  php artisan migrate
+  php artisan iran:import --unite --target=cities --with-city-coordinates
+```
 
 ## Usage
 
@@ -119,7 +144,7 @@ this command runs below commands step by step:
 
 ```
 
-As mentioned before all commands have the `--unite` and the `--target` options.
+As mentioned before all commands have the `--unite`, the `--target` and the `--with-city-coordinates` options.
 
 Remember if you want all regions to be in one `regions` table Use `--unite` option.
 
@@ -146,6 +171,14 @@ related migrations of these models and import data up to
 cities level into separate tables and will ignore city districts, 
 rural districts and villages
 
+If you also want city coordinates, add the `--with-city-coordinates` option:
+
+```sh
+  php artisan iran:init --target=cities --with-city-coordinates
+```
+
+This will additionally publish `add_coordinates_to_iran_cities_table` migration and import lat/lon into `iran_cities` table.
+
 ---
 **The `iran:import` command:**
 
@@ -171,6 +204,14 @@ and will ignore city districts, rural districts and villages
 
 This will import data up to cities level into separate tables a
 nd will ignore city districts, rural districts and villages
+
+With city coordinates:
+
+```sh
+  php artisan iran:import --target=cities --with-city-coordinates
+```
+
+This will import data up to cities level into separate tables and will also import lat/lon into `iran_cities` table.
 
 ---
 **The `iran:publish:migrations` command:**
@@ -200,6 +241,14 @@ This will publish `create_iran_regions_table` migration file.
 ```
 
 This will publish related migration files up to cities level.
+
+With city coordinates:
+
+```sh
+  php artisan iran:publish:migrations --target=cities --with-city-coordinates
+```
+
+This will publish related migration files up to cities level and will also publish `add_coordinates_to_iran_cities_table` migration.
 
 ---
 **The `iran:publish:models` command:**
@@ -527,7 +576,7 @@ $city->isActive(); // return false because the province of the city is not activ
 ## Todos
 
  - Write Tests
- - Add longitude and latitude of regions
+ - Add longitude and latitude of regions other than cities
  - Add geo locations of regions
  
 Issues
