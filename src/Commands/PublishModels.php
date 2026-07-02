@@ -2,21 +2,16 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands;
 
-use SaliBhdr\TyphoonIranCities\Commands\Abstracts\AbstractPublish;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+use Illuminate\Console\Command;
+use SaliBhdr\TyphoonIranCities\Commands\Traits\PublishesIranCities;
 
-class PublishModels extends AbstractPublish
+#[Signature('iran:publish:models' . PublishModels::SIGNATURE_OPTIONS)]
+#[Description('Copies related models')]
+class PublishModels extends Command
 {
-    /**
-     * The name and signature of the console command.
-     * @var string
-     */
-    protected $signature = 'iran:publish:models';
-
-    /**
-     * The console command description.
-     * @var string
-     */
-    protected $description = 'Copies related models';
+    use PublishesIranCities;
 
     /**
      * @param array[int] $targets

@@ -1,22 +1,16 @@
 <?php
 
-namespace SaliBhdr\TyphoonIranCities\Commands\Abstracts;
+namespace SaliBhdr\TyphoonIranCities\Commands\Traits;
 
-use Symfony\Component\Console\Input\InputOption;
-
-abstract class AbstractPublish extends AbstractCommand
+trait PublishesIranCities
 {
-    public function __construct()
-    {
-        parent::__construct();
+    use AsksBoolQuestions;
 
-        $this->getDefinition()->addOptions([
-            new InputOption('force', null, InputOption::VALUE_NONE, 'Force to overwrite copied files'),
-            new InputOption('unite', null, InputOption::VALUE_NONE, 'Unite will put all regions into one region table and will not separate regional tables'),
-            new InputOption('target', null, InputOption::VALUE_OPTIONAL, 'Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]', 'all'),
-            new InputOption('with-city-coordinates', null, InputOption::VALUE_NONE, 'Publish city coordinates migration (lat/lon) when cities are included in the target'),
-        ]);
-    }
+    public const SIGNATURE_OPTIONS = '
+    {--force : Force to overwrite copied files}
+    {--unite : Unite will put all regions into one region table and will not separate regional tables}
+    {--target=all : Target region that you desire to have, options : [all, provinces, counties, sectors, cities, city_districts, rural_districts, villages]}
+    {--with-city-coordinates : Publish city coordinates migration (lat/lon) when cities are included in the target}';
 
     /**
      * @throws \Exception
