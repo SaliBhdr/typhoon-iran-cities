@@ -2,6 +2,8 @@
 
 namespace SaliBhdr\TyphoonIranCities\Commands\Traits;
 
+use SaliBhdr\TyphoonIranCities\Enums\MigrationStub;
+
 trait PublishesIranCities
 {
     use AsksBoolQuestions;
@@ -41,41 +43,74 @@ trait PublishesIranCities
         $target = $this->option('target');
 
         if ($this->option('unite')) {
-            $targets = [8];
+            $targets = [MigrationStub::Regions];
 
-            if ($this->option('with-city-coordinates') && $this->targetIncludesCities())
-                $targets[] = 10;
+            if ($this->option('with-city-coordinates') && $this->targetIncludesCities()) {
+                $targets[] = MigrationStub::CoordinatesRegions;
+            }
 
             return $this->getTargets($targets);
         }
 
         $map = [
-            'all'             => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4, 5, 6, 7])),
-            'provinces'       => $this->getTargets([1]),
-            'counties'        => $this->getTargets([1, 2]),
-            'sectors'         => $this->getTargets([1, 2, 3,]),
-            'cities'          => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4])),
-            'city_districts'  => $this->getTargets($this->withCoordinatesMigration([1, 2, 3, 4, 5])),
-            'rural_districts' => $this->getTargets([1, 2, 3, 6]),
-            'villages'        => $this->getTargets([1, 2, 3, 6, 7]),
+            'all' => $this->getTargets($this->withCoordinatesMigration([
+                MigrationStub::Provinces,
+                MigrationStub::Counties,
+                MigrationStub::Sectors,
+                MigrationStub::Cities,
+                MigrationStub::CityDistricts,
+                MigrationStub::RuralDistricts,
+                MigrationStub::Villages,
+            ])),
+            'provinces' => $this->getTargets([MigrationStub::Provinces]),
+            'counties' => $this->getTargets([MigrationStub::Provinces, MigrationStub::Counties]),
+            'sectors' => $this->getTargets([MigrationStub::Provinces, MigrationStub::Counties, MigrationStub::Sectors]),
+            'cities' => $this->getTargets($this->withCoordinatesMigration([
+                MigrationStub::Provinces,
+                MigrationStub::Counties,
+                MigrationStub::Sectors,
+                MigrationStub::Cities,
+            ])),
+            'city_districts' => $this->getTargets($this->withCoordinatesMigration([
+                MigrationStub::Provinces,
+                MigrationStub::Counties,
+                MigrationStub::Sectors,
+                MigrationStub::Cities,
+                MigrationStub::CityDistricts,
+            ])),
+            'rural_districts' => $this->getTargets([
+                MigrationStub::Provinces,
+                MigrationStub::Counties,
+                MigrationStub::Sectors,
+                MigrationStub::RuralDistricts,
+            ]),
+            'villages' => $this->getTargets([
+                MigrationStub::Provinces,
+                MigrationStub::Counties,
+                MigrationStub::Sectors,
+                MigrationStub::RuralDistricts,
+                MigrationStub::Villages,
+            ]),
         ];
 
-        if (isset($map[$target]))
+        if (isset($map[$target])) {
             return $map[$target];
+        }
 
         throw new \Exception("Target Region ({$target}) Not Found", 404);
     }
 
     /**
-     * @param array $targets
-     * @return array
+     * @param list<MigrationStub> $targets
+     * @return list<MigrationStub>
      */
     protected function withCoordinatesMigration(array $targets): array
     {
-        if (!$this->option('with-city-coordinates') || !in_array(4, $targets))
+        if (!$this->option('with-city-coordinates') || !in_array(MigrationStub::Cities, $targets, true)) {
             return $targets;
+        }
 
-        return array_merge($targets, [9]);
+        return array_merge($targets, [MigrationStub::CoordinatesCities]);
     }
 
     /**
@@ -83,11 +118,11 @@ trait PublishesIranCities
      */
     protected function targetIncludesCities(): bool
     {
-        return in_array($this->option('target'), ['all', 'cities', 'city_districts']);
+        return in_array($this->option('target'), ['all', 'cities', 'city_districts'], true);
     }
 
     /**
-     * @param $targets
+     * @param list<MigrationStub> $targets
      * @return mixed
      */
     abstract protected function getTargets($targets);

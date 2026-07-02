@@ -1,22 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use SaliBhdr\TyphoonIranCities\Enums\TargetTypeEnum;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateIranRegionsTable extends Migration
+return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('iran_regions', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('type', TargetTypeEnum::ALL);
+            $table->enum('type', [
+                'province',
+                'county',
+                'sector',
+                'city',
+                'city_district',
+                'rural_district',
+                'village',
+            ]);
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('province_id')->nullable();
             $table->unsignedInteger('county_id')->nullable();
@@ -28,6 +30,9 @@ class CreateIranRegionsTable extends Migration
             $table->string('short_code', 20);
             $table->boolean('status')->default(1);
 
+            $table->index('type');
+            $table->index(['type', 'code']);
+
             $table->foreign('parent_id')->references('id')->on('iran_regions')->onDelete('cascade');
             $table->foreign('province_id')->references('id')->on('iran_regions')->onDelete('cascade');
             $table->foreign('county_id')->references('id')->on('iran_regions')->onDelete('cascade');
@@ -37,13 +42,8 @@ class CreateIranRegionsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('iran_regions');
     }
-}
+};

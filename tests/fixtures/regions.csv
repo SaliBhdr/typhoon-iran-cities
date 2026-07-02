@@ -1,0 +1,5 @@
+"id","type","parent_id","province_id","county_id","sector_id","city_id","rural_district_id","name","code","short_code"
+"1","province",,,,,,,"Province One","01","01"
+"2","province",,,,,,,"Province Two","02","02"
+"3","county","1","1",,,,,"County One","0101","01"
+"4","city","3","1","1","1",,,"City One","0101010001","0001"

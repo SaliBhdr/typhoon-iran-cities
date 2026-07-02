@@ -6,6 +6,8 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use SaliBhdr\TyphoonIranCities\Commands\Traits\PublishesIranCities;
+use SaliBhdr\TyphoonIranCities\Enums\MigrationStub;
+use SaliBhdr\TyphoonIranCities\Support\PackagePath;
 
 #[Signature('iran:publish:models' . PublishModels::SIGNATURE_OPTIONS)]
 #[Description('Copies related models')]
@@ -14,44 +16,47 @@ class PublishModels extends Command
     use PublishesIranCities;
 
     /**
-     * @param array[int] $targets
+     * @param list<MigrationStub> $targets
      * @return array
      */
     protected function getTargets($targets)
     {
-        $src = $this->getSrcDir();
+        $stubsDir = $this->getStubsDir();
 
         $target = $this->getTargetDir();
 
         $map = [
-            1 => [$src . 'IranProvince.stub' => $target . 'IranProvince.php'],
-            2 => [$src . 'IranCounty.stub' => $target . 'IranCounty.php'],
-            3 => [$src . 'IranSector.stub' => $target . 'IranSector.php'],
-            4 => [$src . 'IranCity.stub' => $target . 'IranCity.php'],
-            5 => [$src . 'IranCityDistrict.stub' => $target . 'IranCityDistrict.php'],
-            6 => [$src . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php'],
-            7 => [$src . 'IranVillage.stub' => $target . 'IranVillage.php'],
-            8 => [$src . 'IranRegion.stub' => $target . 'IranRegion.php'],
+            MigrationStub::Provinces->value => [$stubsDir . 'IranProvince.stub' => $target . 'IranProvince.php'],
+            MigrationStub::Counties->value => [$stubsDir . 'IranCounty.stub' => $target . 'IranCounty.php'],
+            MigrationStub::Sectors->value => [$stubsDir . 'IranSector.stub' => $target . 'IranSector.php'],
+            MigrationStub::Cities->value => [$stubsDir . 'IranCity.stub' => $target . 'IranCity.php'],
+            MigrationStub::CityDistricts->value => [$stubsDir . 'IranCityDistrict.stub' => $target . 'IranCityDistrict.php'],
+            MigrationStub::RuralDistricts->value => [$stubsDir . 'IranRuralDistrict.stub' => $target . 'IranRuralDistrict.php'],
+            MigrationStub::Villages->value => [$stubsDir . 'IranVillage.stub' => $target . 'IranVillage.php'],
+            MigrationStub::Regions->value => [$stubsDir . 'IranRegion.stub' => $target . 'IranRegion.php'],
         ];
 
         $result = [];
 
-        foreach ($targets as $target) {
-            if (isset($map[$target]))
-                $result = array_merge($result, $map[$target]);
+        foreach ($targets as $stub) {
+            $key = $stub instanceof MigrationStub ? $stub->value : $stub;
+
+            if (isset($map[$key])) {
+                $result = array_merge($result, $map[$key]);
+            }
         }
 
         return $result;
     }
 
     /**
-     * Get models src dir
+     * Get model stubs directory.
      *
      * @return string
      */
-    protected function getSrcDir()
+    protected function getStubsDir()
     {
-        return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'models') . DIRECTORY_SEPARATOR;
+        return PackagePath::stubs('models') . DIRECTORY_SEPARATOR;
     }
 
     /**
