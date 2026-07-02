@@ -14,9 +14,12 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ['8.3', '8.4']
         include:
+          - php: '8.3'
+            coverage: false
           - php: '8.4'
+            coverage: true
+          - php: '8.5'
             coverage: true
 
     name: PHP ${{ matrix.php }}
@@ -38,7 +41,7 @@ jobs:
       - name: Run tests
         run: |
           if [ "${{ matrix.coverage }}" = "true" ]; then
-            vendor/bin/phpunit --coverage-clover=coverage.xml
+            vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
           else
             vendor/bin/phpunit
           fi
@@ -47,5 +50,7 @@ jobs:
         if: matrix.coverage
         uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
+          flags: php-${{ matrix.php }}
           fail_ci_if_error: false
